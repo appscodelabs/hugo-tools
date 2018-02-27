@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 
 	"github.com/gohugoio/hugo/parser"
+	"strings"
 )
 
 func main() {
@@ -23,8 +24,11 @@ func main() {
 			if info.IsDir() {
 				return nil
 			}
+			if !strings.HasSuffix(path, ".md") {
+				return nil
+			}
 
-			filename := filepath.Join(path, info.Name())
+			filename := path
 			f, err := os.Open(filename)
 			if err != nil {
 				return err
@@ -45,6 +49,4 @@ func main() {
 			fmt.Printf("error walking the path %q: %v\n", dir, err)
 		}
 	}
-
-	parser.ReadFrom(nil)
 }
