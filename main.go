@@ -19,28 +19,32 @@ func main() {
 
 var (
 	dirTPL = template.Must(template.New("dir").Parse(`---
+---
 title: {{ .title }}
 menu:
-  docs_0.8.0-beta.2:
+  product_voyager_6.0.0-rc.0:
     identifier: {{ .id }}
     name: {{ .title }}
     parent: {{ .pid }}
-    weight: 10
-menu_name: docs_0.8.0-beta.2
+    weight: 1
+menu_name: product_voyager_6.0.0-rc.0
 ---
+
 `))
 
 	mdTPL = template.Must(template.New("md").Parse(`---
 title: {{ .title }}
 menu:
-  docs_0.8.0-beta.2:
+  product_voyager_6.0.0-rc.0:
     identifier: {{ .id }}
     name: {{ .title }}
     parent: {{ .pid }}
-    weight: 10
-menu_name: docs_0.8.0-beta.2
+    weight: 1
+product_name: voyager
+menu_name: product_voyager_6.0.0-rc.0
 section_menu_id: guides
 ---
+
 `))
 )
 
@@ -60,11 +64,10 @@ func addFrontMatter() {
 			parent := clean(filepath.Base(filepath.Dir(path)))
 			granny := clean(filepath.Base(filepath.Dir(filepath.Dir(path))))
 			data := map[string]string{
-				"id":    id(self+" "+parent),
+				"id":    id(self + " " + parent),
 				"pid":   id(parent + " " + granny),
 				"title": strings.Title(parent + " " + self),
 			}
-
 
 			if info.IsDir() {
 				var out bytes.Buffer
