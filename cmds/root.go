@@ -10,8 +10,8 @@ import (
 
 func NewRootCmd() *cobra.Command {
 	rootCmd := &cobra.Command{
-		Use:               "onessl [command]",
-		Short:             `onessl by AppsCode - Simple CLI to generate SSL certificates on any platform`,
+		Use:               "hugo-checker [command]",
+		Short:             `Check various aspects of a hugo site`,
 		DisableAutoGenTag: true,
 		PersistentPreRun: func(c *cobra.Command, args []string) {
 			c.Flags().VisitAll(func(flag *pflag.Flag) {

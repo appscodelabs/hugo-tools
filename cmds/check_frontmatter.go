@@ -15,8 +15,8 @@ import (
 
 func NewCmdCheckFrontMatter() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:               "add-intro",
-		Short:             "Add intro",
+		Use:               "check-frontmatter",
+		Short:             "Check front matter",
 		DisableAutoGenTag: true,
 		Run: func(cmd *cobra.Command, args []string) {
 			checkFrontMatter(args)
