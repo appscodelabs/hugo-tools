@@ -10,7 +10,7 @@ import (
 
 func NewRootCmd() *cobra.Command {
 	rootCmd := &cobra.Command{
-		Use:               "hugo-checker [command]",
+		Use:               "hugo-tools [command]",
 		Short:             `Check various aspects of a hugo site`,
 		DisableAutoGenTag: true,
 		PersistentPreRun: func(c *cobra.Command, args []string) {
