@@ -57,10 +57,25 @@
   version = "v0.3.0"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/appscode/go"
+  packages = [
+    "log/golog",
+    "runtime"
+  ]
+  revision = "f8f2e1c7d2d10789cdd0540468b487d14421dbf9"
+
+[[projects]]
   name = "github.com/chaseadamsio/goorgeous"
   packages = ["."]
   revision = "dcf1ef873b8987bf12596fe6951c48347986eb2f"
   version = "v1.1.0"
+
+[[projects]]
+  name = "github.com/cpuguy83/go-md2man"
+  packages = ["md2man"]
+  revision = "20f5889cbdc3c73dbd2862796665e7c465ade7d1"
+  version = "v1.0.8"
 
 [[projects]]
   branch = "master"
@@ -87,8 +102,20 @@
     "hugofs",
     "parser"
   ]
-  revision = "956a2dce8d9fd51f6c4f827bd2ae859a6f22ac6f"
-  version = "v0.37"
+  revision = "f414966b942b5aad75565bee6c644782a07f0658"
+  version = "v0.37.1"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/golang/glog"
+  packages = ["."]
+  revision = "23def4e6c14b4da8ac2ed8007337bc5eb5007998"
+
+[[projects]]
+  name = "github.com/inconshreveable/mousetrap"
+  packages = ["."]
+  revision = "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75"
+  version = "v1.0"
 
 [[projects]]
   name = "github.com/jdkato/prose"
@@ -158,6 +185,15 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/spf13/cobra"
+  packages = [
+    ".",
+    "doc"
+  ]
+  revision = "c6c44e6fdcc30161c7f4480754da7230d01c06e3"
+
+[[projects]]
+  branch = "master"
   name = "github.com/spf13/jwalterweatherman"
   packages = ["."]
   revision = "7c0cea34c8ece3fbeb2b27ab9b59511d360fb394"
@@ -172,7 +208,7 @@
   branch = "master"
   name = "golang.org/x/net"
   packages = ["idna"]
-  revision = "cbe0f9307d0156177f9dd5dc85da1a31abc5f2fb"
+  revision = "e0c57d8f86c17f0724497efcb3bc617e82834821"
 
 [[projects]]
   branch = "master"
@@ -183,6 +219,7 @@
     "internal/colltab",
     "internal/gen",
     "internal/language",
+    "internal/language/compact",
     "internal/tag",
     "internal/triegen",
     "internal/ucd",
@@ -195,7 +232,7 @@
     "unicode/rangetable",
     "width"
   ]
-  revision = "27420a1a391f5504f73155051cd274311bf70883"
+  revision = "8c34f848e18c4bd34d02db7f19a0ed1a0a8f5852"
 
 [[projects]]
   name = "gopkg.in/yaml.v2"
@@ -206,6 +243,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "d6191a73e90b52046676a97b944a663573861355090b530c25dd699f267218fb"
+  inputs-digest = "22b308d3af277fa4ca9e44eb86f63a4f18f650b2e2fb068b38b86a681e9ad5a0"
   solver-name = "gps-cdcl"
   solver-version = 1

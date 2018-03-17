@@ -1,4 +1,4 @@
-package main
+package cmds
 
 import (
 	"bytes"
@@ -8,10 +8,10 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-
 	"text/template"
 
 	"github.com/gohugoio/hugo/parser"
+	"github.com/spf13/cobra"
 )
 
 var (
@@ -45,8 +45,19 @@ section_menu_id: guides
 `))
 )
 
-func addFrontMatter() {
-	args := os.Args
+func NewCmdAddFrontMatter() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:               "add-frontmatter",
+		Short:             "Add front matter",
+		DisableAutoGenTag: true,
+		Run: func(cmd *cobra.Command, args []string) {
+			addFrontMatter(args)
+		},
+	}
+	return cmd
+}
+
+func addFrontMatter(args []string) {
 	if len(args) < 2 {
 		log.Fatalln("missing directory name")
 	}

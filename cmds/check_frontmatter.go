@@ -1,4 +1,4 @@
-package main
+package cmds
 
 import (
 	"bytes"
@@ -10,10 +10,22 @@ import (
 	"strings"
 
 	"github.com/gohugoio/hugo/parser"
+	"github.com/spf13/cobra"
 )
 
-func checkFrontMatter() {
-	args := os.Args
+func NewCmdCheckFrontMatter() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:               "add-intro",
+		Short:             "Add intro",
+		DisableAutoGenTag: true,
+		Run: func(cmd *cobra.Command, args []string) {
+			checkFrontMatter(args)
+		},
+	}
+	return cmd
+}
+
+func checkFrontMatter(args []string) {
 	if len(args) < 2 {
 		log.Fatalln("missing directory name")
 	}

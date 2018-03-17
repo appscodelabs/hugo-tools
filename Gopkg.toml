@@ -26,8 +26,20 @@
 
 
 [[constraint]]
+  branch = "master"
+  name = "github.com/appscode/go"
+
+[[constraint]]
   name = "github.com/gohugoio/hugo"
-  version = "0.37.0"
+  version = "0.37.1"
+
+[[constraint]]
+  name = "github.com/spf13/cobra"
+  branch = "master"
+
+[[constraint]]
+  name = "github.com/spf13/pflag"
+  version = "1.0.0"
 
 [prune]
   go-tests = true
