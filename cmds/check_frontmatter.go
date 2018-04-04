@@ -26,10 +26,10 @@ func NewCmdCheckFrontMatter() *cobra.Command {
 }
 
 func checkFrontMatter(args []string) {
-	if len(args) < 2 {
+	if len(args) < 1 {
 		log.Fatalln("missing directory name")
 	}
-	for _, dir := range os.Args[1:] {
+	for _, dir := range args {
 		err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
 			if err != nil {
 				fmt.Printf("prevent panic by handling failure accessing a path %q: %v\n", dir, err)
