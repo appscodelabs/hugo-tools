@@ -29,6 +29,7 @@ func checkFrontMatter(args []string) {
 	if len(args) < 1 {
 		log.Fatalln("missing directory name")
 	}
+	var names []string
 	for _, dir := range args {
 		err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
 			if err != nil {
@@ -54,12 +55,18 @@ func checkFrontMatter(args []string) {
 			}
 			fm := page.FrontMatter()
 			if len(fm) == 0 {
-				fmt.Println(path)
+				names = append(names, path)
 			}
 			return nil
 		})
 		if err != nil {
 			fmt.Printf("error walking the path %q: %v\n", dir, err)
+		}
+		for _, file := range names {
+			fmt.Println(file)
+		}
+		if len(names) != 0 {
+			os.Exit(1)
 		}
 	}
 }
