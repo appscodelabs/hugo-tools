@@ -59,16 +59,14 @@ func checkFrontMatter(args []string) {
 			}
 			return nil
 		})
-
+		if err != nil {
+			fmt.Printf("error walking the path %q: %v\n", dir, err)
+		}
 		for _, file := range names {
 			fmt.Println(file)
 		}
 		if len(names) != 0 {
 			os.Exit(1)
-		}
-
-		if err != nil {
-			fmt.Printf("error walking the path %q: %v\n", dir, err)
 		}
 	}
 }
