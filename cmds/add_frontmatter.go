@@ -19,12 +19,12 @@ var (
 ---
 title: {{ .title }}
 menu:
-  product_{{ .product }}_6.0.0-rc.0:
+  product_{{ .product }}_{{ .version }}:
     identifier: {{ .id }}
     name: {{ .title }}
     parent: {{ .pid }}
     weight: 1
-menu_name: product_{{ .product }}_6.0.0-rc.0
+menu_name: product_{{ .product }}_{{ .version }}
 ---
 
 `))
@@ -32,13 +32,13 @@ menu_name: product_{{ .product }}_6.0.0-rc.0
 	mdTPL = template.Must(template.New("md").Parse(`---
 title: {{ .title }}
 menu:
-  product_{{ .product }}_6.0.0-rc.0:
+  product_{{ .product }}_{{ .version }}:
     identifier: {{ .id }}
     name: {{ .title }}
     parent: {{ .pid }}
     weight: 1
 product_name: {{ .product }}
-menu_name: product_{{ .product }}_6.0.0-rc.0
+menu_name: product_{{ .product }}_{{ .version }}
 section_menu_id: guides
 ---
 
@@ -46,6 +46,7 @@ section_menu_id: guides
 )
 
 var product string
+var version string
 
 func NewCmdAddFrontMatter() *cobra.Command {
 	cmd := &cobra.Command{
@@ -57,6 +58,7 @@ func NewCmdAddFrontMatter() *cobra.Command {
 		},
 	}
 	cmd.Flags().StringVar(&product, "product", product, "Name of product")
+	cmd.Flags().StringVar(&version, "version", version, "Product version")
 	return cmd
 }
 
@@ -79,6 +81,7 @@ func addFrontMatter(args []string) {
 				"pid":     id(parent + " " + granny),
 				"title":   strings.Title(parent + " " + self),
 				"product": product,
+				"version": version,
 			}
 
 			if info.IsDir() {
