@@ -13,7 +13,8 @@ hugo-tools add-frontmatter [flags]
 ### Options
 
 ```
-  -h, --help   help for add-frontmatter
+  -h, --help             help for add-frontmatter
+      --product string   Name of product
 ```
 
 ### SEE ALSO

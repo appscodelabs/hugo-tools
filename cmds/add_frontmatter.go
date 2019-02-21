@@ -19,12 +19,12 @@ var (
 ---
 title: {{ .title }}
 menu:
-  product_voyager_6.0.0-rc.0:
+  product_{{ .product }}_6.0.0-rc.0:
     identifier: {{ .id }}
     name: {{ .title }}
     parent: {{ .pid }}
     weight: 1
-menu_name: product_voyager_6.0.0-rc.0
+menu_name: product_{{ .product }}_6.0.0-rc.0
 ---
 
 `))
@@ -32,18 +32,20 @@ menu_name: product_voyager_6.0.0-rc.0
 	mdTPL = template.Must(template.New("md").Parse(`---
 title: {{ .title }}
 menu:
-  product_voyager_6.0.0-rc.0:
+  product_{{ .product }}_6.0.0-rc.0:
     identifier: {{ .id }}
     name: {{ .title }}
     parent: {{ .pid }}
     weight: 1
-product_name: voyager
-menu_name: product_voyager_6.0.0-rc.0
+product_name: {{ .product }}
+menu_name: product_{{ .product }}_6.0.0-rc.0
 section_menu_id: guides
 ---
 
 `))
 )
+
+var product string
 
 func NewCmdAddFrontMatter() *cobra.Command {
 	cmd := &cobra.Command{
@@ -54,6 +56,7 @@ func NewCmdAddFrontMatter() *cobra.Command {
 			addFrontMatter(args)
 		},
 	}
+	cmd.Flags().StringVar(&product, "product", product, "Name of product")
 	return cmd
 }
 
@@ -72,9 +75,10 @@ func addFrontMatter(args []string) {
 			parent := clean(filepath.Base(filepath.Dir(path)))
 			granny := clean(filepath.Base(filepath.Dir(filepath.Dir(path))))
 			data := map[string]string{
-				"id":    id(self + " " + parent),
-				"pid":   id(parent + " " + granny),
-				"title": strings.Title(parent + " " + self),
+				"id":      id(self + " " + parent),
+				"pid":     id(parent + " " + granny),
+				"title":   strings.Title(parent + " " + self),
+				"product": product,
 			}
 
 			if info.IsDir() {
