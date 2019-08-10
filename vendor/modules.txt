@@ -41,6 +41,10 @@ github.com/appscode/go/log/golog
 github.com/appscode/go/runtime
 # github.com/chaseadamsio/goorgeous v1.1.0
 github.com/chaseadamsio/goorgeous
+# github.com/codegangsta/inject v0.0.0-20150114235600-33e0aa1cb7c0
+github.com/codegangsta/inject
+# github.com/codeskyblue/go-sh v0.0.0-20190412065543-76bd3d59ff27
+github.com/codeskyblue/go-sh
 # github.com/cpuguy83/go-md2man v1.0.8
 github.com/cpuguy83/go-md2man/md2man
 # github.com/danwakefield/fnmatch v0.0.0-20160403171240-cbb64ac3d964
@@ -50,9 +54,12 @@ github.com/dlclark/regexp2
 github.com/dlclark/regexp2/syntax
 # github.com/fsnotify/fsnotify v1.4.7
 github.com/fsnotify/fsnotify
+# github.com/gogo/protobuf v0.0.0-20171007142547-342cbe0a0415
+github.com/gogo/protobuf/proto
+github.com/gogo/protobuf/sortkeys
 # github.com/gohugoio/hugo v0.49.1
-github.com/gohugoio/hugo/parser
 github.com/gohugoio/hugo/helpers
+github.com/gohugoio/hugo/parser
 github.com/gohugoio/hugo/bufferpool
 github.com/gohugoio/hugo/common/hugio
 github.com/gohugoio/hugo/common/maps
@@ -67,6 +74,8 @@ github.com/gohugoio/hugo/common/math
 github.com/gohugoio/hugo/langs
 # github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
 github.com/golang/glog
+# github.com/google/gofuzz v0.0.0-20170612174753-24818f796faf
+github.com/google/gofuzz
 # github.com/hashicorp/go-immutable-radix v1.0.0
 github.com/hashicorp/go-immutable-radix
 # github.com/hashicorp/golang-lru v0.5.0
@@ -121,13 +130,43 @@ github.com/spf13/pflag
 github.com/spf13/viper
 # golang.org/x/net v0.0.0-20190404232315-eb5bcb51f2a3
 golang.org/x/net/idna
+golang.org/x/net/http2
+golang.org/x/net/http/httpguts
+golang.org/x/net/http2/hpack
 # golang.org/x/sys v0.0.0-20190412213103-97732733099d
 golang.org/x/sys/unix
-# golang.org/x/text v0.3.0
+# golang.org/x/text v0.3.1-0.20181227161524-e6919f6577db
 golang.org/x/text/transform
 golang.org/x/text/unicode/norm
 golang.org/x/text/width
 golang.org/x/text/secure/bidirule
 golang.org/x/text/unicode/bidi
+# gopkg.in/inf.v0 v0.9.0
+gopkg.in/inf.v0
 # gopkg.in/yaml.v2 v2.2.2
 gopkg.in/yaml.v2
+# k8s.io/apimachinery v0.0.0-20190612205821-1799e75a0719
+k8s.io/apimachinery/pkg/apis/meta/v1/unstructured
+k8s.io/apimachinery/pkg/apis/meta/v1
+k8s.io/apimachinery/pkg/runtime
+k8s.io/apimachinery/pkg/runtime/schema
+k8s.io/apimachinery/pkg/types
+k8s.io/apimachinery/pkg/util/json
+k8s.io/apimachinery/pkg/util/runtime
+k8s.io/apimachinery/pkg/api/resource
+k8s.io/apimachinery/pkg/conversion
+k8s.io/apimachinery/pkg/fields
+k8s.io/apimachinery/pkg/labels
+k8s.io/apimachinery/pkg/selection
+k8s.io/apimachinery/pkg/util/intstr
+k8s.io/apimachinery/pkg/watch
+k8s.io/apimachinery/pkg/conversion/queryparams
+k8s.io/apimachinery/pkg/util/errors
+k8s.io/apimachinery/pkg/util/naming
+k8s.io/apimachinery/pkg/util/sets
+k8s.io/apimachinery/third_party/forked/golang/reflect
+k8s.io/apimachinery/pkg/util/validation
+k8s.io/apimachinery/pkg/util/net
+k8s.io/apimachinery/pkg/util/validation/field
+# k8s.io/klog v0.3.1
+k8s.io/klog
