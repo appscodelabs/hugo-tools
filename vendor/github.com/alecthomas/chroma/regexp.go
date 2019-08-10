@@ -33,7 +33,7 @@ func (e EmitterFunc) Emit(groups []string, lexer Lexer) Iterator { return e(grou
 func ByGroups(emitters ...Emitter) Emitter {
 	return EmitterFunc(func(groups []string, lexer Lexer) Iterator {
 		iterators := make([]Iterator, 0, len(groups)-1)
-		// NOTE: If this panics, there is a mismatch with groups. Uncomment the following line to debug.
+		// NOTE: If this panics, there is a mismatch with groups
 		for i, group := range groups[1:] {
 			iterators = append(iterators, emitters[i].Emit([]string{group}, lexer))
 		}
@@ -41,10 +41,78 @@ func ByGroups(emitters ...Emitter) Emitter {
 	})
 }
 
+// UsingByGroup emits tokens for the matched groups in the regex using a
+// "sublexer". Used when lexing code blocks where the name of a sublexer is
+// contained within the block, for example on a Markdown text block or SQL
+// language block.
+//
+// The sublexer will be retrieved using sublexerGetFunc (typically
+// internal.Get), using the captured value from the matched sublexerNameGroup.
+//
+// If sublexerGetFunc returns a non-nil lexer for the captured sublexerNameGroup,
+// then tokens for the matched codeGroup will be emitted using the retrieved
+// lexer. Otherwise, if the sublexer is nil, then tokens will be emitted from
+// the passed emitter.
+//
+// Example:
+//
+//	var Markdown = internal.Register(MustNewLexer(
+//		&Config{
+//			Name:      "markdown",
+//			Aliases:   []string{"md", "mkd"},
+//			Filenames: []string{"*.md", "*.mkd", "*.markdown"},
+//			MimeTypes: []string{"text/x-markdown"},
+//		},
+//		Rules{
+//			"root": {
+//				{"^(```)(\\w+)(\\n)([\\w\\W]*?)(^```$)",
+//					UsingByGroup(
+//						internal.Get,
+//						2, 4,
+//						String, String, String, Text, String,
+//					),
+//					nil,
+//				},
+//			},
+//		},
+//	))
+//
+// See the lexers/m/markdown.go for the complete example.
+//
+// Note: panic's if the number emitters does not equal the number of matched
+// groups in the regex.
+func UsingByGroup(sublexerGetFunc func(string) Lexer, sublexerNameGroup, codeGroup int, emitters ...Emitter) Emitter {
+	return EmitterFunc(func(groups []string, lexer Lexer) Iterator {
+		// bounds check
+		if len(emitters) != len(groups)-1 {
+			panic("UsingByGroup expects number of emitters to be the same as len(groups)-1")
+		}
+
+		// grab sublexer
+		sublexer := sublexerGetFunc(groups[sublexerNameGroup])
+
+		// build iterators
+		iterators := make([]Iterator, len(groups)-1)
+		for i, group := range groups[1:] {
+			if i == codeGroup-1 && sublexer != nil {
+				var err error
+				iterators[i], err = sublexer.Tokenise(nil, groups[codeGroup])
+				if err != nil {
+					panic(err)
+				}
+			} else {
+				iterators[i] = emitters[i].Emit([]string{group}, lexer)
+			}
+		}
+
+		return Concaterator(iterators...)
+	})
+}
+
 // Using returns an Emitter that uses a given Lexer for parsing and emitting.
-func Using(lexer Lexer, options *TokeniseOptions) Emitter {
+func Using(lexer Lexer) Emitter {
 	return EmitterFunc(func(groups []string, _ Lexer) Iterator {
-		it, err := lexer.Tokenise(options, groups[0])
+		it, err := lexer.Tokenise(&TokeniseOptions{State: "root", Nested: true}, groups[0])
 		if err != nil {
 			panic(err)
 		}
@@ -55,7 +123,7 @@ func Using(lexer Lexer, options *TokeniseOptions) Emitter {
 // UsingSelf is like Using, but uses the current Lexer.
 func UsingSelf(state string) Emitter {
 	return EmitterFunc(func(groups []string, lexer Lexer) Iterator {
-		it, err := lexer.Tokenise(&TokeniseOptions{State: state}, groups[0])
+		it, err := lexer.Tokenise(&TokeniseOptions{State: state, Nested: true}, groups[0])
 		if err != nil {
 			panic(err)
 		}
@@ -195,7 +263,11 @@ func (l *LexerState) Iterator() *Token {
 		if l.Lexer.trace {
 			fmt.Fprintf(os.Stderr, "%s: pos=%d, text=%q\n", l.State, l.Pos, string(l.Text[l.Pos:]))
 		}
-		ruleIndex, rule, groups := matchRules(l.Text[l.Pos:], l.Rules[l.State])
+		selectedRule, ok := l.Rules[l.State]
+		if !ok {
+			panic("unknown state " + l.State)
+		}
+		ruleIndex, rule, groups := matchRules(l.Text[l.Pos:], selectedRule)
 		// No match.
 		if groups == nil {
 			l.Pos++
@@ -309,7 +381,7 @@ func (r *RegexLexer) Tokenise(options *TokeniseOptions, text string) (Iterator, 
 	if options == nil {
 		options = defaultOptions
 	}
-	if r.config.EnsureNL && !strings.HasSuffix(text, "\n") {
+	if !options.Nested && r.config.EnsureNL && !strings.HasSuffix(text, "\n") {
 		text += "\n"
 	}
 	state := &LexerState{

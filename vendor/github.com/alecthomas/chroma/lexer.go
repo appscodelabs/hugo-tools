@@ -64,7 +64,7 @@ type Token struct {
 }
 
 func (t *Token) String() string   { return t.Value }
-func (t *Token) GoString() string { return fmt.Sprintf("Token{%s, %q}", t.Type, t.Value) }
+func (t *Token) GoString() string { return fmt.Sprintf("&Token{%s, %q}", t.Type, t.Value) }
 
 func (t *Token) Clone() *Token {
 	clone := &Token{}
@@ -75,6 +75,8 @@ func (t *Token) Clone() *Token {
 type TokeniseOptions struct {
 	// State to start tokenisation in. Defaults to "root".
 	State string
+	// Nested tokenisation.
+	Nested bool
 }
 
 // A Lexer for tokenising source code.

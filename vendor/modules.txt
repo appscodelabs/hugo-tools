@@ -1,0 +1,133 @@
+# github.com/BurntSushi/toml v0.0.0-20170626110600-a368813c5e64
+github.com/BurntSushi/toml
+# github.com/PuerkitoBio/purell v1.1.0
+github.com/PuerkitoBio/purell
+# github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578
+github.com/PuerkitoBio/urlesc
+# github.com/alecthomas/chroma v0.5.0
+github.com/alecthomas/chroma
+github.com/alecthomas/chroma/formatters
+github.com/alecthomas/chroma/formatters/html
+github.com/alecthomas/chroma/lexers
+github.com/alecthomas/chroma/styles
+github.com/alecthomas/chroma/lexers/a
+github.com/alecthomas/chroma/lexers/b
+github.com/alecthomas/chroma/lexers/c
+github.com/alecthomas/chroma/lexers/circular
+github.com/alecthomas/chroma/lexers/d
+github.com/alecthomas/chroma/lexers/e
+github.com/alecthomas/chroma/lexers/f
+github.com/alecthomas/chroma/lexers/g
+github.com/alecthomas/chroma/lexers/h
+github.com/alecthomas/chroma/lexers/i
+github.com/alecthomas/chroma/lexers/internal
+github.com/alecthomas/chroma/lexers/j
+github.com/alecthomas/chroma/lexers/k
+github.com/alecthomas/chroma/lexers/l
+github.com/alecthomas/chroma/lexers/m
+github.com/alecthomas/chroma/lexers/n
+github.com/alecthomas/chroma/lexers/o
+github.com/alecthomas/chroma/lexers/p
+github.com/alecthomas/chroma/lexers/q
+github.com/alecthomas/chroma/lexers/r
+github.com/alecthomas/chroma/lexers/s
+github.com/alecthomas/chroma/lexers/t
+github.com/alecthomas/chroma/lexers/v
+github.com/alecthomas/chroma/lexers/w
+github.com/alecthomas/chroma/lexers/x
+github.com/alecthomas/chroma/lexers/y
+# github.com/appscode/go v0.0.0-20190808133642-1d4ef1f1c1e0
+github.com/appscode/go/log/golog
+github.com/appscode/go/runtime
+# github.com/chaseadamsio/goorgeous v1.1.0
+github.com/chaseadamsio/goorgeous
+# github.com/cpuguy83/go-md2man v1.0.8
+github.com/cpuguy83/go-md2man/md2man
+# github.com/danwakefield/fnmatch v0.0.0-20160403171240-cbb64ac3d964
+github.com/danwakefield/fnmatch
+# github.com/dlclark/regexp2 v1.1.6
+github.com/dlclark/regexp2
+github.com/dlclark/regexp2/syntax
+# github.com/fsnotify/fsnotify v1.4.7
+github.com/fsnotify/fsnotify
+# github.com/gohugoio/hugo v0.49.1
+github.com/gohugoio/hugo/parser
+github.com/gohugoio/hugo/helpers
+github.com/gohugoio/hugo/bufferpool
+github.com/gohugoio/hugo/common/hugio
+github.com/gohugoio/hugo/common/maps
+github.com/gohugoio/hugo/compare
+github.com/gohugoio/hugo/config
+github.com/gohugoio/hugo/docshelper
+github.com/gohugoio/hugo/hugofs
+github.com/gohugoio/hugo/hugolib/filesystems
+github.com/gohugoio/hugo/hugolib/paths
+github.com/gohugoio/hugo/common/collections
+github.com/gohugoio/hugo/common/math
+github.com/gohugoio/hugo/langs
+# github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
+github.com/golang/glog
+# github.com/hashicorp/go-immutable-radix v1.0.0
+github.com/hashicorp/go-immutable-radix
+# github.com/hashicorp/golang-lru v0.5.0
+github.com/hashicorp/golang-lru/simplelru
+# github.com/hashicorp/hcl v1.0.0
+github.com/hashicorp/hcl
+github.com/hashicorp/hcl/hcl/printer
+github.com/hashicorp/hcl/hcl/ast
+github.com/hashicorp/hcl/hcl/parser
+github.com/hashicorp/hcl/hcl/token
+github.com/hashicorp/hcl/json/parser
+github.com/hashicorp/hcl/hcl/scanner
+github.com/hashicorp/hcl/hcl/strconv
+github.com/hashicorp/hcl/json/scanner
+github.com/hashicorp/hcl/json/token
+# github.com/inconshreveable/mousetrap v1.0.0
+github.com/inconshreveable/mousetrap
+# github.com/jdkato/prose v1.1.0
+github.com/jdkato/prose/transform
+github.com/jdkato/prose/internal/util
+# github.com/kyokomi/emoji v1.5.1
+github.com/kyokomi/emoji
+# github.com/magiconair/properties v1.8.0
+github.com/magiconair/properties
+# github.com/mattn/go-runewidth v0.0.3
+github.com/mattn/go-runewidth
+# github.com/miekg/mmark v1.3.6
+github.com/miekg/mmark
+# github.com/mitchellh/mapstructure v1.0.0
+github.com/mitchellh/mapstructure
+# github.com/olekukonko/tablewriter v0.0.0-20180506121414-d4647c9c7a84
+github.com/olekukonko/tablewriter
+# github.com/pelletier/go-toml v1.2.0
+github.com/pelletier/go-toml
+# github.com/russross/blackfriday v0.0.0-20180804101149-46c73eb196ba
+github.com/russross/blackfriday
+# github.com/shurcooL/sanitized_anchor_name v0.0.0-20170918181015-86672fcb3f95
+github.com/shurcooL/sanitized_anchor_name
+# github.com/spf13/afero v1.1.2
+github.com/spf13/afero
+github.com/spf13/afero/mem
+# github.com/spf13/cast v1.2.0
+github.com/spf13/cast
+# github.com/spf13/cobra v0.0.3
+github.com/spf13/cobra
+github.com/spf13/cobra/doc
+# github.com/spf13/jwalterweatherman v1.0.0
+github.com/spf13/jwalterweatherman
+# github.com/spf13/pflag v1.0.3
+github.com/spf13/pflag
+# github.com/spf13/viper v1.2.0
+github.com/spf13/viper
+# golang.org/x/net v0.0.0-20190404232315-eb5bcb51f2a3
+golang.org/x/net/idna
+# golang.org/x/sys v0.0.0-20190412213103-97732733099d
+golang.org/x/sys/unix
+# golang.org/x/text v0.3.0
+golang.org/x/text/transform
+golang.org/x/text/unicode/norm
+golang.org/x/text/width
+golang.org/x/text/secure/bidirule
+golang.org/x/text/unicode/bidi
+# gopkg.in/yaml.v2 v2.2.2
+gopkg.in/yaml.v2

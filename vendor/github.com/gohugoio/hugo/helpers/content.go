@@ -25,6 +25,8 @@ import (
 	"unicode"
 	"unicode/utf8"
 
+	"github.com/gohugoio/hugo/common/maps"
+
 	"github.com/chaseadamsio/goorgeous"
 	bp "github.com/gohugoio/hugo/bufferpool"
 	"github.com/gohugoio/hugo/config"
@@ -108,6 +110,8 @@ type BlackFriday struct {
 	AngledQuotes          bool
 	Fractions             bool
 	HrefTargetBlank       bool
+	NofollowLinks         bool
+	NoreferrerLinks       bool
 	SmartDashes           bool
 	LatexDashes           bool
 	TaskLists             bool
@@ -124,13 +128,15 @@ func newBlackfriday(config map[string]interface{}) *BlackFriday {
 		"smartypantsQuotesNBSP": false,
 		"fractions":             true,
 		"hrefTargetBlank":       false,
+		"nofollowLinks":         false,
+		"noreferrerLinks":       false,
 		"smartDashes":           true,
 		"latexDashes":           true,
 		"plainIDAnchors":        true,
 		"taskLists":             true,
 	}
 
-	ToLowerMap(defaultParam)
+	maps.ToLower(defaultParam)
 
 	siteConfig := make(map[string]interface{})
 
@@ -277,6 +283,14 @@ func (c *ContentSpec) getHTMLRenderer(defaultFlags int, ctx *RenderingContext) b
 		htmlFlags |= blackfriday.HTML_HREF_TARGET_BLANK
 	}
 
+	if ctx.Config.NofollowLinks {
+		htmlFlags |= blackfriday.HTML_NOFOLLOW_LINKS
+	}
+
+	if ctx.Config.NoreferrerLinks {
+		htmlFlags |= blackfriday.HTML_NOREFERRER_LINKS
+	}
+
 	if ctx.Config.SmartDashes {
 		htmlFlags |= blackfriday.HTML_SMARTYPANTS_DASHES
 	}
@@ -400,6 +414,9 @@ func (c ContentSpec) mmarkRender(ctx *RenderingContext) []byte {
 
 // ExtractTOC extracts Table of Contents from content.
 func ExtractTOC(content []byte) (newcontent []byte, toc []byte) {
+	if !bytes.Contains(content, []byte("<nav>")) {
+		return content, nil
+	}
 	origContent := make([]byte, len(content))
 	copy(origContent, content)
 	first := []byte(`<nav>
@@ -490,7 +507,10 @@ func totalWordsOld(s string) int {
 }
 
 // TruncateWordsByRune truncates words by runes.
-func (c *ContentSpec) TruncateWordsByRune(words []string) (string, bool) {
+func (c *ContentSpec) TruncateWordsByRune(in []string) (string, bool) {
+	words := make([]string, len(in))
+	copy(words, in)
+
 	count := 0
 	for index, word := range words {
 		if count >= c.summaryLength {
