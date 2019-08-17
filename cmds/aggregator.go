@@ -79,7 +79,17 @@ func process(filename string) error {
 	if err != nil {
 		return err
 	}
-	rootDir := filepath.Dir(filename)
+
+	rootDir, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+
+	if rel, err := filepath.Rel(rootDir, filepath.Dir(filename)); err != nil {
+		if strings.HasPrefix(rel, "../") {
+			return fmt.Errorf("run the docs-aggregator command from an ancestor dir of product_listing file")
+		}
+	}
 
 	tmpDir, err := ioutil.TempDir("", "docs-aggregator")
 	if err != nil {
