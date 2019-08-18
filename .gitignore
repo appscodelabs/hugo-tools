@@ -8,6 +8,9 @@ _obj
 _test
 
 # Architecture specific extensions/prefixes
+*.[568vq]
+[568vq].out
+
 *.cgo1.go
 *.cgo2.c
 _cgo_defun.c
@@ -19,10 +22,11 @@ _testmain.go
 *.exe
 *.test
 *.prof
-
 *.DS_Store
-.idea/
-dist/
-.vscode/
-.markdownlint.json
-coverage.txt
+
+/.go
+/.idea
+/.vscode
+/bin
+/coverage.txt
+/dist
