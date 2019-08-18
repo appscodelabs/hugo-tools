@@ -29,16 +29,21 @@ type ProductVersion struct {
 }
 
 type Product struct {
-	Name          string           `json:"-"`
-	URL           string           `json:"url"`
-	Versions      []ProductVersion `json:"versions"`
-	LatestVersion string           `json:"latestVersion"`
-	GithubURL     string           `json:"githubUrl"`
+	Key             string           `json:"key"`
+	Name            string           `json:"name"`
+	DatasheetFormID string           `json:"datasheetFormID"`
+	RepoURL         string           `json:"url"`
+	Versions        []ProductVersion `json:"versions"`
+	LatestVersion   string           `json:"latestVersion"`
+	StarRepo        string           `json:"starRepo"`
+	DocRepo         string           `json:"docRepo"`
 }
 
-type SharedWebsite struct {
+type Listing struct {
 	Products map[string]Product `json:"products"`
 }
+
+var sharedSite = true
 
 func NewCmdDocsAggregator() *cobra.Command {
 	cmd := &cobra.Command{
@@ -71,6 +76,7 @@ func NewCmdDocsAggregator() *cobra.Command {
 			return process(filename)
 		},
 	}
+	cmd.Flags().StringVar(&product, "product", product, "Name of product")
 	return cmd
 }
 
@@ -103,7 +109,7 @@ func process(filename string) error {
 		}
 	}()
 
-	var cfg SharedWebsite
+	var cfg Listing
 	err = json.Unmarshal(data, &cfg)
 	if err != nil {
 		return err
@@ -113,9 +119,23 @@ func process(filename string) error {
 	sh.SetDir(rootDir)
 	sh.ShowCMD = true
 
+	if len(cfg.Products) == 1 {
+		if _, ok := cfg.Products["docs"]; ok {
+			sharedSite = false
+			product = ""
+		}
+	}
+
 	for name, p := range cfg.Products {
-		p.Name = name
-		err = processProduct(p, rootDir, sh, filepath.Join(tmpDir, p.Name))
+		if product != "" && product != name {
+			continue
+		}
+		if p.Key == "" {
+			if name != "docs" {
+				p.Key = name
+			}
+		}
+		err = processProduct(p, rootDir, sh, filepath.Join(tmpDir, p.Key))
 		if err != nil {
 			return err
 		}
@@ -133,7 +153,7 @@ func processProduct(p Product, rootDir string, sh *shell.Session, tmpDir string)
 		return err
 	}
 
-	err = sh.Command("git", "clone", p.GithubURL, repoDir).Run()
+	err = sh.Command("git", "clone", p.RepoURL, repoDir).Run()
 	if err != nil {
 		return err
 	}
@@ -153,7 +173,12 @@ func processProduct(p Product, rootDir string, sh *shell.Session, tmpDir string)
 			return err
 		}
 
-		vDir := filepath.Join(rootDir, "content", "products", p.Name, v.Branch)
+		var vDir string
+		if sharedSite {
+			vDir = filepath.Join(rootDir, "content", "products", p.Key, v.Branch)
+		} else {
+			vDir = filepath.Join(rootDir, "content", "docs", v.Branch)
+		}
 		err = os.RemoveAll(vDir)
 		if err != nil {
 			return err
@@ -194,10 +219,21 @@ func processProduct(p Product, rootDir string, sh *shell.Session, tmpDir string)
 			content := page.Content()
 
 			if strings.Index(string(content), "/docs") > -1 {
-				re1 := regexp.MustCompile(`(\(/docs)`)
-				content = re1.ReplaceAll(content, []byte(`(/products/`+p.Name+`/`+v.Branch))
+				prefix := `/products/` + p.Key + `/` + v.Branch
+				if !sharedSite {
+					prefix = `/docs/` + v.Branch
+				}
 
-				re2 := regexp.MustCompile(`(\(/products/.*)(.md)(#.*)?\)`)
+				var re1 *regexp.Regexp
+				re1 = regexp.MustCompile(`(\(/docs)`)
+				content = re1.ReplaceAll(content, []byte(`(`+prefix))
+
+				var re2 *regexp.Regexp
+				if sharedSite {
+					re2 = regexp.MustCompile(`(\(/products/.*)(.md)(#.*)?\)`)
+				} else {
+					re2 = regexp.MustCompile(`(\(/docs/.*)(.md)(#.*)?\)`)
+				}
 				for idx := 0; idx < 5; idx++ {
 					content = re2.ReplaceAll(content, []byte(`${1}${3})`))
 				}
@@ -206,7 +242,7 @@ func processProduct(p Product, rootDir string, sh *shell.Session, tmpDir string)
 				//	fmt.Println(string(content))
 				//	content = re2.ReplaceAll(content, []byte(`${1}${3})`))
 				//}
-				content = bytes.ReplaceAll(content, []byte(`"/docs/images`), []byte(`"/products/`+p.Name+`/`+v.Branch+`/images`))
+				content = bytes.ReplaceAll(content, []byte(`"/docs/images`), []byte(`"`+prefix+`/images`))
 			}
 
 			var out string
