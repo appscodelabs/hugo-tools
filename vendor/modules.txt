@@ -39,6 +39,8 @@ github.com/alecthomas/chroma/lexers/y
 # github.com/appscode/go v0.0.0-20190808133642-1d4ef1f1c1e0
 github.com/appscode/go/log/golog
 github.com/appscode/go/runtime
+# github.com/appscode/static-assets v0.2.3
+github.com/appscode/static-assets/api
 # github.com/chaseadamsio/goorgeous v1.1.0
 github.com/chaseadamsio/goorgeous
 # github.com/codegangsta/inject v0.0.0-20150114235600-33e0aa1cb7c0
@@ -110,7 +112,7 @@ github.com/mitchellh/mapstructure
 github.com/olekukonko/tablewriter
 # github.com/pelletier/go-toml v1.2.0
 github.com/pelletier/go-toml
-# github.com/russross/blackfriday v0.0.0-20180804101149-46c73eb196ba
+# github.com/russross/blackfriday v1.5.3-0.20190124082335-a477dd164691
 github.com/russross/blackfriday
 # github.com/shurcooL/sanitized_anchor_name v0.0.0-20170918181015-86672fcb3f95
 github.com/shurcooL/sanitized_anchor_name

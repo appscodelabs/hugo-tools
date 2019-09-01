@@ -12,6 +12,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/appscode/static-assets/api"
 	shell "github.com/codeskyblue/go-sh"
 	"github.com/gohugoio/hugo/helpers"
 	"github.com/gohugoio/hugo/parser"
@@ -21,26 +22,8 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
-type ProductVersion struct {
-	Branch    string `json:"branch"`
-	HostDocs  bool   `json:"hostDocs"`
-	VDropdown bool   `json:"v-dropdown,omitempty"`
-	DocsDir   string `json:"docsDir,omitempty"` // default: "docs"
-}
-
-type Product struct {
-	Key             string           `json:"key"`
-	Name            string           `json:"name"`
-	DatasheetFormID string           `json:"datasheetFormID"`
-	RepoURL         string           `json:"url"`
-	Versions        []ProductVersion `json:"versions"`
-	LatestVersion   string           `json:"latestVersion"`
-	StarRepo        string           `json:"starRepo"`
-	DocRepo         string           `json:"docRepo"`
-}
-
 type Listing struct {
-	Products map[string]Product `json:"products"`
+	Products []string `json:"products"`
 }
 
 var sharedSite = true
@@ -51,50 +34,34 @@ func NewCmdDocsAggregator() *cobra.Command {
 		Short:             "Aggregate Docs",
 		DisableAutoGenTag: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			if len(args) != 1 {
-				return errors.New("missing product_listing_file argument")
+			rootDir, err := os.Getwd()
+			if err != nil {
+				return err
 			}
-
-			filename := args[0]
-			var err error
-			if !filepath.IsAbs(filename) {
-				filename, err = filepath.Abs(filename)
-				if err != nil {
-					return err
-				}
-			}
-			fmt.Println("using product_listing_file=", filename)
-
-			info, err := os.Stat(filename)
-			if os.IsNotExist(err) {
-				return fmt.Errorf("product_listing file not found, err:%v", err)
-			}
-			if info.IsDir() {
-				return errors.New("product_listing file is actually a dir")
-			}
-
-			return process(filename)
+			return process(rootDir)
 		},
 	}
 	cmd.Flags().StringVar(&product, "product", product, "Name of product")
 	return cmd
 }
 
-func process(filename string) error {
+func process(rootDir string) error {
+	filename := filepath.Join(rootDir, "data", "config.json")
+
+	info, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return fmt.Errorf("product_listing file not found, err:%v", err)
+	} else if err != nil {
+		return err
+	}
+
+	if info.IsDir() {
+		return errors.New("product_listing file is actually a dir")
+	}
+
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return err
-	}
-
-	rootDir, err := os.Getwd()
-	if err != nil {
-		return err
-	}
-
-	if rel, err := filepath.Rel(rootDir, filepath.Dir(filename)); err != nil {
-		if strings.HasPrefix(rel, "../") {
-			return fmt.Errorf("run the docs-aggregator command from an ancestor dir of product_listing file")
-		}
 	}
 
 	tmpDir, err := ioutil.TempDir("", "docs-aggregator")
@@ -120,21 +87,32 @@ func process(filename string) error {
 	sh.ShowCMD = true
 
 	if len(cfg.Products) == 1 {
-		if _, ok := cfg.Products["docs"]; ok {
-			sharedSite = false
-			product = ""
-		}
+		sharedSite = false
+		product = ""
 	}
 
-	for name, p := range cfg.Products {
+	for _, name := range cfg.Products {
 		if product != "" && product != name {
 			continue
 		}
-		if p.Key == "" {
-			if name != "docs" {
-				p.Key = name
-			}
+
+		pfile := filepath.Join(rootDir, "data", "products", name+".json")
+		fmt.Println("using product_listing_file=", pfile)
+
+		var p api.Product
+		data, err := ioutil.ReadFile(pfile)
+		if err != nil {
+			return err
 		}
+		err = json.Unmarshal(data, &p)
+		if err != nil {
+			return err
+		}
+
+		if p.Key == "" {
+			return fmt.Errorf("missing product key in file=%s", pfile)
+		}
+
 		err = processProduct(p, rootDir, sh, filepath.Join(tmpDir, p.Key))
 		if err != nil {
 			return err
@@ -146,7 +124,7 @@ func process(filename string) error {
 	return nil
 }
 
-func processProduct(p Product, rootDir string, sh *shell.Session, tmpDir string) error {
+func processProduct(p api.Product, rootDir string, sh *shell.Session, tmpDir string) error {
 	repoDir := filepath.Join(tmpDir, "repo")
 	err := os.MkdirAll(repoDir, 0755)
 	if err != nil {
