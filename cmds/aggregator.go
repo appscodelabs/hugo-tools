@@ -22,8 +22,15 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
+type AssetListing struct {
+	RepoURL string            `json:"repoURL"`
+	Branch  string            `json:"branch"`
+	Dirs    map[string]string `json:"dirs"`
+}
+
 type Listing struct {
-	Products []string `json:"products"`
+	Products []string     `json:"products"`
+	Assets   AssetListing `json:"assets"`
 }
 
 var sharedSite = true
@@ -83,12 +90,16 @@ func process(rootDir string) error {
 	}
 
 	sh := shell.NewSession()
-	sh.SetDir(rootDir)
 	sh.ShowCMD = true
 
 	if len(cfg.Products) == 1 {
 		sharedSite = false
 		product = ""
+	}
+
+	err = processAssets(cfg.Assets, rootDir, sh, filepath.Join(tmpDir, "assets"))
+	if err != nil {
+		return err
 	}
 
 	for _, name := range cfg.Products {
@@ -121,6 +132,41 @@ func process(rootDir string) error {
 		fmt.Println("... ... ...")
 		time.Sleep(5 * time.Second)
 	}
+	return nil
+}
+
+func processAssets(a AssetListing, rootDir string, sh *shell.Session, tmpDir string) error {
+	repoDir := filepath.Join(tmpDir, "repo")
+	err := os.MkdirAll(repoDir, 0755)
+	if err != nil {
+		return err
+	}
+
+	err = sh.Command("git", "clone", a.RepoURL, repoDir).Run()
+	if err != nil {
+		return err
+	}
+
+	fmt.Println()
+	sh.SetDir(repoDir)
+	err = sh.Command("git", "checkout", a.Branch).Run()
+	if err != nil {
+		return err
+	}
+
+	for src, dst := range a.Dirs {
+		err = sh.Command("cp", "-r", src, filepath.Dir(filepath.Join(rootDir, dst))).Run()
+		if err != nil {
+			return err
+		}
+		if src == "data" {
+			err = sh.Command("find", filepath.Join(rootDir, dst), "-name", "bindata.go").Command("xargs", "rm", "-rf", "{}").Run()
+			if err != nil {
+				return err
+			}
+		}
+	}
+
 	return nil
 }
 
