@@ -10,9 +10,11 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"text/template"
 	"time"
 
 	"github.com/appscode/static-assets/api"
+	"github.com/appscode/static-assets/data/products"
 	"github.com/appscode/static-assets/hugo"
 	shell "github.com/codeskyblue/go-sh"
 	"github.com/gohugoio/hugo/helpers"
@@ -21,9 +23,10 @@ import (
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v2"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/util/sets"
 )
 
-var sharedSite = true
+var sharedSite = false
 
 func NewCmdDocsAggregator() *cobra.Command {
 	cmd := &cobra.Command{
@@ -39,6 +42,7 @@ func NewCmdDocsAggregator() *cobra.Command {
 		},
 	}
 	cmd.Flags().StringVar(&product, "product", product, "Name of product")
+	cmd.Flags().BoolVar(&sharedSite, "shared", sharedSite, "If true, considered a shared site like appscode.com instead of a product specific site like kubedb.com")
 	return cmd
 }
 
@@ -68,12 +72,11 @@ func process(rootDir string) error {
 	sh := shell.NewSession()
 	sh.ShowCMD = true
 
-	if len(cfg.Products) == 1 {
-		sharedSite = false
-		product = ""
+	if !sharedSite {
+		sharedSite = len(cfg.Products) > 1
 	}
 
-	err = processAssets(cfg.Assets, rootDir, sh, filepath.Join(tmpDir, "assets"))
+	err = processAssets(cfg.Assets, rootDir, sh, tmpDir)
 	if err != nil {
 		return err
 	}
@@ -83,11 +86,11 @@ func process(rootDir string) error {
 			continue
 		}
 
-		pfile := filepath.Join(rootDir, "data", "products", name+".json")
+		pfile := name + ".json"
 		fmt.Println("using product_listing_file=", pfile)
 
 		var p api.Product
-		data, err := ioutil.ReadFile(pfile)
+		data, err := products.Asset(pfile)
 		if err != nil {
 			return err
 		}
@@ -100,7 +103,7 @@ func process(rootDir string) error {
 			return fmt.Errorf("missing product key in file=%s", pfile)
 		}
 
-		err = processProduct(p, rootDir, sh, filepath.Join(tmpDir, p.Key))
+		err = processProduct(p, rootDir, sh, tmpDir)
 		if err != nil {
 			return err
 		}
@@ -214,6 +217,7 @@ func processDataConfig(rootDir string) (*api.Listing, error) {
 }
 
 func processAssets(a api.AssetListing, rootDir string, sh *shell.Session, tmpDir string) error {
+	tmpDir = filepath.Join(tmpDir, "assets")
 	repoDir := filepath.Join(tmpDir, "repo")
 	err := os.MkdirAll(repoDir, 0755)
 	if err != nil {
@@ -249,6 +253,7 @@ func processAssets(a api.AssetListing, rootDir string, sh *shell.Session, tmpDir
 }
 
 func processProduct(p api.Product, rootDir string, sh *shell.Session, tmpDir string) error {
+	tmpDir = filepath.Join(tmpDir, p.Key)
 	repoDir := filepath.Join(tmpDir, "repo")
 	err := os.MkdirAll(repoDir, 0755)
 	if err != nil {
@@ -296,6 +301,12 @@ func processProduct(p api.Product, rootDir string, sh *shell.Session, tmpDir str
 
 		sh.SetDir(tmpDir)
 		err = sh.Command("cp", "-r", filepath.Join("repo", v.DocsDir), vDir).Run()
+		if err != nil {
+			return err
+		}
+
+		// process sub project
+		err = processSubproject(p, v, vDir, sh, tmpDir)
 		if err != nil {
 			return err
 		}
@@ -477,4 +488,131 @@ func stringifyMapKeys(in interface{}) (interface{}, bool) {
 	}
 
 	return nil, false
+}
+
+func processSubproject(p api.Product, v api.ProductVersion, vDir string, sh *shell.Session, rootTempDir string) error {
+	for spKey, info := range p.SubProjects {
+		tmpDir := filepath.Join(rootTempDir, spKey)
+		repoDir := filepath.Join(tmpDir, "repo")
+		err := os.MkdirAll(repoDir, 0755)
+		if err != nil {
+			return err
+		}
+
+		pfile := spKey + ".json"
+		fmt.Println("using product_listing_file=", pfile)
+
+		var sp api.Product
+		data, err := products.Asset(pfile)
+		if err != nil {
+			return err
+		}
+		err = json.Unmarshal(data, &sp)
+		if err != nil {
+			return err
+		}
+
+		t := template.Must(template.New("x1").Parse(info.Dir))
+		var buf bytes.Buffer
+		err = t.Execute(&buf, v)
+		if err != nil {
+			return err
+		}
+
+		for _, mapping := range info.Mappings {
+			if sets.NewString(mapping.Versions...).Has(v.Version) {
+
+				err = sh.Command("git", "clone", sp.RepoURL, repoDir).Run()
+				if err != nil {
+					return err
+				}
+
+				for _, spVersion := range mapping.SubProjectVersions {
+					spv, err := findVersion(sp.Versions, spVersion)
+					if err != nil {
+						return err
+					}
+
+					if !spv.HostDocs {
+						continue
+					}
+					if spv.DocsDir == "" {
+						spv.DocsDir = "docs"
+					}
+
+					fmt.Println()
+					sh.SetDir(repoDir)
+					ref := spv.Branch
+					if ref == "" {
+						ref = spv.Version
+					}
+					err = sh.Command("git", "checkout", ref).Run()
+					if err != nil {
+						return err
+					}
+
+					spvDir := filepath.Join(vDir, buf.String(), spv.Version)
+					err = os.RemoveAll(spvDir)
+					if err != nil {
+						return err
+					}
+					err = os.MkdirAll(filepath.Dir(spvDir), 0755) // create parent dir
+					if err != nil {
+						return err
+					}
+
+					sh.SetDir(tmpDir)
+					err = sh.Command("cp", "-r", filepath.Join("repo", spv.DocsDir), spvDir).Run()
+					if err != nil {
+						return err
+					}
+					fmt.Println(">>> ", spvDir)
+
+					err = filepath.Walk(spvDir, func(path string, info os.FileInfo, err error) error {
+						if err != nil {
+							fmt.Printf("prevent panic by handling failure accessing a path %q: %v\n", vDir, err)
+							return err
+						}
+						if info.IsDir() || !strings.HasSuffix(path, ".md") {
+							return nil // skip
+						}
+
+						data, err := ioutil.ReadFile(path)
+						if err != nil {
+							return err
+						}
+						buf := bytes.NewBuffer(data)
+
+						page, err := parser.ReadFrom(buf)
+						if err != nil {
+							return err
+						}
+
+						t := template.Must(template.New("x2").Parse(string(page.FrontMatter())))
+						var buf2 bytes.Buffer
+						err = t.Execute(&buf2, v)
+						if err != nil {
+							return err
+						}
+
+						buf2.Write(page.Content())
+						return ioutil.WriteFile(path, buf2.Bytes(), 0644)
+					})
+					if err != nil {
+						return err
+					}
+				}
+			}
+		}
+	}
+	return nil
+}
+
+func findVersion(versions []api.ProductVersion, x string) (api.ProductVersion, error) {
+	for _, v := range versions {
+		if v.Version == x {
+			return v, nil
+		}
+	}
+	return api.ProductVersion{}, fmt.Errorf("version %s not found", x)
 }
