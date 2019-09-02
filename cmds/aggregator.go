@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/appscode/static-assets/api"
+	"github.com/appscode/static-assets/hugo"
 	shell "github.com/codeskyblue/go-sh"
 	"github.com/gohugoio/hugo/helpers"
 	"github.com/gohugoio/hugo/parser"
@@ -53,20 +54,12 @@ func NewCmdDocsAggregator() *cobra.Command {
 }
 
 func process(rootDir string) error {
-	filename := filepath.Join(rootDir, "data", "config.json")
-
-	info, err := os.Stat(filename)
-	if os.IsNotExist(err) {
-		return fmt.Errorf("product_listing file not found, err:%v", err)
-	} else if err != nil {
+	err := processHugoConfig(rootDir)
+	if err != nil {
 		return err
 	}
 
-	if info.IsDir() {
-		return errors.New("product_listing file is actually a dir")
-	}
-
-	data, err := ioutil.ReadFile(filename)
+	cfg, err := processDataConfig(rootDir)
 	if err != nil {
 		return err
 	}
@@ -82,12 +75,6 @@ func process(rootDir string) error {
 			fmt.Fprintf(os.Stderr, "failed to remove tmp dir, err : %v", err)
 		}
 	}()
-
-	var cfg Listing
-	err = json.Unmarshal(data, &cfg)
-	if err != nil {
-		return err
-	}
 
 	sh := shell.NewSession()
 	sh.ShowCMD = true
@@ -133,6 +120,108 @@ func process(rootDir string) error {
 		time.Sleep(5 * time.Second)
 	}
 	return nil
+}
+
+func processHugoConfig(rootDir string) error {
+	baseData, err := hugo.Asset("params.json")
+	if err != nil {
+		return err
+	}
+
+	var baseParams map[string]string
+	err = json.Unmarshal(baseData, &baseParams)
+	if err != nil {
+		return err
+	}
+
+	filename := filepath.Join(rootDir, "config.yaml")
+	data, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return err
+	}
+
+	var m2 yaml.MapSlice
+	err = yaml.Unmarshal(data, &m2)
+	if err != nil {
+		return err
+	}
+	for i := range m2 {
+		if sk, ok := m2[i].Key.(string); ok && sk == "params" {
+			p2, _ := m2[i].Value.(yaml.MapSlice)
+			for j := range p2 {
+				key := p2[j].Key.(string)
+				if v, found := baseParams[key]; found {
+					p2[j].Value = v
+					delete(baseParams, key)
+				}
+			}
+			for k, v := range baseParams {
+				p2 = append(p2, yaml.MapItem{
+					Key:   k,
+					Value: v,
+				})
+			}
+			m2[i].Value = p2
+		}
+	}
+
+	data, err = yaml.Marshal(m2)
+	if err != nil {
+		return err
+	}
+	return ioutil.WriteFile(filename, data, 0644)
+}
+
+func processDataConfig(rootDir string) (*Listing, error) {
+	filename := filepath.Join(rootDir, "data", "config.json")
+	info, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return nil, fmt.Errorf("product_listing file not found, err:%v", err)
+	} else if err != nil {
+		return nil, err
+	}
+	if info.IsDir() {
+		return nil, errors.New("product_listing file is actually a dir")
+	}
+
+	baseData, err := hugo.Asset("config.json")
+	if err != nil {
+		return nil, err
+	}
+	var baseCfg map[string]interface{}
+	err = json.Unmarshal(baseData, &baseCfg)
+	if err != nil {
+		return nil, err
+	}
+
+	data, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return nil, err
+	}
+	var cfg map[string]interface{}
+	err = json.Unmarshal(data, &cfg)
+	if err != nil {
+		return nil, err
+	}
+	for k, v := range baseCfg {
+		cfg[k] = v
+	}
+
+	data3, err := json.MarshalIndent(cfg, "", "  ")
+	if err != nil {
+		return nil, err
+	}
+	err = ioutil.WriteFile(filename, data3, 0644)
+	if err != nil {
+		return nil, err
+	}
+
+	var out Listing
+	err = json.Unmarshal(data3, &out)
+	if err != nil {
+		return nil, err
+	}
+	return &out, nil
 }
 
 func processAssets(a AssetListing, rootDir string, sh *shell.Session, tmpDir string) error {
