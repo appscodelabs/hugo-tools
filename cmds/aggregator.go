@@ -23,17 +23,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
-type AssetListing struct {
-	RepoURL string            `json:"repoURL"`
-	Branch  string            `json:"branch"`
-	Dirs    map[string]string `json:"dirs"`
-}
-
-type Listing struct {
-	Products []string     `json:"products"`
-	Assets   AssetListing `json:"assets"`
-}
-
 var sharedSite = true
 
 func NewCmdDocsAggregator() *cobra.Command {
@@ -172,7 +161,7 @@ func processHugoConfig(rootDir string) error {
 	return ioutil.WriteFile(filename, data, 0644)
 }
 
-func processDataConfig(rootDir string) (*Listing, error) {
+func processDataConfig(rootDir string) (*api.Listing, error) {
 	filename := filepath.Join(rootDir, "data", "config.json")
 	info, err := os.Stat(filename)
 	if os.IsNotExist(err) {
@@ -216,7 +205,7 @@ func processDataConfig(rootDir string) (*Listing, error) {
 		return nil, err
 	}
 
-	var out Listing
+	var out api.Listing
 	err = json.Unmarshal(data3, &out)
 	if err != nil {
 		return nil, err
@@ -224,7 +213,7 @@ func processDataConfig(rootDir string) (*Listing, error) {
 	return &out, nil
 }
 
-func processAssets(a AssetListing, rootDir string, sh *shell.Session, tmpDir string) error {
+func processAssets(a api.AssetListing, rootDir string, sh *shell.Session, tmpDir string) error {
 	repoDir := filepath.Join(tmpDir, "repo")
 	err := os.MkdirAll(repoDir, 0755)
 	if err != nil {
@@ -238,7 +227,7 @@ func processAssets(a AssetListing, rootDir string, sh *shell.Session, tmpDir str
 
 	fmt.Println()
 	sh.SetDir(repoDir)
-	err = sh.Command("git", "checkout", a.Branch).Run()
+	err = sh.Command("git", "checkout", a.Version).Run()
 	if err != nil {
 		return err
 	}
@@ -281,16 +270,20 @@ func processProduct(p api.Product, rootDir string, sh *shell.Session, tmpDir str
 
 		fmt.Println()
 		sh.SetDir(repoDir)
-		err = sh.Command("git", "checkout", v.Branch).Run()
+		ref := v.Branch
+		if ref == "" {
+			ref = v.Version
+		}
+		err = sh.Command("git", "checkout", ref).Run()
 		if err != nil {
 			return err
 		}
 
 		var vDir string
 		if sharedSite {
-			vDir = filepath.Join(rootDir, "content", "products", p.Key, v.Branch)
+			vDir = filepath.Join(rootDir, "content", "products", p.Key, v.Version)
 		} else {
-			vDir = filepath.Join(rootDir, "content", "docs", v.Branch)
+			vDir = filepath.Join(rootDir, "content", "docs", v.Version)
 		}
 		err = os.RemoveAll(vDir)
 		if err != nil {
@@ -332,9 +325,9 @@ func processProduct(p api.Product, rootDir string, sh *shell.Session, tmpDir str
 			content := page.Content()
 
 			if strings.Index(string(content), "/docs") > -1 {
-				prefix := `/products/` + p.Key + `/` + v.Branch
+				prefix := `/products/` + p.Key + `/` + v.Version
 				if !sharedSite {
-					prefix = `/docs/` + v.Branch
+					prefix = `/docs/` + v.Version
 				}
 
 				var re1 *regexp.Regexp
