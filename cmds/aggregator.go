@@ -14,7 +14,6 @@ import (
 	"time"
 
 	"github.com/appscode/static-assets/api"
-	"github.com/appscode/static-assets/data/products"
 	"github.com/appscode/static-assets/hugo"
 	shell "github.com/codeskyblue/go-sh"
 	"github.com/gohugoio/hugo/helpers"
@@ -86,11 +85,11 @@ func process(rootDir string) error {
 			continue
 		}
 
-		pfile := name + ".json"
+		pfile := filepath.Join(rootDir, "data", "products", name+".json")
 		fmt.Println("using product_listing_file=", pfile)
 
 		var p api.Product
-		data, err := products.Asset(pfile)
+		data, err := ioutil.ReadFile(pfile)
 		if err != nil {
 			return err
 		}
@@ -306,7 +305,7 @@ func processProduct(p api.Product, rootDir string, sh *shell.Session, tmpDir str
 		}
 
 		// process sub project
-		err = processSubproject(p, v, vDir, sh, tmpDir)
+		err = processSubproject(p, v, rootDir, vDir, sh, tmpDir)
 		if err != nil {
 			return err
 		}
@@ -490,7 +489,7 @@ func stringifyMapKeys(in interface{}) (interface{}, bool) {
 	return nil, false
 }
 
-func processSubproject(p api.Product, v api.ProductVersion, vDir string, sh *shell.Session, rootTempDir string) error {
+func processSubproject(p api.Product, v api.ProductVersion, rootDir, vDir string, sh *shell.Session, rootTempDir string) error {
 	for spKey, info := range p.SubProjects {
 		tmpDir := filepath.Join(rootTempDir, spKey)
 		repoDir := filepath.Join(tmpDir, "repo")
@@ -499,11 +498,11 @@ func processSubproject(p api.Product, v api.ProductVersion, vDir string, sh *she
 			return err
 		}
 
-		pfile := spKey + ".json"
+		pfile := filepath.Join(rootDir, "data", "products", spKey+".json")
 		fmt.Println("using product_listing_file=", pfile)
 
 		var sp api.Product
-		data, err := products.Asset(pfile)
+		data, err := ioutil.ReadFile(pfile)
 		if err != nil {
 			return err
 		}
