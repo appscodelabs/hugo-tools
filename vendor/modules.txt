@@ -39,8 +39,9 @@ github.com/alecthomas/chroma/lexers/y
 # github.com/appscode/go v0.0.0-20190808133642-1d4ef1f1c1e0
 github.com/appscode/go/log/golog
 github.com/appscode/go/runtime
-# github.com/appscode/static-assets v0.2.8
+# github.com/appscode/static-assets v0.2.10
 github.com/appscode/static-assets/api
+github.com/appscode/static-assets/data/products
 github.com/appscode/static-assets/hugo
 # github.com/chaseadamsio/goorgeous v1.1.0
 github.com/chaseadamsio/goorgeous
@@ -150,6 +151,7 @@ gopkg.in/inf.v0
 gopkg.in/yaml.v2
 # k8s.io/apimachinery v0.0.0-20190612205821-1799e75a0719
 k8s.io/apimachinery/pkg/apis/meta/v1/unstructured
+k8s.io/apimachinery/pkg/util/sets
 k8s.io/apimachinery/pkg/apis/meta/v1
 k8s.io/apimachinery/pkg/runtime
 k8s.io/apimachinery/pkg/runtime/schema
@@ -166,7 +168,6 @@ k8s.io/apimachinery/pkg/watch
 k8s.io/apimachinery/pkg/conversion/queryparams
 k8s.io/apimachinery/pkg/util/errors
 k8s.io/apimachinery/pkg/util/naming
-k8s.io/apimachinery/pkg/util/sets
 k8s.io/apimachinery/third_party/forked/golang/reflect
 k8s.io/apimachinery/pkg/util/validation
 k8s.io/apimachinery/pkg/util/net
