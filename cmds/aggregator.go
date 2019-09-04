@@ -26,7 +26,7 @@ import (
 )
 
 var sharedSite = false
-
+var onlyAssets = false
 func NewCmdDocsAggregator() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:               "docs-aggregator",
@@ -42,6 +42,7 @@ func NewCmdDocsAggregator() *cobra.Command {
 	}
 	cmd.Flags().StringVar(&product, "product", product, "Name of product")
 	cmd.Flags().BoolVar(&sharedSite, "shared", sharedSite, "If true, considered a shared site like appscode.com instead of a product specific site like kubedb.com")
+	cmd.Flags().BoolVar(&onlyAssets, "only-assets", onlyAssets, "If true, only aggregates config")
 	return cmd
 }
 
@@ -78,6 +79,10 @@ func process(rootDir string) error {
 	err = processAssets(cfg.Assets, rootDir, sh, tmpDir)
 	if err != nil {
 		return err
+	}
+
+	if onlyAssets {
+		return nil // exit
 	}
 
 	for _, name := range cfg.Products {
@@ -195,7 +200,10 @@ func processDataConfig(rootDir string) (*api.Listing, error) {
 		return nil, err
 	}
 	for k, v := range baseCfg {
-		cfg[k] = v
+		if k != "assets" || !hasKey(cfg, k) {
+			// inject assets if not found, all other keys are always injected
+			cfg[k] = v
+		}
 	}
 
 	data3, err := json.MarshalIndent(cfg, "", "  ")
@@ -213,6 +221,11 @@ func processDataConfig(rootDir string) (*api.Listing, error) {
 		return nil, err
 	}
 	return &out, nil
+}
+
+func hasKey(m map[string]interface{}, key string) bool {
+	_, ok := m[key]
+	return ok
 }
 
 func processAssets(a api.AssetListing, rootDir string, sh *shell.Session, tmpDir string) error {
