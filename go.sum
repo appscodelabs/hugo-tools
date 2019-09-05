@@ -15,8 +15,8 @@ github.com/alecthomas/repr v0.0.0-20180818092828-117648cd9897 h1:p9Sln00KOTlrYkx
 github.com/alecthomas/repr v0.0.0-20180818092828-117648cd9897/go.mod h1:xTS7Pm1pD1mvyM075QCDSRqH6qRLXylzS24ZTpRiSzQ=
 github.com/appscode/go v0.0.0-20190808133642-1d4ef1f1c1e0 h1:EZp2qE4LUJUG0wMHyUxOg982hVbOFh7qqcM1XIMVGpk=
 github.com/appscode/go v0.0.0-20190808133642-1d4ef1f1c1e0/go.mod h1:iy07dV61Z7QQdCKJCIvUoDL21u6AIceRhZzyleh2ymc=
-github.com/appscode/static-assets v0.2.10 h1:VjFMu7dWKMOOur4JvXn5iCy5b1QGIus16B5mRHyG7t8=
-github.com/appscode/static-assets v0.2.10/go.mod h1:Bvk6peljX6QnzrfYfz+cetuVO+icWh/sTlkZ7gP1I/s=
+github.com/appscode/static-assets v0.2.12 h1:AH9T/4JNzsy0n28hjIiuqUMwIgs/LEjflpIfsic7S7A=
+github.com/appscode/static-assets v0.2.12/go.mod h1:Bvk6peljX6QnzrfYfz+cetuVO+icWh/sTlkZ7gP1I/s=
 github.com/beevik/ntp v0.2.0/go.mod h1:hIHWr+l3+/clUnF44zdK+CWW7fO8dR5cIylAQ76NRpg=
 github.com/bep/debounce v1.1.0/go.mod h1:H8yggRPQKLUhUoqrJC1bO2xNya7vanpDl7xR3ISbCJ0=
 github.com/bep/gitmap v1.0.0/go.mod h1:g9VRETxFUXNWzMiuxOwcudo6DfZkW9jOsOW0Ft4kYaY=

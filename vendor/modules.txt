@@ -39,7 +39,7 @@ github.com/alecthomas/chroma/lexers/y
 # github.com/appscode/go v0.0.0-20190808133642-1d4ef1f1c1e0
 github.com/appscode/go/log/golog
 github.com/appscode/go/runtime
-# github.com/appscode/static-assets v0.2.10
+# github.com/appscode/static-assets v0.2.12
 github.com/appscode/static-assets/api
 github.com/appscode/static-assets/hugo
 # github.com/chaseadamsio/goorgeous v1.1.0

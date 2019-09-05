@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -27,6 +28,7 @@ import (
 
 var sharedSite = false
 var onlyAssets = false
+
 func NewCmdDocsAggregator() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:               "docs-aggregator",
@@ -119,7 +121,19 @@ func process(rootDir string) error {
 }
 
 func processHugoConfig(rootDir string) error {
-	baseData, err := hugo.Asset("params.json")
+	if err := processHugoConfigEnv(rootDir, "dev"); err != nil {
+		log.Println("failed to process params.dev.json")
+		log.Println(err)
+	}
+	return processHugoConfigEnv(rootDir, "")
+}
+
+func processHugoConfigEnv(rootDir, env string) error {
+	pf := "params.json"
+	if env != "" {
+		pf = "params." + env + ".json"
+	}
+	baseData, err := hugo.Asset(pf)
 	if err != nil {
 		return err
 	}
@@ -130,7 +144,11 @@ func processHugoConfig(rootDir string) error {
 		return err
 	}
 
-	filename := filepath.Join(rootDir, "config.yaml")
+	cf := "config.yaml"
+	if env != "" {
+		cf = "config." + env + ".yaml"
+	}
+	filename := filepath.Join(rootDir, cf)
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return err
