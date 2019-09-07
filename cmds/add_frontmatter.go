@@ -101,7 +101,7 @@ func addFrontMatter(args []string) {
 			data := map[string]interface{}{
 				"id":      id(self + " " + parent),
 				"pid":     id(parent + " " + granny),
-				"title":   strings.Title(parent + " " + self),
+				"title":   strings.Title(self),
 				"product": product,
 				"version": version,
 				"shared":  shared,
