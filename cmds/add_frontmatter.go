@@ -19,12 +19,20 @@ var (
 ---
 title: {{ .title }}
 menu:
+  {{- if .shared }}
   product_{{ .product }}_{{ .version }}:
+  {{- else }}
+  docs_{{ .version }}:
+  {{- end }}
     identifier: {{ .id }}
     name: {{ .title }}
     parent: {{ .pid }}
     weight: 1
+{{- if .shared }}
 menu_name: product_{{ .product }}_{{ .version }}
+{{- else }}
+menu_name: docs_{{ .version }}
+{{- end }}
 ---
 
 `))
@@ -32,14 +40,22 @@ menu_name: product_{{ .product }}_{{ .version }}
 	mdTPL = template.Must(template.New("md").Parse(`---
 title: {{ .title }}
 menu:
+  {{- if .shared }}
   product_{{ .product }}_{{ .version }}:
+  {{- else }}
+  docs_{{ .version }}:
+  {{- end }}
     identifier: {{ .id }}
     name: {{ .title }}
     parent: {{ .pid }}
     weight: 1
+{{- if .shared }}
 product_name: {{ .product }}
 menu_name: product_{{ .product }}_{{ .version }}
-section_menu_id: guides
+{{- else }}
+menu_name: docs_{{ .version }}
+{{- end }}
+section_menu_id: {{ .section }}
 ---
 
 `))
@@ -47,6 +63,9 @@ section_menu_id: guides
 
 var product string
 var version string
+var shared bool
+var section = "reference"
+var skipDir bool
 
 func NewCmdAddFrontMatter() *cobra.Command {
 	cmd := &cobra.Command{
@@ -59,6 +78,9 @@ func NewCmdAddFrontMatter() *cobra.Command {
 	}
 	cmd.Flags().StringVar(&product, "product", product, "Name of product")
 	cmd.Flags().StringVar(&version, "version", version, "Product version")
+	cmd.Flags().BoolVar(&shared, "shared", shared, "Shared or product specific project")
+	cmd.Flags().StringVar(&section, "section", section, "Website section")
+	cmd.Flags().BoolVar(&skipDir, "skipDir", skipDir, "If true, skips generating dir _index.md files")
 	return cmd
 }
 
@@ -76,21 +98,25 @@ func addFrontMatter(args []string) {
 			self := clean(strings.TrimSuffix(filepath.Base(path), ".md"))
 			parent := clean(filepath.Base(filepath.Dir(path)))
 			granny := clean(filepath.Base(filepath.Dir(filepath.Dir(path))))
-			data := map[string]string{
+			data := map[string]interface{}{
 				"id":      id(self + " " + parent),
 				"pid":     id(parent + " " + granny),
 				"title":   strings.Title(parent + " " + self),
 				"product": product,
 				"version": version,
+				"shared":  shared,
+				"section": section,
 			}
 
 			if info.IsDir() {
-				var out bytes.Buffer
-				err = dirTPL.Execute(&out, data)
-				if err != nil {
-					return err
+				if !skipDir {
+					var out bytes.Buffer
+					err = dirTPL.Execute(&out, data)
+					if err != nil {
+						return err
+					}
+					ioutil.WriteFile(filepath.Join(path, "_index.md"), out.Bytes(), 0755)
 				}
-				ioutil.WriteFile(filepath.Join(path, "_index.md"), out.Bytes(), 0755)
 				return nil
 			}
 			if !strings.HasSuffix(path, ".md") {
