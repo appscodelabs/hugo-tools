@@ -249,7 +249,14 @@ func hasKey(m map[string]interface{}, key string) bool {
 func processAssets(a api.AssetListing, rootDir string, sh *shell.Session, tmpDir string) error {
 	tmpDir = filepath.Join(tmpDir, "assets")
 	repoDir := filepath.Join(tmpDir, "repo")
-	err := os.MkdirAll(repoDir, 0755)
+	// repoDir may already exist and not be empty. In this case, "git clone" will fail.
+	// remove repoDir first.
+	err := os.RemoveAll(repoDir)
+	if err != nil {
+		return err
+	}
+
+	err = os.MkdirAll(repoDir, 0755)
 	if err != nil {
 		return err
 	}
@@ -285,7 +292,13 @@ func processAssets(a api.AssetListing, rootDir string, sh *shell.Session, tmpDir
 func processProduct(p api.Product, rootDir string, sh *shell.Session, tmpDir string) error {
 	tmpDir = filepath.Join(tmpDir, p.Key)
 	repoDir := filepath.Join(tmpDir, "repo")
-	err := os.MkdirAll(repoDir, 0755)
+	// repoDir may already exist and not be empty. In this case, "git clone" will fail.
+	// remove repoDir first.
+	err := os.RemoveAll(repoDir)
+	if err != nil {
+		return err
+	}
+	err = os.MkdirAll(repoDir, 0755)
 	if err != nil {
 		return err
 	}
@@ -524,7 +537,13 @@ func processSubproject(p api.Product, v api.ProductVersion, rootDir, vDir string
 	for spKey, info := range p.SubProjects {
 		tmpDir := filepath.Join(rootTempDir, spKey)
 		repoDir := filepath.Join(tmpDir, "repo")
-		err := os.MkdirAll(repoDir, 0755)
+		// repoDir may already exist and not be empty. In this case, "git clone" will fail.
+		// remove repoDir first.
+		err := os.RemoveAll(repoDir)
+		if err != nil {
+			return err
+		}
+		err = os.MkdirAll(repoDir, 0755)
 		if err != nil {
 			return err
 		}
