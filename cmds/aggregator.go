@@ -395,6 +395,15 @@ func processProduct(p api.Product, rootDir string, sh *shell.Session, tmpDir str
 			var out string
 			frontmatter := page.FrontMatter()
 
+			// resolve any templated part in front matter
+			t := template.Must(template.New("xF").Parse(string(frontmatter)))
+			var resolvedFrontMatter bytes.Buffer
+			err = t.Execute(&resolvedFrontMatter, v)
+			if err != nil {
+				return err
+			}
+			frontmatter = resolvedFrontMatter.Bytes()
+
 			if len(frontmatter) != 0 {
 				out = "---\n"
 
