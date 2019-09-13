@@ -26,6 +26,25 @@ import (
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
+type PageInfo struct {
+	Version           string `json:"version"`
+	SubProjectVersion string `json:"subproject_version,omitempty"`
+	// Git GitInfo `json:"git"`
+}
+
+func (p PageInfo) Map() (map[string]interface{}, error) {
+	data, err := json.Marshal(p)
+	if err != nil {
+		return nil, err
+	}
+	var m map[string]interface{}
+	err = json.Unmarshal(data, &m)
+	if err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 var sharedSite = false
 var onlyAssets = false
 
@@ -392,15 +411,22 @@ func processProduct(p api.Product, rootDir string, sh *shell.Session, tmpDir str
 				content = bytes.ReplaceAll(content, []byte(`"/docs/images`), []byte(`"`+prefix+`/images`))
 			}
 
-			var out string
-			frontmatter := page.FrontMatter()
+			pageInfo, err := PageInfo{Version: v.Version}.Map()
+			if err != nil {
+				return err
+			}
 
-			if len(frontmatter) != 0 {
-				out = "---\n"
+			t := template.Must(template.New("x2").Parse(string(page.FrontMatter())))
+			var buf2 bytes.Buffer
+			err = t.Execute(&buf2, pageInfo)
+			if err != nil {
+				return err
+			}
 
-				if rune(frontmatter[0]) == '-' {
+			if buf2.Len() > 0 {
+				if rune(buf2.Bytes()[0]) == '-' {
 					var m2 yaml.MapSlice
-					err = yaml.Unmarshal(frontmatter, &m2)
+					err = yaml.Unmarshal(buf2.Bytes(), &m2)
 					if err != nil {
 						return err
 					}
@@ -430,11 +456,35 @@ func processProduct(p api.Product, rootDir string, sh *shell.Session, tmpDir str
 						}
 					}
 
+					// inject Page params info.***
+					var infoFound bool
+					for i := range m2 {
+						if sk, ok := m2[i].Key.(string); ok && sk == "info" {
+							m2[i].Value = pageInfo
+							infoFound = true
+						}
+					}
+					if !infoFound {
+						m2 = append(m2, yaml.MapItem{Key: "info", Value: pageInfo})
+					}
+
 					d2, err := yaml.Marshal(m2)
 					if err != nil {
 						return err
 					}
-					out += string(d2)
+					buf2.Reset()
+					_, err = buf2.WriteString("---\n")
+					if err != nil {
+						return err
+					}
+					_, err = buf2.Write(d2)
+					if err != nil {
+						return err
+					}
+					_, err = buf2.WriteString("---\n\n")
+					if err != nil {
+						return err
+					}
 				} else {
 					metadata, err := page.Metadata()
 					if err != nil {
@@ -457,18 +507,37 @@ func processProduct(p api.Product, rootDir string, sh *shell.Session, tmpDir str
 						}
 					}
 
+					// inject Page params info.***
+					err = unstructured.SetNestedField(metadata, pageInfo, "info")
+					if err != nil {
+						return err
+					}
+
 					metaYAML, err := yaml.Marshal(metadata)
 					if err != nil {
 						return err
 					}
-					out += string(metaYAML)
+					buf2.Reset()
+					_, err = buf2.WriteString("---\n")
+					if err != nil {
+						return err
+					}
+					_, err = buf2.Write(metaYAML)
+					if err != nil {
+						return err
+					}
+					_, err = buf2.WriteString("---\n\n")
+					if err != nil {
+						return err
+					}
 				}
-
-				out = out + "---\n\n"
 			}
 
-			out = out + string(content)
-			return ioutil.WriteFile(path, []byte(out), 0644)
+			_, err = buf2.Write(content)
+			if err != nil {
+				return err
+			}
+			return ioutil.WriteFile(path, buf2.Bytes(), 0644)
 		})
 		if err != nil {
 			return err
@@ -543,13 +612,6 @@ func processSubProject(p api.Product, v api.ProductVersion, rootDir, vDir string
 			return err
 		}
 
-		t := template.Must(template.New("x1").Parse(info.Dir))
-		var buf bytes.Buffer
-		err = t.Execute(&buf, v)
-		if err != nil {
-			return err
-		}
-
 		for _, mapping := range info.Mappings {
 			if sets.NewString(mapping.Versions...).Has(v.Version) {
 
@@ -582,7 +644,7 @@ func processSubProject(p api.Product, v api.ProductVersion, rootDir, vDir string
 						return err
 					}
 
-					spvDir := filepath.Join(vDir, buf.String(), spv.Version)
+					spvDir := filepath.Join(vDir, info.Dir, spv.Version)
 					err = os.RemoveAll(spvDir)
 					if err != nil {
 						return err
@@ -619,14 +681,92 @@ func processSubProject(p api.Product, v api.ProductVersion, rootDir, vDir string
 							return err
 						}
 
+						pageInfo, err := PageInfo{
+							Version:           v.Version,
+							SubProjectVersion: spv.Version,
+						}.Map()
+						if err != nil {
+							return err
+						}
 						t := template.Must(template.New("x2").Parse(string(page.FrontMatter())))
 						var buf2 bytes.Buffer
-						err = t.Execute(&buf2, v)
+						err = t.Execute(&buf2, pageInfo)
 						if err != nil {
 							return err
 						}
 
-						buf2.Write(page.Content())
+						// inject Page params info.***
+						// https://gohugo.io/variables/page/#page-level-params
+						if rune(buf2.Bytes()[0]) == '-' {
+							var m2 yaml.MapSlice
+							err = yaml.Unmarshal(buf2.Bytes(), &m2)
+							if err != nil {
+								return err
+							}
+							var infoFound bool
+							for i := range m2 {
+								if sk, ok := m2[i].Key.(string); ok && sk == "info" {
+									m2[i].Value = pageInfo
+									infoFound = true
+								} else if vv, changed := stringifyMapKeys(m2[i].Value); changed {
+									m2[i].Value = vv
+								}
+							}
+							if !infoFound {
+								m2 = append(m2, yaml.MapItem{Key: "info", Value: pageInfo})
+							}
+
+							d2, err := yaml.Marshal(m2)
+							if err != nil {
+								return err
+							}
+							buf2.Reset()
+							_, err = buf2.WriteString("---\n")
+							if err != nil {
+								return err
+							}
+							_, err = buf2.Write(d2)
+							if err != nil {
+								return err
+							}
+							_, err = buf2.WriteString("---\n\n")
+							if err != nil {
+								return err
+							}
+						} else {
+							metadata, err := page.Metadata()
+							if err != nil {
+								return err
+							}
+
+							err = unstructured.SetNestedField(metadata, pageInfo, "info")
+							if err != nil {
+								return err
+							}
+
+							metaYAML, err := yaml.Marshal(metadata)
+							if err != nil {
+								return err
+							}
+							buf2.Reset()
+							_, err = buf2.WriteString("---\n")
+							if err != nil {
+								return err
+							}
+							_, err = buf2.Write(metaYAML)
+							if err != nil {
+								return err
+							}
+							_, err = buf2.WriteString("---\n\n")
+							if err != nil {
+								return err
+							}
+						}
+
+						_, err = buf2.Write(page.Content())
+						if err != nil {
+							return err
+						}
 						return ioutil.WriteFile(path, buf2.Bytes(), 0644)
 					})
 					if err != nil {
