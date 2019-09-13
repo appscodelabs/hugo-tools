@@ -19,6 +19,7 @@ import (
 	shell "github.com/codeskyblue/go-sh"
 	"github.com/gohugoio/hugo/helpers"
 	"github.com/gohugoio/hugo/parser"
+	"github.com/imdario/mergo"
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v2"
@@ -460,7 +461,22 @@ func processProduct(p api.Product, rootDir string, sh *shell.Session, tmpDir str
 					var infoFound bool
 					for i := range m2 {
 						if sk, ok := m2[i].Key.(string); ok && sk == "info" {
-							m2[i].Value = pageInfo
+							d3, err := yaml.Marshal(m2[i].Value)
+							if err != nil {
+								return err
+							}
+							m3 := make(map[string]interface{})
+							err = yaml.Unmarshal(d3, &m3)
+							if err != nil {
+								return err
+							}
+
+							// merge needs a map as dst
+							err = mergo.Merge(&m3, pageInfo)
+							if err != nil {
+								return err
+							}
+							m2[i].Value = m3
 							infoFound = true
 						}
 					}
@@ -508,9 +524,24 @@ func processProduct(p api.Product, rootDir string, sh *shell.Session, tmpDir str
 					}
 
 					// inject Page params info.***
-					err = unstructured.SetNestedField(metadata, pageInfo, "info")
+					existingInfo, ok, err := unstructured.NestedFieldNoCopy(metadata, "info")
 					if err != nil {
 						return err
+					}
+					if ok {
+						err = mergo.Merge(&existingInfo, pageInfo)
+						if err != nil {
+							return err
+						}
+						err = unstructured.SetNestedField(metadata, existingInfo, "info")
+						if err != nil {
+							return err
+						}
+					} else {
+						err = unstructured.SetNestedField(metadata, pageInfo, "info")
+						if err != nil {
+							return err
+						}
 					}
 
 					metaYAML, err := yaml.Marshal(metadata)
@@ -688,6 +719,7 @@ func processSubProject(p api.Product, v api.ProductVersion, rootDir, vDir string
 						if err != nil {
 							return err
 						}
+
 						t := template.Must(template.New("x2").Parse(string(page.FrontMatter())))
 						var buf2 bytes.Buffer
 						err = t.Execute(&buf2, pageInfo)
