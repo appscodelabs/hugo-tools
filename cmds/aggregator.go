@@ -336,7 +336,7 @@ func processProduct(p api.Product, rootDir string, sh *shell.Session, tmpDir str
 		}
 
 		// process sub project
-		err = processSubproject(p, v, rootDir, vDir, sh, tmpDir)
+		err = processSubProject(p, v, rootDir, vDir, sh, tmpDir)
 		if err != nil {
 			return err
 		}
@@ -520,9 +520,10 @@ func stringifyMapKeys(in interface{}) (interface{}, bool) {
 	return nil, false
 }
 
-func processSubproject(p api.Product, v api.ProductVersion, rootDir, vDir string, sh *shell.Session, rootTempDir string) error {
+func processSubProject(p api.Product, v api.ProductVersion, rootDir, vDir string, sh *shell.Session, rootTempDir string) error {
 	for spKey, info := range p.SubProjects {
-		tmpDir := filepath.Join(rootTempDir, spKey)
+		// create project version specific subfolder for the subprojects
+		tmpDir := filepath.Join(rootTempDir, p.Key+"-"+v.Version, spKey)
 		repoDir := filepath.Join(tmpDir, "repo")
 		err := os.MkdirAll(repoDir, 0755)
 		if err != nil {
