@@ -417,11 +417,14 @@ func processProduct(p api.Product, rootDir string, sh *shell.Session, tmpDir str
 				return err
 			}
 
-			t := template.Must(template.New("x2").Parse(string(page.FrontMatter())))
+			t, err := template.New("x2").Parse(string(page.FrontMatter()))
+			if err != nil {
+				return fmt.Errorf("failed to process frontmatter template for file %q. reason: %v", path, err)
+			}
 			var buf2 bytes.Buffer
 			err = t.Execute(&buf2, pageInfo)
 			if err != nil {
-				return err
+				return fmt.Errorf("failed to process frontmatter template for file %q. reason: %v", path, err)
 			}
 
 			if buf2.Len() > 0 {
