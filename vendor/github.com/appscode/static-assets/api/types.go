@@ -36,6 +36,12 @@ type Solution struct {
 	Description string `json:"description"`
 }
 
+type Badge struct {
+	URL  string `json:"url"`
+	Alt  string `json:"alt"`
+	Logo string `json:"logo"`
+}
+
 type Product struct {
 	Key             string                `json:"key"`
 	Name            string                `json:"name"`
@@ -51,6 +57,8 @@ type Product struct {
 	StarRepo        string                `json:"starRepo,omitempty"`
 	DocRepo         string                `json:"docRepo,omitempty"`
 	DatasheetFormID string                `json:"datasheetFormID,omitempty"`
+	Badges          []Badge               `json:"badges,omitempty"`
+	Videos          map[string]string     `json:"videos,omitempty"`
 	Features        []Feature             `json:"features,omitempty"`
 	Solutions       []Solution            `json:"solutions,omitempty"`
 	Versions        []ProductVersion      `json:"versions,omitempty"`
