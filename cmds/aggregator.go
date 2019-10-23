@@ -33,7 +33,7 @@ type PageInfo struct {
 	// Git GitInfo `json:"git"`
 }
 
-func (p PageInfo) Map() (map[string]interface{}, error) {
+func (p PageInfo) Map(extra map[string]interface{}) (map[string]interface{}, error) {
 	data, err := json.Marshal(p)
 	if err != nil {
 		return nil, err
@@ -42,6 +42,14 @@ func (p PageInfo) Map() (map[string]interface{}, error) {
 	err = json.Unmarshal(data, &m)
 	if err != nil {
 		return nil, err
+	}
+
+	if extra != nil {
+		for k, v := range extra {
+			if _, ok := m[k]; !ok {
+				m[k] = v
+			}
+		}
 	}
 	return m, nil
 }
@@ -412,7 +420,7 @@ func processProduct(p api.Product, rootDir string, sh *shell.Session, tmpDir str
 				content = bytes.ReplaceAll(content, []byte(`"/docs/images`), []byte(`"`+prefix+`/images`))
 			}
 
-			pageInfo, err := PageInfo{Version: v.Version}.Map()
+			pageInfo, err := PageInfo{Version: v.Version}.Map(v.Info)
 			if err != nil {
 				return err
 			}
@@ -718,7 +726,7 @@ func processSubProject(p api.Product, v api.ProductVersion, rootDir, vDir string
 						pageInfo, err := PageInfo{
 							Version:           v.Version,
 							SubProjectVersion: spv.Version,
-						}.Map()
+						}.Map(v.Info)
 						if err != nil {
 							return err
 						}

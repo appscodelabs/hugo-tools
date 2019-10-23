@@ -13,10 +13,10 @@ github.com/alecthomas/colour v0.0.0-20160524082231-60882d9e2721 h1:JHZL0hZKJ1VEN
 github.com/alecthomas/colour v0.0.0-20160524082231-60882d9e2721/go.mod h1:QO9JBoKquHd+jz9nshCh40fOfO+JzsoXy8qTHF68zU0=
 github.com/alecthomas/repr v0.0.0-20180818092828-117648cd9897 h1:p9Sln00KOTlrYkxI1zYWl1QLnEqAqEARBEYa8FQnQcY=
 github.com/alecthomas/repr v0.0.0-20180818092828-117648cd9897/go.mod h1:xTS7Pm1pD1mvyM075QCDSRqH6qRLXylzS24ZTpRiSzQ=
-github.com/appscode/go v0.0.0-20190920081029-7b75ec783e2e h1:c2EGRz/Xi/CGm+P0v/pbUHDZcGcOqtbl65RyvKcJFJg=
-github.com/appscode/go v0.0.0-20190920081029-7b75ec783e2e/go.mod h1:hUW7Fq0KY2/ntGnYAzemyUpIhLL6bXrTljN6SRY/+Lc=
-github.com/appscode/static-assets v0.2.22 h1:ugZs2ExHUJhXy6WZ0W3EwA1/ehiD1r7ilPbB5lss/Mo=
-github.com/appscode/static-assets v0.2.22/go.mod h1:Bvk6peljX6QnzrfYfz+cetuVO+icWh/sTlkZ7gP1I/s=
+github.com/appscode/go v0.0.0-20191016085057-e186b6c94a3b h1:UskbETXW8u0DRCPU1pyBIgA55BFUnjuYjmt3qOBMdAY=
+github.com/appscode/go v0.0.0-20191016085057-e186b6c94a3b/go.mod h1:hUW7Fq0KY2/ntGnYAzemyUpIhLL6bXrTljN6SRY/+Lc=
+github.com/appscode/static-assets v0.3.0 h1:qjm62Yd3TuLvnafi+YYK+9By8rWyVAd6E+CJi/TJw5I=
+github.com/appscode/static-assets v0.3.0/go.mod h1:Bvk6peljX6QnzrfYfz+cetuVO+icWh/sTlkZ7gP1I/s=
 github.com/beevik/ntp v0.2.0/go.mod h1:hIHWr+l3+/clUnF44zdK+CWW7fO8dR5cIylAQ76NRpg=
 github.com/bep/debounce v1.1.0/go.mod h1:H8yggRPQKLUhUoqrJC1bO2xNya7vanpDl7xR3ISbCJ0=
 github.com/bep/gitmap v1.0.0/go.mod h1:g9VRETxFUXNWzMiuxOwcudo6DfZkW9jOsOW0Ft4kYaY=

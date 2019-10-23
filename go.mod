@@ -1,8 +1,8 @@
 module github.com/appscodelabs/hugo-tools
 
 require (
-	github.com/appscode/go v0.0.0-20190920081029-7b75ec783e2e
-	github.com/appscode/static-assets v0.2.22
+	github.com/appscode/go v0.0.0-20191016085057-e186b6c94a3b
+	github.com/appscode/static-assets v0.3.0
 	github.com/codeskyblue/go-sh v0.0.0-20190412065543-76bd3d59ff27
 	github.com/gohugoio/hugo v0.49.1
 	github.com/imdario/mergo v0.3.7
