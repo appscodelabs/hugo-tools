@@ -56,6 +56,7 @@ func (p PageInfo) Map(extra map[string]interface{}) (map[string]interface{}, err
 
 var sharedSite = false
 var onlyAssets = false
+var fmReplacements = map[string]string{}
 
 func NewCmdDocsAggregator() *cobra.Command {
 	cmd := &cobra.Command{
@@ -73,6 +74,7 @@ func NewCmdDocsAggregator() *cobra.Command {
 	cmd.Flags().StringVar(&product, "product", product, "Name of product")
 	cmd.Flags().BoolVar(&sharedSite, "shared", sharedSite, "If true, considered a shared site like appscode.com instead of a product specific site like kubedb.com")
 	cmd.Flags().BoolVar(&onlyAssets, "only-assets", onlyAssets, "If true, only aggregates config")
+	cmd.Flags().StringToStringVar(&fmReplacements, "fm-replacements", fmReplacements, "Frontmatter replacements")
 	return cmd
 }
 
@@ -499,6 +501,7 @@ func processProduct(p api.Product, rootDir string, sh *shell.Session, tmpDir str
 					if err != nil {
 						return err
 					}
+					d2 = applyFrontmatterReplacements(d2)
 					buf2.Reset()
 					_, err = buf2.WriteString("---\n")
 					if err != nil {
@@ -559,6 +562,7 @@ func processProduct(p api.Product, rootDir string, sh *shell.Session, tmpDir str
 					if err != nil {
 						return err
 					}
+					metaYAML = applyFrontmatterReplacements(metaYAML)
 					buf2.Reset()
 					_, err = buf2.WriteString("---\n")
 					if err != nil {
@@ -586,6 +590,14 @@ func processProduct(p api.Product, rootDir string, sh *shell.Session, tmpDir str
 		}
 	}
 	return nil
+}
+
+func applyFrontmatterReplacements(data []byte) []byte {
+	s := string(data)
+	for k, v := range fmReplacements {
+		s = strings.ReplaceAll(s, k, v)
+	}
+	return []byte(s)
 }
 
 // stringifyMapKeys recurses into in and changes all instances of
