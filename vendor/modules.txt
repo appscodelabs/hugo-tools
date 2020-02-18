@@ -39,7 +39,7 @@ github.com/alecthomas/chroma/styles
 # github.com/appscode/go v0.0.0-20191119085241-0887d8ec2ecc
 github.com/appscode/go/log/golog
 github.com/appscode/go/runtime
-# github.com/appscode/static-assets v0.3.1
+# github.com/appscode/static-assets v0.4.0
 github.com/appscode/static-assets/api
 github.com/appscode/static-assets/hugo
 # github.com/chaseadamsio/goorgeous v1.1.0
