@@ -33,12 +33,12 @@ type PageInfo struct {
 	// Git GitInfo `json:"git"`
 }
 
-func (p PageInfo) Map(extra map[string]string) (map[string]string, error) {
+func (p PageInfo) Map(extra map[string]string) (map[string]interface{}, error) {
 	data, err := json.Marshal(p)
 	if err != nil {
 		return nil, err
 	}
-	var m map[string]string
+	var m map[string]interface{}
 	err = json.Unmarshal(data, &m)
 	if err != nil {
 		return nil, err
