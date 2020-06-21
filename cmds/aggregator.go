@@ -1,3 +1,19 @@
+/*
+Copyright AppsCode Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package cmds
 
 import (
@@ -44,11 +60,9 @@ func (p PageInfo) Map(extra map[string]string) (map[string]interface{}, error) {
 		return nil, err
 	}
 
-	if extra != nil {
-		for k, v := range extra {
-			if _, ok := m[k]; !ok {
-				m[k] = v
-			}
+	for k, v := range extra {
+		if _, ok := m[k]; !ok {
+			m[k] = v
 		}
 	}
 	return m, nil
@@ -395,14 +409,13 @@ func processProduct(p api.Product, rootDir string, sh *shell.Session, tmpDir str
 
 			content := page.Content()
 
-			if strings.Index(string(content), "/docs") > -1 {
+			if strings.Contains(string(content), "/docs") {
 				prefix := `/products/` + p.Key + `/` + v.Version
 				if !sharedSite {
 					prefix = `/docs/` + v.Version
 				}
 
-				var re1 *regexp.Regexp
-				re1 = regexp.MustCompile(`(\(/docs)`)
+				re1 := regexp.MustCompile(`(\(/docs)`)
 				content = re1.ReplaceAll(content, []byte(`(`+prefix))
 
 				var re2 *regexp.Regexp
