@@ -661,10 +661,6 @@ func processSubProject(p api.Product, v api.ProductVersion, rootDir, vDir string
 		// create project version specific subfolder for the subprojects
 		tmpDir := filepath.Join(rootTempDir, p.Key+"-"+v.Version, spKey)
 		repoDir := filepath.Join(tmpDir, "repo")
-		err := os.MkdirAll(repoDir, 0755)
-		if err != nil {
-			return err
-		}
 
 		pfile := filepath.Join(rootDir, "data", "products", spKey+".json")
 		fmt.Println("using product_listing_file=", pfile)
@@ -679,13 +675,19 @@ func processSubProject(p api.Product, v api.ProductVersion, rootDir, vDir string
 			return err
 		}
 
+		err = os.MkdirAll(tmpDir, 0755)
+		if err != nil {
+			return err
+		}
+		if !exists(repoDir) {
+			err = sh.Command("git", "clone", sp.RepoURL, repoDir).Run()
+			if err != nil {
+				return err
+			}
+		}
+
 		for _, mapping := range info.Mappings {
 			if sets.NewString(mapping.Versions...).Has(v.Version) {
-
-				err = sh.Command("git", "clone", sp.RepoURL, repoDir).Run()
-				if err != nil {
-					return err
-				}
 
 				for _, spVersion := range mapping.SubProjectVersions {
 					spv, err := findVersion(sp.Versions, spVersion)
@@ -854,4 +856,12 @@ func findVersion(versions []api.ProductVersion, x string) (api.ProductVersion, e
 		}
 	}
 	return api.ProductVersion{}, fmt.Errorf("version %s not found", x)
+}
+
+// exists reports whether the named file or directory Exists.
+func exists(name string) bool {
+	if _, err := os.Stat(name); os.IsNotExist(err) {
+		return false
+	}
+	return true
 }
