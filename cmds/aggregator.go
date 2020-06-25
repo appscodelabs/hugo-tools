@@ -19,10 +19,10 @@ package cmds
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
+	"net/url"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -68,9 +68,22 @@ func (p PageInfo) Map(extra map[string]string) (map[string]interface{}, error) {
 	return m, nil
 }
 
-var sharedSite = false
-var onlyAssets = false
-var fmReplacements = map[string]string{}
+const (
+	Workspace      = "/tmp/workspace"
+	GitHubUserKey  = "GITHUB_USER"
+	GitHubTokenKey = "LGTM_GITHUB_TOKEN"
+	MasterBranch   = "master"
+)
+
+var (
+	sharedSite     = false
+	onlyAssets     = false
+	fmReplacements = map[string]string{}
+
+	empty         = struct{}{}
+	scriptRoot, _ = os.Getwd()
+	dataRoot      = filepath.Join(scriptRoot, "data")
+)
 
 func NewCmdDocsAggregator() *cobra.Command {
 	cmd := &cobra.Command{
@@ -78,11 +91,7 @@ func NewCmdDocsAggregator() *cobra.Command {
 		Short:             "Aggregate Docs",
 		DisableAutoGenTag: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			rootDir, err := os.Getwd()
-			if err != nil {
-				return err
-			}
-			return process(rootDir)
+			return process()
 		},
 	}
 	cmd.Flags().StringVar(&product, "product", product, "Name of product")
@@ -92,13 +101,13 @@ func NewCmdDocsAggregator() *cobra.Command {
 	return cmd
 }
 
-func process(rootDir string) error {
-	err := processHugoConfig(rootDir)
+func process() error {
+	err := processHugoConfig()
 	if err != nil {
 		return err
 	}
 
-	cfg, err := processDataConfig(rootDir)
+	cfg, err := processDataConfig()
 	if err != nil {
 		return err
 	}
@@ -111,18 +120,28 @@ func process(rootDir string) error {
 		fmt.Println("removing tmp dir=", tmpDir)
 		e2 := os.RemoveAll(tmpDir)
 		if e2 != nil {
-			fmt.Fprintf(os.Stderr, "failed to remove tmp dir, err : %v", err)
+			_, e3 := fmt.Fprintf(os.Stderr, "failed to remove tmp dir, err : %v", err)
+			if e3 != nil {
+				panic(e3)
+			}
 		}
 	}()
 
+	err = os.RemoveAll(Workspace)
+	if err != nil {
+		return err
+	}
+
 	sh := shell.NewSession()
 	sh.ShowCMD = true
+	sh.PipeFail = true
+	sh.PipeStdErrors = true
 
 	if !sharedSite {
 		sharedSite = len(cfg.Products) > 1
 	}
 
-	err = processAssets(cfg.Assets, rootDir, sh, tmpDir)
+	err = processAssets(sh, cfg.Assets)
 	if err != nil {
 		return err
 	}
@@ -136,7 +155,7 @@ func process(rootDir string) error {
 			continue
 		}
 
-		pfile := filepath.Join(rootDir, "data", "products", name+".json")
+		pfile := filepath.Join(dataRoot, "products", name+".json")
 		fmt.Println("using product_listing_file=", pfile)
 
 		var p api.Product
@@ -153,7 +172,7 @@ func process(rootDir string) error {
 			return fmt.Errorf("missing product key in file=%s", pfile)
 		}
 
-		err = processProduct(p, rootDir, sh, tmpDir)
+		err = processProduct(sh, p)
 		if err != nil {
 			return err
 		}
@@ -164,15 +183,15 @@ func process(rootDir string) error {
 	return nil
 }
 
-func processHugoConfig(rootDir string) error {
-	if err := processHugoConfigEnv(rootDir, "dev"); err != nil {
+func processHugoConfig() error {
+	if err := processHugoConfigEnv("dev"); err != nil {
 		log.Println("failed to process params.dev.json")
 		log.Println(err)
 	}
-	return processHugoConfigEnv(rootDir, "")
+	return processHugoConfigEnv("")
 }
 
-func processHugoConfigEnv(rootDir, env string) error {
+func processHugoConfigEnv(env string) error {
 	pf := "params.json"
 	if env != "" {
 		pf = "params." + env + ".json"
@@ -192,7 +211,7 @@ func processHugoConfigEnv(rootDir, env string) error {
 	if env != "" {
 		cf = "config." + env + ".yaml"
 	}
-	filename := filepath.Join(rootDir, cf)
+	filename := filepath.Join(scriptRoot, cf)
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return err
@@ -230,18 +249,7 @@ func processHugoConfigEnv(rootDir, env string) error {
 	return ioutil.WriteFile(filename, data, 0644)
 }
 
-func processDataConfig(rootDir string) (*api.Listing, error) {
-	filename := filepath.Join(rootDir, "data", "config.json")
-	info, err := os.Stat(filename)
-	if os.IsNotExist(err) {
-		return nil, fmt.Errorf("product_listing file not found, err:%v", err)
-	} else if err != nil {
-		return nil, err
-	}
-	if info.IsDir() {
-		return nil, errors.New("product_listing file is actually a dir")
-	}
-
+func processDataConfig() (*api.Listing, error) {
 	baseData, err := hugo.Asset("config.json")
 	if err != nil {
 		return nil, err
@@ -252,6 +260,10 @@ func processDataConfig(rootDir string) (*api.Listing, error) {
 		return nil, err
 	}
 
+	filename := filepath.Join(dataRoot, "config.json")
+	if !exists(filename) {
+		return nil, fmt.Errorf("product_listing file %s not found", filename)
+	}
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return nil, err
@@ -290,33 +302,50 @@ func hasKey(m map[string]interface{}, key string) bool {
 	return ok
 }
 
-func processAssets(a api.AssetListing, rootDir string, sh *shell.Session, tmpDir string) error {
-	tmpDir = filepath.Join(tmpDir, "assets")
-	repoDir := filepath.Join(tmpDir, "repo")
-	err := os.MkdirAll(repoDir, 0755)
+func processAssets(sh *shell.Session, a api.AssetListing) error {
+	// pushd, popd
+	wdOrig := sh.Getwd()
+	defer sh.SetDir(wdOrig)
+
+	owner, repo := ParseRepoURL(a.RepoURL)
+
+	// TODO: cache git repo
+	wdCur := filepath.Join(Workspace, owner)
+	err := os.MkdirAll(wdCur, 0755)
 	if err != nil {
 		return err
 	}
 
-	err = sh.Command("git", "clone", a.RepoURL, repoDir).Run()
-	if err != nil {
-		return err
-	}
+	if !exists(filepath.Join(wdCur, repo)) {
+		sh.SetDir(wdCur)
 
-	fmt.Println()
-	sh.SetDir(repoDir)
+		err = sh.Command("git",
+			"clone",
+			// "--no-tags", //TODO: ok?
+			"--no-recurse-submodules",
+			//"--depth=1",
+			//"--no-single-branch",
+			gitURL(a.RepoURL),
+		).Run()
+		if err != nil {
+			return err
+		}
+	}
+	wdCur = filepath.Join(wdCur, repo)
+	sh.SetDir(wdCur)
+
 	err = sh.Command("git", "checkout", a.Version).Run()
 	if err != nil {
 		return err
 	}
 
 	for src, dst := range a.Dirs {
-		err = sh.Command("cp", "-r", src, filepath.Dir(filepath.Join(rootDir, dst))).Run()
+		err = sh.Command("cp", "-r", src, filepath.Dir(filepath.Join(scriptRoot, dst))).Run()
 		if err != nil {
 			return err
 		}
 		if src == "data" {
-			err = sh.Command("find", filepath.Join(rootDir, dst), "-name", "bindata.go").Command("xargs", "rm", "-rf", "{}").Run()
+			err = sh.Command("find", filepath.Join(scriptRoot, dst), "-name", "bindata.go").Command("xargs", "rm", "-rf", "{}").Run()
 			if err != nil {
 				return err
 			}
@@ -326,18 +355,37 @@ func processAssets(a api.AssetListing, rootDir string, sh *shell.Session, tmpDir
 	return nil
 }
 
-func processProduct(p api.Product, rootDir string, sh *shell.Session, tmpDir string) error {
-	tmpDir = filepath.Join(tmpDir, p.Key)
-	repoDir := filepath.Join(tmpDir, "repo")
-	err := os.MkdirAll(repoDir, 0755)
+func processProduct(sh *shell.Session, p api.Product) error {
+	// pushd, popd
+	wdOrig := sh.Getwd()
+	defer sh.SetDir(wdOrig)
+
+	owner, repo := ParseRepoURL(p.RepoURL)
+
+	// TODO: cache git repo
+	wdCur := filepath.Join(Workspace, owner)
+	err := os.MkdirAll(wdCur, 0755)
 	if err != nil {
 		return err
 	}
 
-	err = sh.Command("git", "clone", p.RepoURL, repoDir).Run()
-	if err != nil {
-		return err
+	if !exists(filepath.Join(wdCur, repo)) {
+		sh.SetDir(wdCur)
+
+		err = sh.Command("git",
+			"clone",
+			// "--no-tags", //TODO: ok?
+			"--no-recurse-submodules",
+			//"--depth=1",
+			//"--no-single-branch",
+			gitURL(p.RepoURL),
+		).Run()
+		if err != nil {
+			return err
+		}
 	}
+	wdCur = filepath.Join(wdCur, repo)
+	sh.SetDir(wdCur)
 
 	for _, v := range p.Versions {
 		if !v.HostDocs {
@@ -347,8 +395,9 @@ func processProduct(p api.Product, rootDir string, sh *shell.Session, tmpDir str
 			v.DocsDir = "docs"
 		}
 
-		fmt.Println()
-		sh.SetDir(repoDir)
+		sh.SetDir(wdCur)
+		fmt.Println(wdCur)
+
 		ref := v.Branch
 		if ref == "" {
 			ref = v.Version
@@ -360,9 +409,9 @@ func processProduct(p api.Product, rootDir string, sh *shell.Session, tmpDir str
 
 		var vDir string
 		if sharedSite {
-			vDir = filepath.Join(rootDir, "content", "products", p.Key, v.Version)
+			vDir = filepath.Join(scriptRoot, "content", "products", p.Key, v.Version)
 		} else {
-			vDir = filepath.Join(rootDir, "content", "docs", v.Version)
+			vDir = filepath.Join(scriptRoot, "content", "docs", v.Version)
 		}
 		err = os.RemoveAll(vDir)
 		if err != nil {
@@ -373,14 +422,13 @@ func processProduct(p api.Product, rootDir string, sh *shell.Session, tmpDir str
 			return err
 		}
 
-		sh.SetDir(tmpDir)
-		err = sh.Command("cp", "-r", filepath.Join("repo", v.DocsDir), vDir).Run()
+		err = sh.Command("cp", "-r", filepath.Join(wdCur, v.DocsDir), vDir).Run()
 		if err != nil {
 			return err
 		}
 
 		// process sub project
-		err = processSubProject(p, v, rootDir, vDir, sh, tmpDir)
+		err = processSubProject(sh, p, v, vDir)
 		if err != nil {
 			return err
 		}
@@ -656,13 +704,13 @@ func stringifyMapKeys(in interface{}) (interface{}, bool) {
 	return nil, false
 }
 
-func processSubProject(p api.Product, v api.ProductVersion, rootDir, vDir string, sh *shell.Session, rootTempDir string) error {
-	for spKey, info := range p.SubProjects {
-		// create project version specific subfolder for the subprojects
-		tmpDir := filepath.Join(rootTempDir, p.Key+"-"+v.Version, spKey)
-		repoDir := filepath.Join(tmpDir, "repo")
+func processSubProject(sh *shell.Session, p api.Product, v api.ProductVersion, vDir string) error {
+	// pushd, popd
+	wdOrig := sh.Getwd()
+	defer sh.SetDir(wdOrig)
 
-		pfile := filepath.Join(rootDir, "data", "products", spKey+".json")
+	for spKey, info := range p.SubProjects {
+		pfile := filepath.Join(dataRoot, "products", spKey+".json")
 		fmt.Println("using product_listing_file=", pfile)
 
 		var sp api.Product
@@ -675,16 +723,32 @@ func processSubProject(p api.Product, v api.ProductVersion, rootDir, vDir string
 			return err
 		}
 
-		err = os.MkdirAll(tmpDir, 0755)
+		owner, repo := ParseRepoURL(sp.RepoURL)
+
+		// TODO: cache git repo
+		wdCur := filepath.Join(Workspace, owner)
+		err = os.MkdirAll(wdCur, 0755)
 		if err != nil {
 			return err
 		}
-		if !exists(repoDir) {
-			err = sh.Command("git", "clone", sp.RepoURL, repoDir).Run()
+
+		if !exists(filepath.Join(wdCur, repo)) {
+			sh.SetDir(wdCur)
+
+			err = sh.Command("git",
+				"clone",
+				// "--no-tags", //TODO: ok?
+				"--no-recurse-submodules",
+				//"--depth=1",
+				//"--no-single-branch",
+				gitURL(sp.RepoURL),
+			).Run()
 			if err != nil {
 				return err
 			}
 		}
+		wdCur = filepath.Join(wdCur, repo)
+		sh.SetDir(wdCur)
 
 		for _, mapping := range info.Mappings {
 			if sets.NewString(mapping.Versions...).Has(v.Version) {
@@ -702,8 +766,8 @@ func processSubProject(p api.Product, v api.ProductVersion, rootDir, vDir string
 						spv.DocsDir = "docs"
 					}
 
-					fmt.Println()
-					sh.SetDir(repoDir)
+					fmt.Println(wdCur)
+					sh.SetDir(wdCur)
 					ref := spv.Branch
 					if ref == "" {
 						ref = spv.Version
@@ -723,8 +787,7 @@ func processSubProject(p api.Product, v api.ProductVersion, rootDir, vDir string
 						return err
 					}
 
-					sh.SetDir(tmpDir)
-					err = sh.Command("cp", "-r", filepath.Join("repo", spv.DocsDir), spvDir).Run()
+					err = sh.Command("cp", "-r", spv.DocsDir, spvDir).Run()
 					if err != nil {
 						return err
 					}
@@ -864,4 +927,42 @@ func exists(name string) bool {
 		return false
 	}
 	return true
+}
+
+func ParseRepoURL(repoURL string) (string, string) {
+	if !strings.Contains(repoURL, "://") {
+		repoURL = "https://" + repoURL
+	}
+	if strings.HasSuffix(repoURL, ".git") {
+		repoURL = strings.TrimSuffix(repoURL, ".git")
+	}
+
+	u, err := url.Parse(repoURL)
+	if err != nil {
+		panic(err)
+	}
+	parts := strings.Split(u.Path, "/")
+	if u.Hostname() != "github.com" || len(parts) != 3 {
+		panic(fmt.Errorf("invalid or unsupported repo url: %s", repoURL))
+	}
+
+	owner := parts[1]
+	repo := parts[2]
+	return owner, repo
+}
+
+func gitURL(repoURL string) string {
+	if !strings.Contains(repoURL, "://") {
+		repoURL = "https://" + repoURL
+	}
+	if !strings.HasSuffix(repoURL, ".git") {
+		repoURL = repoURL + ".git"
+	}
+
+	u, err := url.Parse(repoURL)
+	if err != nil {
+		panic(err)
+	}
+	u.User = url.UserPassword(os.Getenv(GitHubUserKey), os.Getenv(GitHubTokenKey))
+	return u.String()
 }
