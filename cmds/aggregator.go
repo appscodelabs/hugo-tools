@@ -307,7 +307,7 @@ func processAssets(sh *shell.Session, a api.AssetListing) error {
 	wdOrig := sh.Getwd()
 	defer sh.SetDir(wdOrig)
 
-	owner, repo := ParseRepoURL(a.RepoURL)
+	owner, repo := parseRepoURL(a.RepoURL)
 
 	// TODO: cache git repo
 	wdCur := filepath.Join(Workspace, owner)
@@ -360,7 +360,7 @@ func processProduct(sh *shell.Session, p api.Product) error {
 	wdOrig := sh.Getwd()
 	defer sh.SetDir(wdOrig)
 
-	owner, repo := ParseRepoURL(p.RepoURL)
+	owner, repo := parseRepoURL(p.RepoURL)
 
 	// TODO: cache git repo
 	wdCur := filepath.Join(Workspace, owner)
@@ -723,7 +723,7 @@ func processSubProject(sh *shell.Session, p api.Product, v api.ProductVersion, v
 			return err
 		}
 
-		owner, repo := ParseRepoURL(sp.RepoURL)
+		owner, repo := parseRepoURL(sp.RepoURL)
 
 		// TODO: cache git repo
 		wdCur := filepath.Join(Workspace, owner)
@@ -929,7 +929,7 @@ func exists(name string) bool {
 	return true
 }
 
-func ParseRepoURL(repoURL string) (string, string) {
+func parseRepoURL(repoURL string) (string, string) {
 	if !strings.Contains(repoURL, "://") {
 		repoURL = "https://" + repoURL
 	}
@@ -963,6 +963,8 @@ func gitURL(repoURL string) string {
 	if err != nil {
 		panic(err)
 	}
-	u.User = url.UserPassword(os.Getenv(GitHubUserKey), os.Getenv(GitHubTokenKey))
+	if os.Getenv(GitHubUserKey) != "" && os.Getenv(GitHubTokenKey) != "" {
+		u.User = url.UserPassword(os.Getenv(GitHubUserKey), os.Getenv(GitHubTokenKey))
+	}
 	return u.String()
 }
