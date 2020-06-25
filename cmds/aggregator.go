@@ -80,7 +80,6 @@ var (
 	onlyAssets     = false
 	fmReplacements = map[string]string{}
 
-	empty         = struct{}{}
 	scriptRoot, _ = os.Getwd()
 	dataRoot      = filepath.Join(scriptRoot, "data")
 )
