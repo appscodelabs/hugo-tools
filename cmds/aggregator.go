@@ -111,25 +111,11 @@ func process() error {
 		return err
 	}
 
-	tmpDir, err := ioutil.TempDir("", "docs-aggregator")
-	if err != nil {
-		return err
-	}
-	defer func() {
-		fmt.Println("removing tmp dir=", tmpDir)
-		e2 := os.RemoveAll(tmpDir)
-		if e2 != nil {
-			_, e3 := fmt.Fprintf(os.Stderr, "failed to remove tmp dir, err : %v", err)
-			if e3 != nil {
-				panic(e3)
-			}
-		}
-	}()
-
-	err = os.RemoveAll(Workspace)
-	if err != nil {
-		return err
-	}
+	// Do NOT delete workspace, The same workspace is used by release-automaton tool.
+	//err = os.RemoveAll(Workspace)
+	//if err != nil {
+	//	return err
+	//}
 
 	sh := shell.NewSession()
 	sh.ShowCMD = true
