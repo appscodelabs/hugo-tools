@@ -332,7 +332,7 @@ func processAssets(sh *shell.Session, a api.AssetListing) error {
 	}
 
 	// Pull latest changes from the remote.
-	err = sh.Command("git", "pull", "origin", a.Version).Run()
+	err = sh.Command("git", "pull", "origin", a.Version, "-X", "theirs").Run()
 	if err != nil {
 		return err
 	}
@@ -414,7 +414,7 @@ func processProduct(sh *shell.Session, p api.Product) error {
 		}
 
 		// Pull latest changes from the remote.
-		err = sh.Command("git", "pull", "origin", ref).Run()
+		err = sh.Command("git", "pull", "origin", ref, "-X", "theirs").Run()
 		if err != nil {
 			return err
 		}
@@ -798,7 +798,7 @@ func processSubProject(sh *shell.Session, p api.Product, v api.ProductVersion, v
 					}
 
 					// Pull latest changes from the remote.
-					err = sh.Command("git", "pull", "origin", ref).Run()
+					err = sh.Command("git", "pull", "origin", ref, "-X", "theirs").Run()
 					if err != nil {
 						return err
 					}
