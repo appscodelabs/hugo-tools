@@ -319,7 +319,20 @@ func processAssets(sh *shell.Session, a api.AssetListing) error {
 	wdCur = filepath.Join(wdCur, repo)
 	sh.SetDir(wdCur)
 
+	// Since we are now caching the repos, the cached repo might not have the information about latest remote branches.
+	// So, we should fetch them first.
+	err = sh.Command("git", "fetch", "--all").Run()
+	if err != nil {
+		return err
+	}
+
 	err = sh.Command("git", "checkout", a.Version).Run()
+	if err != nil {
+		return err
+	}
+
+	// Pull latest changes from the remote.
+	err = sh.Command("git", "pull", "origin", a.Version, "-X", "theirs").Run()
 	if err != nil {
 		return err
 	}
@@ -387,7 +400,21 @@ func processProduct(sh *shell.Session, p api.Product) error {
 		if ref == "" {
 			ref = v.Version
 		}
+
+		// Since we are now caching the repos, the cached repo might not have the information about latest remote branches.
+		// So, we should fetch them first.
+		err = sh.Command("git", "fetch", "--all").Run()
+		if err != nil {
+			return err
+		}
+
 		err = sh.Command("git", "checkout", ref).Run()
+		if err != nil {
+			return err
+		}
+
+		// Pull latest changes from the remote.
+		err = sh.Command("git", "pull", "origin", ref, "-X", "theirs").Run()
 		if err != nil {
 			return err
 		}
@@ -757,7 +784,21 @@ func processSubProject(sh *shell.Session, p api.Product, v api.ProductVersion, v
 					if ref == "" {
 						ref = spv.Version
 					}
+
+					// Since we are now caching the repos, the cached repo might not have the information about latest remote branches.
+					// So, we should fetch them first.
+					err = sh.Command("git", "fetch", "--all").Run()
+					if err != nil {
+						return err
+					}
+
 					err = sh.Command("git", "checkout", ref).Run()
+					if err != nil {
+						return err
+					}
+
+					// Pull latest changes from the remote.
+					err = sh.Command("git", "pull", "origin", ref, "-X", "theirs").Run()
 					if err != nil {
 						return err
 					}
