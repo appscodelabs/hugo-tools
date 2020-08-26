@@ -453,9 +453,9 @@ func processProduct(sh *shell.Session, p api.Product) error {
 
 				var re2 *regexp.Regexp
 				if sharedSite {
-					re2 = regexp.MustCompile(`(\(/products/.*)(.md)(#.*)?\)`)
+					re2 = regexp.MustCompile(`([("]/products/.*)(.md)(#.*)?[)"]`)
 				} else {
-					re2 = regexp.MustCompile(`(\(/docs/.*)(.md)(#.*)?\)`)
+					re2 = regexp.MustCompile(`([("]/docs/.*)(.md)(#.*)?[)"]`)
 				}
 				for idx := 0; idx < 5; idx++ {
 					content = re2.ReplaceAll(content, []byte(`${1}${3})`))
