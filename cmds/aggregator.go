@@ -475,8 +475,8 @@ func processProduct(sh *shell.Session, p api.Product) error {
 					prefix = `/docs/` + v.Version
 				}
 
-				re1 := regexp.MustCompile(`(\(/docs)`)
-				content = re1.ReplaceAll(content, []byte(`(`+prefix))
+				re1 := regexp.MustCompile(`([("])(/docs)`)
+				content = re1.ReplaceAll(content, []byte(`${1}`+prefix))
 
 				var re2 *regexp.Regexp
 				if sharedSite {
