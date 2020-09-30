@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/appscode/go v0.0.0-20200323182826-54e98e09185a
-	github.com/appscode/static-assets v0.6.1
+	github.com/appscode/static-assets v0.6.2
 	github.com/codeskyblue/go-sh v0.0.0-20200712050446-30169cf553fe
 	github.com/gohugoio/hugo v0.49.1
 	github.com/imdario/mergo v0.3.5
