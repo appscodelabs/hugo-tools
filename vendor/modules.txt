@@ -40,7 +40,7 @@ github.com/alecthomas/chroma/styles
 ## explicit
 github.com/appscode/go/log/golog
 github.com/appscode/go/runtime
-# github.com/appscode/static-assets v0.6.2
+# github.com/appscode/static-assets v0.6.4
 ## explicit
 github.com/appscode/static-assets/api
 github.com/appscode/static-assets/hugo
