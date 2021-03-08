@@ -1,6 +1,6 @@
 module github.com/appscodelabs/hugo-tools
 
-go 1.14
+go 1.16
 
 require (
 	github.com/appscode/static-assets v0.6.7
