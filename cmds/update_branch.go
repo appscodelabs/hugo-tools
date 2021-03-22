@@ -17,6 +17,7 @@ limitations under the License.
 package cmds
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -69,11 +70,15 @@ func updateBranch() error {
 		}
 	}
 
-	data, err = json.MarshalIndent(prod, "", "  ")
+	var buf bytes.Buffer
+	e := json.NewEncoder(&buf)
+	e.SetEscapeHTML(false)
+	e.SetIndent("", "  ")
+	err = e.Encode(prod)
 	if err != nil {
 		return err
 	}
-	return ioutil.WriteFile(filename, data, 0644)
+	return ioutil.WriteFile(filename, buf.Bytes(), 0644)
 }
 
 // Exists reports whether the named file or directory Exists.
