@@ -78,6 +78,7 @@ const (
 var (
 	sharedSite     = false
 	onlyAssets     = false
+	skipAssets     = false
 	fmReplacements = map[string]string{}
 
 	scriptRoot, _ = os.Getwd()
@@ -96,6 +97,7 @@ func NewCmdDocsAggregator() *cobra.Command {
 	cmd.Flags().StringVar(&product, "product", product, "Name of product")
 	cmd.Flags().BoolVar(&sharedSite, "shared", sharedSite, "If true, considered a shared site like appscode.com instead of a product specific site like kubedb.com")
 	cmd.Flags().BoolVar(&onlyAssets, "only-assets", onlyAssets, "If true, only aggregates config")
+	cmd.Flags().BoolVar(&skipAssets, "skip-assets", skipAssets, "If true, skip updating aggregates config")
 	cmd.Flags().StringToStringVar(&fmReplacements, "fm-replacements", fmReplacements, "Frontmatter replacements")
 	return cmd
 }
@@ -126,9 +128,11 @@ func process() error {
 		sharedSite = len(cfg.Products) > 1
 	}
 
-	err = processAssets(sh, cfg.Assets)
-	if err != nil {
-		return err
+	if !skipAssets {
+		err = processAssets(sh, cfg.Assets)
+		if err != nil {
+			return err
+		}
 	}
 
 	if onlyAssets {
