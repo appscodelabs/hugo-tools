@@ -14,6 +14,7 @@ require (
 	gomodules.xyz/x v0.0.0-20201105065653-91c568df6331
 	gopkg.in/yaml.v2 v2.3.0
 	k8s.io/apimachinery v0.18.3
+	sigs.k8s.io/yaml v1.2.0
 )
 
 replace github.com/imdario/mergo => github.com/imdario/mergo v0.3.5
