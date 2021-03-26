@@ -79,6 +79,7 @@ var (
 	sharedSite     = false
 	onlyAssets     = false
 	skipAssets     = false
+	allVersions    = false
 	fmReplacements = map[string]string{}
 
 	scriptRoot, _ = os.Getwd()
@@ -98,6 +99,7 @@ func NewCmdDocsAggregator() *cobra.Command {
 	cmd.Flags().BoolVar(&sharedSite, "shared", sharedSite, "If true, considered a shared site like appscode.com instead of a product specific site like kubedb.com")
 	cmd.Flags().BoolVar(&onlyAssets, "only-assets", onlyAssets, "If true, only aggregates config")
 	cmd.Flags().BoolVar(&skipAssets, "skip-assets", skipAssets, "If true, skip updating aggregates config")
+	cmd.Flags().BoolVar(&allVersions, "all-versions", allVersions, "If true, process all version, otherwise only process the latest version")
 	cmd.Flags().StringToStringVar(&fmReplacements, "fm-replacements", fmReplacements, "Frontmatter replacements")
 	return cmd
 }
@@ -161,7 +163,7 @@ func process() error {
 			return fmt.Errorf("missing product key in file=%s", pfile)
 		}
 
-		err = processProduct(sh, p)
+		err = processProduct(sh, p, allVersions)
 		if err != nil {
 			return err
 		}
@@ -357,7 +359,7 @@ func processAssets(sh *shell.Session, a api.AssetListing) error {
 	return nil
 }
 
-func processProduct(sh *shell.Session, p api.Product) error {
+func processProduct(sh *shell.Session, p api.Product, allVersions bool) error {
 	// pushd, popd
 	wdOrig := sh.Getwd()
 	defer sh.SetDir(wdOrig)
@@ -393,6 +395,10 @@ func processProduct(sh *shell.Session, p api.Product) error {
 		if !v.HostDocs {
 			continue
 		}
+		if !allVersions && v.Version != p.LatestVersion {
+			continue
+		}
+
 		if v.DocsDir == "" {
 			v.DocsDir = "docs"
 		}
