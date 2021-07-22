@@ -3,17 +3,25 @@ build:
   steps:
     - setup-go-workspace
     - script:
-        name: install goveralls
+        name: go version
+        code: go version
+    - script:
+        name: install tools
         code: |
           go get github.com/mattn/goveralls
+          GO111MODULE=on go get github.com/golangci/golangci-lint/cmd/golangci-lint
     - script:
         name: go get
         code: |
-          go get
+          go get ./...
     - script:
         name: go build
         code: |
           go build ./...
+    - script:
+        name: golangci-lint
+        code: |
+          golangci-lint run
     - script:
         name: go test
         code: |
