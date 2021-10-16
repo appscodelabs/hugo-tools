@@ -20,6 +20,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io/fs"
 	"io/ioutil"
 	"log"
 	"net/url"
@@ -30,14 +31,14 @@ import (
 	"text/template"
 	"time"
 
+	staticassets "github.com/appscode/static-assets"
 	"github.com/appscode/static-assets/api"
-	"github.com/appscode/static-assets/hugo"
-	shell "github.com/codeskyblue/go-sh"
 	"github.com/gohugoio/hugo/helpers"
 	"github.com/gohugoio/hugo/parser"
 	"github.com/imdario/mergo"
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
+	shell "gomodules.xyz/go-sh"
 	"gopkg.in/yaml.v2"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/util/sets"
@@ -187,7 +188,7 @@ func processHugoConfigEnv(env string) error {
 	if env != "" {
 		pf = "params." + env + ".json"
 	}
-	baseData, err := hugo.Asset(pf)
+	baseData, err := fs.ReadFile(staticassets.Hugo(), pf)
 	if err != nil {
 		return err
 	}
@@ -241,7 +242,7 @@ func processHugoConfigEnv(env string) error {
 }
 
 func processDataConfig() (*api.Listing, error) {
-	baseData, err := hugo.Asset("config.json")
+	baseData, err := fs.ReadFile(staticassets.Hugo(), "config.json")
 	if err != nil {
 		return nil, err
 	}
