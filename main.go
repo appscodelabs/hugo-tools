@@ -17,19 +17,18 @@ limitations under the License.
 package main
 
 import (
-	"os"
-
 	"github.com/appscodelabs/hugo-tools/cmds"
 
-	logs "gomodules.xyz/x/log/golog"
+	"gomodules.xyz/logs"
+	"k8s.io/klog/v2"
 )
 
 func main() {
-	logs.InitLogs()
+	rootCmd := cmds.NewRootCmd()
+	logs.Init(rootCmd, true)
 	defer logs.FlushLogs()
 
-	if err := cmds.NewRootCmd().Execute(); err != nil {
-		os.Exit(1)
+	if err := rootCmd.Execute(); err != nil {
+		klog.Fatal(err)
 	}
-	os.Exit(0)
 }

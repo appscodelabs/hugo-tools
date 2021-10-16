@@ -36,17 +36,14 @@ github.com/alecthomas/chroma/lexers/w
 github.com/alecthomas/chroma/lexers/x
 github.com/alecthomas/chroma/lexers/y
 github.com/alecthomas/chroma/styles
-# github.com/appscode/static-assets v0.6.7
+# github.com/appscode/static-assets v0.7.0
 ## explicit
+github.com/appscode/static-assets
 github.com/appscode/static-assets/api
-github.com/appscode/static-assets/hugo
 # github.com/chaseadamsio/goorgeous v1.1.0
 github.com/chaseadamsio/goorgeous
 # github.com/codegangsta/inject v0.0.0-20150114235600-33e0aa1cb7c0
 github.com/codegangsta/inject
-# github.com/codeskyblue/go-sh v0.0.0-20200712050446-30169cf553fe
-## explicit
-github.com/codeskyblue/go-sh
 # github.com/cpuguy83/go-md2man/v2 v2.0.0
 github.com/cpuguy83/go-md2man/v2/md2man
 # github.com/danwakefield/fnmatch v0.0.0-20160403171240-cbb64ac3d964
@@ -54,8 +51,10 @@ github.com/danwakefield/fnmatch
 # github.com/dlclark/regexp2 v1.1.6
 github.com/dlclark/regexp2
 github.com/dlclark/regexp2/syntax
-# github.com/fsnotify/fsnotify v1.4.9
+# github.com/fsnotify/fsnotify v1.4.7
 github.com/fsnotify/fsnotify
+# github.com/go-logr/logr v0.4.0
+github.com/go-logr/logr
 # github.com/gogo/protobuf v1.3.1
 github.com/gogo/protobuf/proto
 github.com/gogo/protobuf/sortkeys
@@ -75,8 +74,6 @@ github.com/gohugoio/hugo/hugolib/filesystems
 github.com/gohugoio/hugo/hugolib/paths
 github.com/gohugoio/hugo/langs
 github.com/gohugoio/hugo/parser
-# github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
-github.com/golang/glog
 # github.com/google/gofuzz v1.1.0
 github.com/google/gofuzz
 # github.com/hashicorp/go-immutable-radix v1.0.0
@@ -102,7 +99,7 @@ github.com/inconshreveable/mousetrap
 # github.com/jdkato/prose v1.1.0
 github.com/jdkato/prose/internal/util
 github.com/jdkato/prose/transform
-# github.com/json-iterator/go v1.1.10
+# github.com/json-iterator/go v1.1.8
 github.com/json-iterator/go
 # github.com/kyokomi/emoji v1.5.1
 github.com/kyokomi/emoji
@@ -134,7 +131,7 @@ github.com/spf13/afero/mem
 # github.com/spf13/cast v1.3.1
 ## explicit
 github.com/spf13/cast
-# github.com/spf13/cobra v1.1.1
+# github.com/spf13/cobra v1.1.3
 ## explicit
 github.com/spf13/cobra
 github.com/spf13/cobra/doc
@@ -152,7 +149,7 @@ golang.org/x/net/http/httpguts
 golang.org/x/net/http2
 golang.org/x/net/http2/hpack
 golang.org/x/net/idna
-# golang.org/x/sys v0.0.0-20200223170610-d5e6a3e2c0ae
+# golang.org/x/sys v0.0.0-20191022100944-742c48ecaeb7
 golang.org/x/sys/unix
 # golang.org/x/text v0.3.2
 golang.org/x/text/secure/bidirule
@@ -160,17 +157,28 @@ golang.org/x/text/transform
 golang.org/x/text/unicode/bidi
 golang.org/x/text/unicode/norm
 golang.org/x/text/width
-# gomodules.xyz/runtime v0.0.0-20201104200926-d838b09dda8b
+# gomodules.xyz/clock v0.0.0-20200817085942-06523dba733f
+gomodules.xyz/clock
+# gomodules.xyz/flags v0.1.3
+gomodules.xyz/flags
+# gomodules.xyz/go-sh v0.1.0
+## explicit
+gomodules.xyz/go-sh
+# gomodules.xyz/logs v0.0.5
+## explicit
+gomodules.xyz/logs
+# gomodules.xyz/runtime v0.2.0
 ## explicit
 gomodules.xyz/runtime
-# gomodules.xyz/x v0.0.0-20201105065653-91c568df6331
-## explicit
-gomodules.xyz/x/log/golog
+# gomodules.xyz/sets v0.2.0
+gomodules.xyz/sets
+# gomodules.xyz/wait v0.2.0
+gomodules.xyz/wait
 # gopkg.in/inf.v0 v0.9.1
 gopkg.in/inf.v0
 # gopkg.in/ini.v1 v1.51.0
 gopkg.in/ini.v1
-# gopkg.in/yaml.v2 v2.3.0
+# gopkg.in/yaml.v2 v2.4.0
 ## explicit
 gopkg.in/yaml.v2
 # k8s.io/apimachinery v0.18.3
@@ -199,6 +207,9 @@ k8s.io/apimachinery/pkg/watch
 k8s.io/apimachinery/third_party/forked/golang/reflect
 # k8s.io/klog v1.0.0
 k8s.io/klog
+# k8s.io/klog/v2 v2.8.0
+## explicit
+k8s.io/klog/v2
 # sigs.k8s.io/structured-merge-diff/v3 v3.0.0
 sigs.k8s.io/structured-merge-diff/v3/value
 # sigs.k8s.io/yaml v1.2.0
