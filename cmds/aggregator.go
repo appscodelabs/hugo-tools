@@ -983,9 +983,7 @@ func parseRepoURL(repoURL string) (string, string) {
 	if !strings.Contains(repoURL, "://") {
 		repoURL = "https://" + repoURL
 	}
-	if strings.HasSuffix(repoURL, ".git") {
-		repoURL = strings.TrimSuffix(repoURL, ".git")
-	}
+	repoURL = strings.TrimSuffix(repoURL, ".git")
 
 	u, err := url.Parse(repoURL)
 	if err != nil {
