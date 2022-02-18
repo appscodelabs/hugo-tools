@@ -360,6 +360,13 @@ func processAssets(sh *shell.Session, a api.AssetListing) error {
 	return nil
 }
 
+func dirExists(path string) bool {
+	if fi, err := os.Stat(path); !os.IsNotExist(err) {
+		return fi.IsDir()
+	}
+	return false
+}
+
 func processProduct(sh *shell.Session, p api.Product, allVersions bool) error {
 	// pushd, popd
 	wdOrig := sh.Getwd()
@@ -396,7 +403,15 @@ func processProduct(sh *shell.Session, p api.Product, allVersions bool) error {
 		if !v.HostDocs {
 			continue
 		}
-		if !allVersions && v.Version != p.LatestVersion {
+
+		var vDir string
+		if sharedSite {
+			vDir = filepath.Join(scriptRoot, "content", "products", p.Key, v.Version)
+		} else {
+			vDir = filepath.Join(scriptRoot, "content", "docs", v.Version)
+		}
+
+		if !allVersions && v.Version != p.LatestVersion && dirExists(vDir) {
 			continue
 		}
 
@@ -430,12 +445,6 @@ func processProduct(sh *shell.Session, p api.Product, allVersions bool) error {
 			return err
 		}
 
-		var vDir string
-		if sharedSite {
-			vDir = filepath.Join(scriptRoot, "content", "products", p.Key, v.Version)
-		} else {
-			vDir = filepath.Join(scriptRoot, "content", "docs", v.Version)
-		}
 		err = os.RemoveAll(vDir)
 		if err != nil {
 			return err
