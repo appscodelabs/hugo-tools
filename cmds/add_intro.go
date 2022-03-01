@@ -77,7 +77,7 @@ func addIntro(args []string) {
 			b2.WriteRune('\n')
 			b2.WriteRune('\n')
 			b2.Write(c)
-			return ioutil.WriteFile(path, b2.Bytes(), 0755)
+			return ioutil.WriteFile(path, b2.Bytes(), 0o755)
 		})
 		if err != nil {
 			fmt.Printf("error walking the path %q: %v\n", dir, err)

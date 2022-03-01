@@ -238,7 +238,7 @@ func processHugoConfigEnv(env string) error {
 	if err != nil {
 		return err
 	}
-	return ioutil.WriteFile(filename, data, 0644)
+	return ioutil.WriteFile(filename, data, 0o644)
 }
 
 func processDataConfig() (*api.Listing, error) {
@@ -276,7 +276,7 @@ func processDataConfig() (*api.Listing, error) {
 	if err != nil {
 		return nil, err
 	}
-	err = ioutil.WriteFile(filename, data3, 0644)
+	err = ioutil.WriteFile(filename, data3, 0o644)
 	if err != nil {
 		return nil, err
 	}
@@ -303,7 +303,7 @@ func processAssets(sh *shell.Session, a api.AssetListing) error {
 
 	// TODO: cache git repo
 	wdCur := filepath.Join(Workspace, owner)
-	err := os.MkdirAll(wdCur, 0755)
+	err := os.MkdirAll(wdCur, 0o755)
 	if err != nil {
 		return err
 	}
@@ -376,7 +376,7 @@ func processProduct(sh *shell.Session, p api.Product, allVersions bool) error {
 
 	// TODO: cache git repo
 	wdCur := filepath.Join(Workspace, owner)
-	err := os.MkdirAll(wdCur, 0755)
+	err := os.MkdirAll(wdCur, 0o755)
 	if err != nil {
 		return err
 	}
@@ -449,7 +449,7 @@ func processProduct(sh *shell.Session, p api.Product, allVersions bool) error {
 		if err != nil {
 			return err
 		}
-		err = os.MkdirAll(filepath.Dir(vDir), 0755) // create parent dir
+		err = os.MkdirAll(filepath.Dir(vDir), 0o755) // create parent dir
 		if err != nil {
 			return err
 		}
@@ -689,7 +689,7 @@ func processProduct(sh *shell.Session, p api.Product, allVersions bool) error {
 			if err != nil {
 				return err
 			}
-			return ioutil.WriteFile(path, buf2.Bytes(), 0644)
+			return ioutil.WriteFile(path, buf2.Bytes(), 0o644)
 		})
 		if err != nil {
 			return err
@@ -772,7 +772,7 @@ func processSubProject(sh *shell.Session, p api.Product, v api.ProductVersion, v
 
 		// TODO: cache git repo
 		wdCur := filepath.Join(Workspace, owner)
-		err = os.MkdirAll(wdCur, 0755)
+		err = os.MkdirAll(wdCur, 0o755)
 		if err != nil {
 			return err
 		}
@@ -797,7 +797,6 @@ func processSubProject(sh *shell.Session, p api.Product, v api.ProductVersion, v
 
 		for _, mapping := range info.Mappings {
 			if sets.NewString(mapping.Versions...).Has(v.Version) {
-
 				for _, spVersion := range mapping.SubProjectVersions {
 					spv, err := findVersion(sp.Versions, spVersion)
 					if err != nil {
@@ -841,7 +840,7 @@ func processSubProject(sh *shell.Session, p api.Product, v api.ProductVersion, v
 					if err != nil {
 						return err
 					}
-					err = os.MkdirAll(filepath.Dir(spvDir), 0755) // create parent dir
+					err = os.MkdirAll(filepath.Dir(spvDir), 0o755) // create parent dir
 					if err != nil {
 						return err
 					}
@@ -959,7 +958,7 @@ func processSubProject(sh *shell.Session, p api.Product, v api.ProductVersion, v
 						if err != nil {
 							return err
 						}
-						return ioutil.WriteFile(path, buf2.Bytes(), 0644)
+						return ioutil.WriteFile(path, buf2.Bytes(), 0o644)
 					})
 					if err != nil {
 						return err

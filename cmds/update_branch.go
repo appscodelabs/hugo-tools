@@ -28,8 +28,10 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-var filename string
-var branch string
+var (
+	filename string
+	branch   string
+)
 
 func NewCmdUpdateBranch() *cobra.Command {
 	cmd := &cobra.Command{
@@ -78,7 +80,7 @@ func updateBranch() error {
 	if err != nil {
 		return err
 	}
-	return ioutil.WriteFile(filename, buf.Bytes(), 0644)
+	return ioutil.WriteFile(filename, buf.Bytes(), 0o644)
 }
 
 // Exists reports whether the named file or directory Exists.
