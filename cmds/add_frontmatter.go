@@ -77,11 +77,13 @@ section_menu_id: {{ .section }}
 `))
 )
 
-var product string
-var version string
-var shared bool
-var section = "reference"
-var skipDir bool
+var (
+	product string
+	version string
+	shared  bool
+	section = "reference"
+	skipDir bool
+)
 
 func NewCmdAddFrontMatter() *cobra.Command {
 	cmd := &cobra.Command{
@@ -131,7 +133,7 @@ func addFrontMatter(args []string) {
 					if err != nil {
 						return err
 					}
-					err = ioutil.WriteFile(filepath.Join(path, "_index.md"), out.Bytes(), 0755)
+					err = ioutil.WriteFile(filepath.Join(path, "_index.md"), out.Bytes(), 0o755)
 					if err != nil {
 						return err
 					}
@@ -160,7 +162,7 @@ func addFrontMatter(args []string) {
 					log.Fatalln(path, "err: ", err)
 				}
 
-				err = ioutil.WriteFile(path, []byte(out.String()+string(content)), 0755)
+				err = ioutil.WriteFile(path, []byte(out.String()+string(content)), 0o755)
 				if err != nil {
 					log.Fatalln(path, "err: ", err)
 				}
