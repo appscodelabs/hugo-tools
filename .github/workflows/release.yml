@@ -4,11 +4,12 @@ on:
   push:
     tags:
       - '*.*'
-
   workflow_dispatch:
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
+
 jobs:
 
   build:
@@ -42,6 +43,8 @@ jobs:
         with:
           files: |
             bin/hugo-tools-linux-amd64
+            bin/hugo-tools-linux-arm64
             bin/hugo-tools-darwin-amd64
+            bin/hugo-tools-darwin-arm64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
