@@ -36,7 +36,7 @@ github.com/alecthomas/chroma/lexers/w
 github.com/alecthomas/chroma/lexers/x
 github.com/alecthomas/chroma/lexers/y
 github.com/alecthomas/chroma/styles
-# github.com/appscode/static-assets v0.7.1
+# github.com/appscode/static-assets v0.7.2-0.20220310075658-43ad12ef4a9e
 ## explicit
 github.com/appscode/static-assets
 github.com/appscode/static-assets/api

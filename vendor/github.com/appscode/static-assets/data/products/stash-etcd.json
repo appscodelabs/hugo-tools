@@ -28,10 +28,20 @@
       "show": true
     },
     {
+      "version": "3.5.0-v2",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "3.5.0-v1",
+      "hostDocs": true,
+      "show": true
+    },
+    {
       "version": "3.5.0",
       "hostDocs": true,
       "show": true
     }
   ],
-  "latestVersion": "3.5.0"
+  "latestVersion": "3.5.0-v2"
 }
