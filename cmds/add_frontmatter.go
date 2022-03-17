@@ -28,6 +28,8 @@ import (
 
 	"github.com/gohugoio/hugo/parser"
 	"github.com/spf13/cobra"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 var (
@@ -119,7 +121,7 @@ func addFrontMatter(args []string) {
 			data := map[string]interface{}{
 				"id":      id(self + " " + parent),
 				"pid":     id(parent + " " + granny),
-				"title":   strings.Title(self),
+				"title":   cases.Title(language.English).String(self),
 				"product": product,
 				"version": version,
 				"shared":  shared,
