@@ -2,8 +2,8 @@
   "key": "stash",
   "name": "Stash",
   "fullname": "Stash by AppsCode",
-  "tagline": "Backup your Kubernetes Stateful Applications",
-  "summary": "Stash by AppsCode is a cloud native data backup and recovery solution for Kubernetes workloads, volumes and databases",
+  "tagline": "Backup and Recovery Solution for Kubernetes",
+  "summary": "A complete Kubernetes native disaster recovery solution for backup and restore your volumes and databases in Kubernetes on any public and private clouds.",
   "published": true,
   "author": "AppsCode Inc.",
   "website": {
@@ -59,9 +59,8 @@
   "features": [
     {
       "title": "Declarative API",
-      "url": "",
       "image": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/feature-1.png",
+        "src": "https://cdn.appscode.com/images/addons/illustrations/declarative-api.png",
         "alt": "http"
       },
       "icon": {
@@ -69,31 +68,16 @@
         "alt": "http"
       },
       "summary": "",
-      "description": "Backup your data in Kubernetes native way. Stash uses Custom Resource Definition (CRD) to specify targets and behaviors of backup and restore process. Schedule a backup for your workloads in the same way you deployed them into Kubernetes."
-    },
-    {
-      "title": "Restic",
-      "url": "",
-      "image": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/feature-3.png",
-        "alt": "http"
-      },
-      "icon": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/restic.svg",
-        "alt": "http"
-      },
-      "summary": "",
-      "description": "Built-in on top of open source backup program Restic (restic.net) . It provides fast, secure, efficient and verifiable backup facility."
+      "description": "Backup your data in Kubernetes native way. Stash uses Custom Resource Definition (CRD) to specify targets and behaviors of the backup and restore process. Schedule a backup for your workloads in the same way you deployed them into Kubernetes."
     },
     {
       "title": "Backup Kubernetes Volumes",
-      "url": "",
       "image": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/feature-2.png",
+        "src": "https://cdn.appscode.com/images/addons/illustrations/backup-kubernetes-volumes.png",
         "alt": "http"
       },
       "icon": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/kub-workload.svg",
+        "src": "https://cdn.appscode.com/images/products/stash/features/vol.svg",
         "alt": "http"
       },
       "summary": "",
@@ -101,205 +85,86 @@
     },
     {
       "title": "Backup Database",
-      "url": "",
       "image": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/feature-2.png",
+        "src": "https://cdn.appscode.com/images/addons/illustrations/backup-restore-databases.png",
         "alt": "http"
       },
       "icon": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/kub-workload.svg",
+        "src": "https://cdn.appscode.com/images/products/stash/features/backup-icon.png",
         "alt": "http"
       },
       "summary": "",
-      "description": "Backup your databases deployed in Kubernetes. Stash supports backup of PostgreSQL, MySQL, MongoDB, Elasticsearch and Percona XtraDB databases. It seemingly integrates with KubeDB. It is now recommended method to backup KubeDB supported databases."
+      "description": "Backup your databases deployed in Kubernetes. Stash supports backup of MariaDB, Redis, PostgreSQL, MySQL, MongoDB, Elasticsearch and Percona XtraDB, Etcd databases. It seemingly integrates with KubeDB. It is now a recommended method to backup KubeDB supported databases."
     },
     {
-      "title": "Volume Snapshot",
-      "url": "",
+      "title": "Multiple Storage Support",
       "image": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/feature-2.png",
+        "src": "https://cdn.appscode.com/images/addons/illustrations/multiple-storage-support.png",
         "alt": "http"
       },
       "icon": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/kub-workload.svg",
-        "alt": "http"
-      },
-      "summary": "",
-      "description": "Take scheduled snapshot of the volumes of your workload using Kubernetes VolumeSnapshot API. Stash removes the burden of creating VolumeSnapshot manually for each volume used in your workload. Instead, just create a single BackupConfiguration for the workload and Stash will do the rest for you."
-    },
-    {
-      "title": "Cluster Snapshot",
-      "url": "",
-      "image": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/feature-2.png",
-        "alt": "http"
-      },
-      "icon": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/kub-workload.svg",
-        "alt": "http"
-      },
-      "summary": "",
-      "description": "Backup your cluster resources definition periodically so that you can recover your cluster in case of any disaster."
-    },
-    {
-      "title": "Batch Backup",
-      "url": "",
-      "image": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/feature-6.png",
-        "alt": "http"
-      },
-      "icon": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/rback.svg",
-        "alt": "http"
-      },
-      "summary": "",
-      "description": "Often an application consists of more than one component. For example, an application may have a front-end and a back-end. Stash supports taking backup of multiple co-related components using a single configuration."
-    },
-    {
-      "title": "Templated Backup",
-      "url": "",
-      "image": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/feature-6.png",
-        "alt": "http"
-      },
-      "icon": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/rback.svg",
-        "alt": "http"
-      },
-      "summary": "",
-      "description": "Define a common template to backup all similar types of workloads. Then, just add some annotations to your targeted workload to enable backup for it. You can use a single template to backup all the Deployments, StatefulSets, DaemonSets, ReplicationControllers and ReplicaSets of your entire cluster."
-    },
-    {
-      "title": "Automatic Cleanup",
-      "url": "",
-      "image": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/feature-6.png",
-        "alt": "http"
-      },
-      "icon": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/rback.svg",
-        "alt": "http"
-      },
-      "summary": "",
-      "description": "Cleanup old snapshots automatically according to different retention policies."
-    },
-    {
-      "title": "Hooks",
-      "url": "",
-      "image": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/feature-6.png",
-        "alt": "http"
-      },
-      "icon": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/rback.svg",
-        "alt": "http"
-      },
-      "summary": "",
-      "description": "Perform some actions before and after backup or restore process using Stash Hooks."
-    },
-    {
-      "title": "Multiple Platforms Support",
-      "url": "",
-      "image": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/feature-4.png",
-        "alt": "http"
-      },
-      "icon": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/platform-support.svg",
+        "src": "https://cdn.appscode.com/images/products/stash/features/storage-icon.png",
         "alt": "http"
       },
       "summary": "",
       "description": "You can store your backed up data into various storage services. Stash supports AWS S3, Minio, Rook, Google Cloud Storage, Azure Blob Storage, OpenStack Swift, DigitalOcean Spaces, Blackbaze B2 and REST server as backend. You can also use Kubernetes persistent volumes as backend."
     },
     {
-      "title": "Multiple Architectures Support",
-      "url": "",
-      "image": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/feature-4.png",
-        "alt": "http"
-      },
-      "icon": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/platform-support.svg",
-        "alt": "http"
-      },
-      "summary": "",
-      "description": "Stash supports multiple architectures. Stash docker images are platform aware. We use Docker manifest to build docker image for linux/amd64 linux/arm linux/arm64 architectures. Hence, whatever platforms you are using, you don't have to worry about the image version. Docker will automatically download the right image for you."
-    },
-    {
       "title": "Deduplication",
-      "url": "",
       "image": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/feature-6.png",
+        "src": "https://cdn.appscode.com/images/addons/illustrations/deduplication.png",
         "alt": "http"
       },
       "icon": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/rback.svg",
+        "src": "https://cdn.appscode.com/images/products/stash/features/compare-icon.png",
         "alt": "http"
       },
       "summary": "",
-      "description": "Stash will upload only the diff since last backup. It splits the targeted files into smaller blob using Content Defined Chunking (CDC) and upload only the modified blobs."
+      "description": "Stash will upload only the diff since the last backup. It splits the targeted files into smaller blobs using Content Defined Chunking (CDC) and uploads only the modified blobs."
     },
     {
-      "title": "Encryption",
-      "url": "",
+      "title": "Data Encryption",
       "image": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/feature-6.png",
+        "src": "https://cdn.appscode.com/images/addons/illustrations/data-encryption.png",
         "alt": "http"
       },
       "icon": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/rback.svg",
+        "src": "https://cdn.appscode.com/images/products/stash/features/encryption-icon.png",
         "alt": "http"
       },
       "summary": "",
-      "description": "Stash keeps all your data encrypted using AES-256. So, your data is protected event if it leaks from the backend."
+      "description": "To provide data security, your data needs to be encrypted during the whole process. Stash keeps all the backed up data encrypted using AES-256. So, your data is protected even if it leaks from the backend. And it will not make any sense until they are decrypted."
     },
     {
-      "title": "Extensibility",
-      "url": "",
+      "title": "Volume Snapshot",
       "image": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/feature-6.png",
+        "src": "https://cdn.appscode.com/images/addons/illustrations/volume-snapshot.png",
         "alt": "http"
       },
       "icon": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/rback.svg",
+        "src": "https://cdn.appscode.com/images/products/stash/features/volume-snapshot.png",
         "alt": "http"
       },
       "summary": "",
-      "description": "You can extend Stash using Function and Task. Now, you can customize the backup and restore process. You can even backup your custom workloads that are not officially supported by Stash."
+      "description": "Take a scheduled snapshot of the volumes of your workload using Kubernetes VolumeSnapshot API. Stash removes the burden of creating VolumeSnapshot manually for each volume used in your workload. Instead, just create a single BackupConfiguration for the workload and Stash will do the rest for you."
     },
     {
-      "title": "kubectl Plugin",
-      "url": "",
+      "title": "Policy Based Backup",
       "image": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/feature-6.png",
+        "src": "https://cdn.appscode.com/images/addons/illustrations/policy-based-backup.png",
         "alt": "http"
       },
       "icon": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/rback.svg",
+        "src": "https://cdn.appscode.com/images/products/stash/features/policy-based-icon.png",
         "alt": "http"
       },
       "summary": "",
-      "description": "Stah provides a kubectl plugin that provides some nifty features such as triggering instant backup, copy Repository into different namespace, clone workloads into a different namespace or cluster etc."
+      "description": "Define a common template to backup all similar types of workloads. Then, just add some annotations to your targeted workload to enable backup for it. You can use a single template to backup all the Deployments, StatefulSets, DaemonSets, ReplicationControllers and ReplicaSets of your entire cluster."
     },
     {
-      "title": "RBAC",
-      "url": "",
+      "title": "Monitoring",
       "image": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/feature-6.png",
-        "alt": "http"
-      },
-      "icon": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/rback.svg",
-        "alt": "http"
-      },
-      "summary": "",
-      "description": "Stash comes with minimal RBAC permissions to ensure your cluster security. We make sure that no user can use Stash to access the resources of an unauthenticated namespace."
-    },
-    {
-      "title": "Prometheus Monitoring",
-      "url": "",
-      "image": {
-        "src": "https://cdn.appscode.com/images/products/stash/features/feature-5.png",
+        "src": "https://cdn.appscode.com/images/addons/illustrations/monitoring.png",
         "alt": "http"
       },
       "icon": {
@@ -307,7 +172,7 @@
         "alt": "http"
       },
       "summary": "",
-      "description": "Stash provides rich Prometheus metrics for backup and restore process. You can use official Prometheus server or CoreOS Prometheus operator to monitor these metrics."
+      "description": "Stash comes with native support for monitoring via Prometheus. You can use builtin Prometheus scrapper or CoreOS Prometheus Operator to monitor your database in Kubernetes. You can use the Grafana to view key operational metrics, including compute/memory/storage capacity utilization, I/O activity, and instance connections."
     }
   ],
   "versions": [
@@ -315,6 +180,77 @@
       "version": "master",
       "hostDocs": false,
       "show": true
+    },
+    {
+      "version": "v2022.05.12",
+      "hostDocs": true,
+      "show": true,
+      "info": {
+        "cli": "v0.20.0",
+        "community": "v0.20.0",
+        "elasticsearch": [
+          "5.6.4-v17",
+          "6.2.4-v17",
+          "6.3.0-v17",
+          "6.4.0-v17",
+          "6.5.3-v17",
+          "6.8.0-v17",
+          "7.14.0-v3",
+          "7.2.0-v17",
+          "7.3.2-v17"
+        ],
+        "enterprise": "v0.20.0",
+        "etcd": [
+          "3.5.0-v4"
+        ],
+        "installer": "v2022.05.12",
+        "kubedump": [
+          "0.1.0"
+        ],
+        "mariadb": [
+          "10.5.8-v10"
+        ],
+        "mongodb": [
+          "3.4.17-v16",
+          "3.4.22-v16",
+          "3.6.13-v16",
+          "3.6.8-v16",
+          "4.0.11-v16",
+          "4.0.3-v16",
+          "4.0.5-v16",
+          "4.1.13-v16",
+          "4.1.4-v16",
+          "4.1.7-v16",
+          "4.2.3-v16",
+          "4.4.6-v7",
+          "5.0.3-v4"
+        ],
+        "mysql": [
+          "5.7.25-v17",
+          "8.0.14-v17",
+          "8.0.21-v11",
+          "8.0.3-v17"
+        ],
+        "nats": [
+          "2.6.1-v4"
+        ],
+        "percona-xtradb": [
+          "5.7-v12"
+        ],
+        "postgres": [
+          "10.14-v15",
+          "11.9-v15",
+          "12.4-v15",
+          "13.1-v12",
+          "14.0-v4",
+          "9.6.19-v15"
+        ],
+        "redis": [
+          "5.0.13-v5",
+          "6.2.5-v5"
+        ],
+        "ui-server": "v0.2.0"
+      }
     },
     {
       "version": "v2022.03.29",
@@ -1679,7 +1615,7 @@
       "hostDocs": false
     }
   ],
-  "latestVersion": "v2022.03.29",
+  "latestVersion": "v2022.05.12",
   "socialLinks": {
     "facebook": "https://facebook.com/appscode",
     "github": "https://github.com/stashed",
