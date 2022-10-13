@@ -28,6 +28,21 @@
       "show": true
     },
     {
+      "version": "14.0-v7",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "14.0-v6",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "14.0-v5",
+      "hostDocs": true,
+      "show": true
+    },
+    {
       "version": "14.0-v4",
       "hostDocs": true,
       "show": true
@@ -49,6 +64,21 @@
     },
     {
       "version": "14.0",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "13.1-v15",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "13.1-v14",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "13.1-v13",
       "hostDocs": true,
       "show": true
     },
@@ -103,12 +133,12 @@
       "show": true
     },
     {
-      "version": "13.1-v2",
+      "version": "13.1.0-v2",
       "hostDocs": true,
       "show": true
     },
     {
-      "version": "13.1.0-v2",
+      "version": "13.1-v2",
       "hostDocs": true,
       "show": true
     },
@@ -119,6 +149,21 @@
     },
     {
       "version": "13.1.0",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "12.4-v18",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "12.4-v17",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "12.4-v16",
       "hostDocs": true,
       "show": true
     },
@@ -173,12 +218,12 @@
       "show": true
     },
     {
-      "version": "12.4-v5",
+      "version": "12.4.0-v5",
       "hostDocs": true,
       "show": true
     },
     {
-      "version": "12.4.0-v5",
+      "version": "12.4-v5",
       "hostDocs": true,
       "show": true
     },
@@ -204,6 +249,21 @@
     },
     {
       "version": "12.4.0",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "11.9-v18",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "11.9-v17",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "11.9-v16",
       "hostDocs": true,
       "show": true
     },
@@ -258,12 +318,12 @@
       "show": true
     },
     {
-      "version": "11.9.0-v5",
+      "version": "11.9-v5",
       "hostDocs": true,
       "show": true
     },
     {
-      "version": "11.9-v5",
+      "version": "11.9.0-v5",
       "hostDocs": true,
       "show": true
     },
@@ -355,6 +415,21 @@
     {
       "version": "11.1-beta.20200708",
       "hostDocs": true
+    },
+    {
+      "version": "10.14-v18",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "10.14-v17",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "10.14-v16",
+      "hostDocs": true,
+      "show": true
     },
     {
       "version": "10.14-v15",
@@ -506,6 +581,21 @@
       "hostDocs": true
     },
     {
+      "version": "9.6.19-v18",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "9.6.19-v17",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "9.6.19-v16",
+      "hostDocs": true,
+      "show": true
+    },
+    {
       "version": "9.6.19-v15",
       "hostDocs": true,
       "show": true
@@ -618,5 +708,5 @@
       "hostDocs": true
     }
   ],
-  "latestVersion": "14.0-v4"
+  "latestVersion": "14.0-v7"
 }

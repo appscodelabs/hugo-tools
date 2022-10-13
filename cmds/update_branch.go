@@ -20,7 +20,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	saapi "github.com/appscode/static-assets/api"
@@ -53,7 +52,7 @@ func updateBranch() error {
 		return nil
 	}
 
-	data, err := ioutil.ReadFile(filename)
+	data, err := os.ReadFile(filename)
 	if err != nil {
 		return err
 	}
@@ -80,7 +79,7 @@ func updateBranch() error {
 	if err != nil {
 		return err
 	}
-	return ioutil.WriteFile(filename, buf.Bytes(), 0o644)
+	return os.WriteFile(filename, buf.Bytes(), 0o644)
 }
 
 // Exists reports whether the named file or directory Exists.
