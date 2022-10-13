@@ -19,7 +19,6 @@ package cmds
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -58,7 +57,7 @@ func addIntro(args []string) {
 				return nil
 			}
 
-			data, err := ioutil.ReadFile(path)
+			data, err := os.ReadFile(path)
 			if err != nil {
 				return err
 			}
@@ -77,7 +76,7 @@ func addIntro(args []string) {
 			b2.WriteRune('\n')
 			b2.WriteRune('\n')
 			b2.Write(c)
-			return ioutil.WriteFile(path, b2.Bytes(), 0o755)
+			return os.WriteFile(path, b2.Bytes(), 0o755)
 		})
 		if err != nil {
 			fmt.Printf("error walking the path %q: %v\n", dir, err)

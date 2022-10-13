@@ -42,6 +42,7 @@ func NewRootCmd() *cobra.Command {
 	rootCmd.AddCommand(NewCmdAddFrontMatter())
 	rootCmd.AddCommand(NewCmdAddIntro())
 	rootCmd.AddCommand(NewCmdCheckFrontMatter())
+	rootCmd.AddCommand(NewCmdFormatFrontMatter())
 	rootCmd.AddCommand(NewCmdDocsAggregator())
 	rootCmd.AddCommand(NewCmdUpdateBranch())
 	return rootCmd

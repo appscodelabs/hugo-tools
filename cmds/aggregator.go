@@ -21,7 +21,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/fs"
-	"io/ioutil"
 	"log"
 	"net/url"
 	"os"
@@ -151,7 +150,7 @@ func process() error {
 		fmt.Println("using product_listing_file=", pfile)
 
 		var p api.Product
-		data, err := ioutil.ReadFile(pfile)
+		data, err := os.ReadFile(pfile)
 		if err != nil {
 			return err
 		}
@@ -204,7 +203,7 @@ func processHugoConfigEnv(env string) error {
 		cf = "config." + env + ".yaml"
 	}
 	filename := filepath.Join(scriptRoot, cf)
-	data, err := ioutil.ReadFile(filename)
+	data, err := os.ReadFile(filename)
 	if err != nil {
 		return err
 	}
@@ -238,7 +237,7 @@ func processHugoConfigEnv(env string) error {
 	if err != nil {
 		return err
 	}
-	return ioutil.WriteFile(filename, data, 0o644)
+	return os.WriteFile(filename, data, 0o644)
 }
 
 func processDataConfig() (*api.Listing, error) {
@@ -256,7 +255,7 @@ func processDataConfig() (*api.Listing, error) {
 	if !exists(filename) {
 		return nil, fmt.Errorf("product_listing file %s not found", filename)
 	}
-	data, err := ioutil.ReadFile(filename)
+	data, err := os.ReadFile(filename)
 	if err != nil {
 		return nil, err
 	}
@@ -276,7 +275,7 @@ func processDataConfig() (*api.Listing, error) {
 	if err != nil {
 		return nil, err
 	}
-	err = ioutil.WriteFile(filename, data3, 0o644)
+	err = os.WriteFile(filename, data3, 0o644)
 	if err != nil {
 		return nil, err
 	}
@@ -476,7 +475,7 @@ func processProduct(sh *shell.Session, p api.Product, allVersions bool) error {
 				return nil // skip
 			}
 
-			data, err := ioutil.ReadFile(path)
+			data, err := os.ReadFile(path)
 			if err != nil {
 				return err
 			}
@@ -689,7 +688,7 @@ func processProduct(sh *shell.Session, p api.Product, allVersions bool) error {
 			if err != nil {
 				return err
 			}
-			return ioutil.WriteFile(path, buf2.Bytes(), 0o644)
+			return os.WriteFile(path, buf2.Bytes(), 0o644)
 		})
 		if err != nil {
 			return err
@@ -759,7 +758,7 @@ func processSubProject(sh *shell.Session, p api.Product, v api.ProductVersion, v
 		fmt.Println("using product_listing_file=", pfile)
 
 		var sp api.Product
-		data, err := ioutil.ReadFile(pfile)
+		data, err := os.ReadFile(pfile)
 		if err != nil {
 			return err
 		}
@@ -860,7 +859,7 @@ func processSubProject(sh *shell.Session, p api.Product, v api.ProductVersion, v
 							return nil // skip
 						}
 
-						data, err := ioutil.ReadFile(path)
+						data, err := os.ReadFile(path)
 						if err != nil {
 							return err
 						}
@@ -958,7 +957,7 @@ func processSubProject(sh *shell.Session, p api.Product, v api.ProductVersion, v
 						if err != nil {
 							return err
 						}
-						return ioutil.WriteFile(path, buf2.Bytes(), 0o644)
+						return os.WriteFile(path, buf2.Bytes(), 0o644)
 					})
 					if err != nil {
 						return err

@@ -19,7 +19,6 @@ package cmds
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -135,7 +134,7 @@ func addFrontMatter(args []string) {
 					if err != nil {
 						return err
 					}
-					err = ioutil.WriteFile(filepath.Join(path, "_index.md"), out.Bytes(), 0o755)
+					err = os.WriteFile(filepath.Join(path, "_index.md"), out.Bytes(), 0o755)
 					if err != nil {
 						return err
 					}
@@ -146,7 +145,7 @@ func addFrontMatter(args []string) {
 				return nil
 			}
 
-			content, err := ioutil.ReadFile(path)
+			content, err := os.ReadFile(path)
 			if err != nil {
 				return err
 			}
@@ -164,7 +163,7 @@ func addFrontMatter(args []string) {
 					log.Fatalln(path, "err: ", err)
 				}
 
-				err = ioutil.WriteFile(path, []byte(out.String()+string(content)), 0o755)
+				err = os.WriteFile(path, []byte(out.String()+string(content)), 0o755)
 				if err != nil {
 					log.Fatalln(path, "err: ", err)
 				}
