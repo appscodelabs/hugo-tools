@@ -27,25 +27,27 @@ import (
 
 	"github.com/gohugoio/hugo/parser"
 	"github.com/spf13/cobra"
-	"gopkg.in/yaml.v2"
+	"gomodules.xyz/encoding/json/query"
 )
 
-func NewCmdFormatFrontMatter() *cobra.Command {
+func NewCmdTagStats() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:               "fmt-frontmatter",
-		Short:             "Format front matter",
+		Use:               "tag-stats",
+		Short:             "Print list of tags",
 		DisableAutoGenTag: true,
 		Run: func(cmd *cobra.Command, args []string) {
-			fmtFrontMatter(args)
+			tagstats(args)
 		},
 	}
 	return cmd
 }
 
-func fmtFrontMatter(args []string) {
+func tagstats(args []string) {
 	if len(args) < 1 {
 		log.Fatalln("missing directory name")
 	}
+
+	stats := map[string]int{}
 	for _, dir := range args {
 		err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
 			if err != nil {
@@ -69,41 +71,31 @@ func fmtFrontMatter(args []string) {
 			if err != nil {
 				return err
 			}
-			fm := page.FrontMatter()
-			if len(fm) == 0 {
-				return nil
-			}
 
-			var obj yaml.MapSlice
-			err = yaml.Unmarshal(fm, &obj)
-			if err != nil {
-				return nil // front matter does not have YAML format, so do nothing
-			}
-			for i, item := range obj {
-				if item.Key.(string) == "tags" {
-					valTags := item.Value.([]interface{})
-					tags := make([]string, 0, len(valTags))
-					for _, tag := range valTags {
-						tags = append(tags, strings.ToLower(tag.(string)))
-					}
-					sort.Strings(tags)
-					obj[i].Value = tags
-				}
-			}
-			ffm, err := yaml.Marshal(obj)
+			fm, err := page.Metadata()
 			if err != nil {
 				return err
 			}
+			tags, _, err := query.NestedStringSlice(fm, "tags")
+			if err != nil {
+				return err
+			}
+			for _, tag := range tags {
+				stats[tag]++
+			}
 
-			buf.Reset()
-			buf.WriteString("---\n")
-			buf.Write(ffm)
-			buf.WriteString("---\n\n")
-			buf.Write(page.Content())
-			return os.WriteFile(path, buf.Bytes(), 0o644)
+			return nil
 		})
 		if err != nil {
 			fmt.Printf("error walking the path %q: %v\n", dir, err)
+		}
+		keys := make([]string, 0, len(stats))
+		for tag := range stats {
+			keys = append(keys, tag)
+		}
+		sort.Strings(keys)
+		for _, key := range keys {
+			fmt.Println(key, stats[key])
 		}
 	}
 }
