@@ -37,8 +37,11 @@ func NewCmdTagStats() *cobra.Command {
 		Use:               "tag-stats",
 		Short:             "Print list of tags",
 		DisableAutoGenTag: true,
-		RunE: func(cmd *cobra.Command, args []string) error {
-			return calculateTagStats(args, invalidOnly)
+		Run: func(cmd *cobra.Command, args []string) {
+			if err := calculateTagStats(args, invalidOnly); err != nil {
+				fmt.Fprintln(os.Stderr, "\nerror:", err)
+				os.Exit(1)
+			}
 		},
 	}
 	cmd.Flags().BoolVar(&invalidOnly, "invalid-only", invalidOnly, "Only report invalid tags")
@@ -109,6 +112,7 @@ func calculateTagStats(args []string, invalidOnly bool) error {
 		}
 	}
 	sort.Strings(keys)
+	fmt.Println("TAG:___________________________________")
 	for _, key := range keys {
 		fmt.Println(key, stats[key])
 	}
