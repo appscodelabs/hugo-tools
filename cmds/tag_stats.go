@@ -23,7 +23,6 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
-	"unicode"
 
 	"github.com/gohugoio/hugo/parser"
 	"github.com/pkg/errors"
@@ -99,15 +98,7 @@ func calculateTagStats(args []string, invalidOnly bool) error {
 
 	keys := make([]string, 0, len(stats))
 	for tag := range stats {
-		if invalidOnly {
-			fields := strings.FieldsFunc(tag, func(r rune) bool {
-				return unicode.IsSpace(r) || r == '-' || r == '_'
-			})
-			// too many words or not in lower case
-			if len(fields) > 3 || strings.ToLower(tag) != tag {
-				keys = append(keys, tag)
-			}
-		} else {
+		if !invalidOnly || isInvalidTag(tag) {
 			keys = append(keys, tag)
 		}
 	}
@@ -120,4 +111,18 @@ func calculateTagStats(args []string, invalidOnly bool) error {
 		return errors.Errorf("%d invalid tags found", len(keys))
 	}
 	return nil
+}
+
+func isInvalidTag(tag string) bool {
+	if strings.ToLower(tag) != tag {
+		return true // only lower case cahrs are allowed
+	}
+	if len(strings.Fields(tag)) > 1 {
+		return true // contains white space char
+	}
+
+	fields := strings.FieldsFunc(tag, func(r rune) bool {
+		return r == '-' || r == '_'
+	})
+	return len(fields) > 3 // max-three-words
 }
