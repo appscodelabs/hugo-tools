@@ -22,11 +22,11 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"sort"
 	"strings"
 
 	"github.com/gohugoio/hugo/parser"
 	"github.com/spf13/cobra"
+	"gomodules.xyz/sets"
 	"gopkg.in/yaml.v2"
 )
 
@@ -82,12 +82,11 @@ func fmtFrontMatter(args []string) {
 			for i, item := range obj {
 				if item.Key.(string) == "tags" {
 					valTags := item.Value.([]interface{})
-					tags := make([]string, 0, len(valTags))
+					tags := sets.NewString()
 					for _, tag := range valTags {
-						tags = append(tags, strings.ToLower(tag.(string)))
+						tags.Insert(strings.ToLower(tag.(string)))
 					}
-					sort.Strings(tags)
-					obj[i].Value = tags
+					obj[i].Value = tags.List()
 				}
 			}
 			ffm, err := yaml.Marshal(obj)

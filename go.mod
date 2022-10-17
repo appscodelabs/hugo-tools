@@ -15,6 +15,7 @@ require (
 	gomodules.xyz/go-sh v0.1.0
 	gomodules.xyz/logs v0.0.5
 	gomodules.xyz/runtime v0.2.0
+	gomodules.xyz/sets v0.2.0
 	gopkg.in/yaml.v2 v2.4.0
 	k8s.io/apimachinery v0.18.3
 	k8s.io/klog/v2 v2.8.0
@@ -67,7 +68,6 @@ require (
 	gomodules.xyz/clock v0.0.0-20200817085942-06523dba733f // indirect
 	gomodules.xyz/flags v0.1.3 // indirect
 	gomodules.xyz/jsonpath v0.0.2 // indirect
-	gomodules.xyz/sets v0.2.0 // indirect
 	gomodules.xyz/wait v0.2.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
