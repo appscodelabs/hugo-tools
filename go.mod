@@ -10,7 +10,7 @@ require (
 	github.com/spf13/cast v1.3.1
 	github.com/spf13/cobra v1.4.0
 	github.com/spf13/pflag v1.0.5
-	golang.org/x/text v0.3.7
+	golang.org/x/text v0.3.8
 	gomodules.xyz/encoding v0.0.7
 	gomodules.xyz/go-sh v0.1.0
 	gomodules.xyz/logs v0.0.5
@@ -64,7 +64,7 @@ require (
 	github.com/spf13/viper v1.7.0 // indirect
 	github.com/subosito/gotenv v1.2.0 // indirect
 	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd // indirect
-	golang.org/x/sys v0.0.0-20211216021012-1d35b9e2eb4e // indirect
+	golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f // indirect
 	gomodules.xyz/clock v0.0.0-20200817085942-06523dba733f // indirect
 	gomodules.xyz/flags v0.1.3 // indirect
 	gomodules.xyz/jsonpath v0.0.2 // indirect
