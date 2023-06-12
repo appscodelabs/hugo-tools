@@ -40,7 +40,7 @@ github.com/alecthomas/chroma/lexers/w
 github.com/alecthomas/chroma/lexers/x
 github.com/alecthomas/chroma/lexers/y
 github.com/alecthomas/chroma/styles
-# github.com/appscode/static-assets v0.8.3-0.20230612003837-1d79954b7479
+# github.com/appscode/static-assets v0.8.3-0.20230612010412-223ff9857739
 ## explicit; go 1.19
 github.com/appscode/static-assets
 github.com/appscode/static-assets/api
