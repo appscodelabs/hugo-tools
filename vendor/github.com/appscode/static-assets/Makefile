@@ -12,8 +12,8 @@ SRC_DIRS := $(SRC_PKGS) data *.go # directories which hold app source (not vendo
 OS   := $(if $(GOOS),$(GOOS),$(shell go env GOOS))
 ARCH := $(if $(GOARCH),$(GOARCH),$(shell go env GOARCH))
 
-GO_VERSION       ?= 1.19
-BUILD_IMAGE      ?= appscode/golang-dev:$(GO_VERSION)
+GO_VERSION       ?= 1.20
+BUILD_IMAGE      ?= ghcr.io/appscode/golang-dev:$(GO_VERSION)
 
 fmt: $(BUILD_DIRS)
 	@docker run                                                 \
@@ -36,8 +36,8 @@ gen:
 
 publish:
 	@echo "publishing files"
-	gsutil -m rsync -d -r $$(pwd)/files gs://cdn.appscode.com/files
-	gsutil -m acl ch -u AllUsers:R -r gs://cdn.appscode.com/files
+	gsutil -m rsync -a public-read -d -r $$(pwd)/files gs://cdn.appscode.com/files
+	# gsutil -m acl ch -u AllUsers:R -r gs://cdn.appscode.com/files
 	@echo "publishing images"
-	gsutil -m rsync -d -r $$(pwd)/images gs://cdn.appscode.com/images
-	gsutil -m acl ch -u AllUsers:R -r gs://cdn.appscode.com/images
+	gsutil -m rsync -d -a public-read -r $$(pwd)/images gs://cdn.appscode.com/images
+	# gsutil -m acl ch -u AllUsers:R -r gs://cdn.appscode.com/images

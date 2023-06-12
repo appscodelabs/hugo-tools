@@ -28,6 +28,37 @@
       "show": true
     },
     {
+      "version": "10.5.8-v19",
+      "hostDocs": true
+    },
+    {
+      "version": "10.5.8-v18",
+      "hostDocs": true
+    },
+    {
+      "version": "10.5.8-v17",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "10.5.8-v16",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "10.5.8-v15",
+      "hostDocs": true
+    },
+    {
+      "version": "10.5.8-v14",
+      "hostDocs": true
+    },
+    {
+      "version": "10.5.8-v13",
+      "hostDocs": true,
+      "show": true
+    },
+    {
       "version": "10.5.8-v12",
       "hostDocs": true,
       "show": true
@@ -93,5 +124,5 @@
       "show": true
     }
   ],
-  "latestVersion": "10.5.8-v12"
+  "latestVersion": "10.5.8-v17"
 }

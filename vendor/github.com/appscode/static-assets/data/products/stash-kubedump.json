@@ -28,6 +28,37 @@
       "show": true
     },
     {
+      "version": "0.1.0-v9",
+      "hostDocs": true
+    },
+    {
+      "version": "0.1.0-v8",
+      "hostDocs": true
+    },
+    {
+      "version": "0.1.0-v7",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "0.1.0-v6",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "0.1.0-v5",
+      "hostDocs": true
+    },
+    {
+      "version": "0.1.0-v4",
+      "hostDocs": true
+    },
+    {
+      "version": "0.1.0-v3",
+      "hostDocs": true,
+      "show": true
+    },
+    {
       "version": "0.1.0-v2",
       "hostDocs": true,
       "show": true
@@ -43,5 +74,5 @@
       "show": true
     }
   ],
-  "latestVersion": "0.1.0-v2"
+  "latestVersion": "0.1.0-v7"
 }
