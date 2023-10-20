@@ -3,17 +3,17 @@ module github.com/appscodelabs/hugo-tools
 go 1.18
 
 require (
-	github.com/appscode/static-assets v0.8.3-0.20230620163932-ebc9d7396f87
+	github.com/appscode/static-assets v0.8.3-0.20231018144821-f353e30b2a5f
 	github.com/gohugoio/hugo v0.49.1
 	github.com/imdario/mergo v0.3.13
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cast v1.3.1
-	github.com/spf13/cobra v1.4.0
+	github.com/spf13/cobra v1.5.0
 	github.com/spf13/pflag v1.0.5
-	golang.org/x/text v0.7.0
+	golang.org/x/text v0.13.0
 	gomodules.xyz/encoding v0.0.7
 	gomodules.xyz/go-sh v0.1.0
-	gomodules.xyz/logs v0.0.5
+	gomodules.xyz/logs v0.0.7
 	gomodules.xyz/runtime v0.2.0
 	gomodules.xyz/sets v0.2.1
 	gopkg.in/yaml.v2 v2.4.0
@@ -29,7 +29,7 @@ require (
 	github.com/alecthomas/chroma v0.5.0 // indirect
 	github.com/chaseadamsio/goorgeous v1.1.0 // indirect
 	github.com/codegangsta/inject v0.0.0-20150114235600-33e0aa1cb7c0 // indirect
-	github.com/cpuguy83/go-md2man/v2 v2.0.1 // indirect
+	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/danwakefield/fnmatch v0.0.0-20160403171240-cbb64ac3d964 // indirect
 	github.com/dlclark/regexp2 v1.1.6 // indirect
 	github.com/fatih/structs v1.1.0 // indirect
@@ -61,8 +61,8 @@ require (
 	github.com/spf13/jwalterweatherman v1.0.0 // indirect
 	github.com/spf13/viper v1.7.0 // indirect
 	github.com/subosito/gotenv v1.2.0 // indirect
-	golang.org/x/net v0.7.0 // indirect
-	golang.org/x/sys v0.5.0 // indirect
+	golang.org/x/net v0.17.0 // indirect
+	golang.org/x/sys v0.13.0 // indirect
 	gomodules.xyz/clock v0.0.0-20200817085942-06523dba733f // indirect
 	gomodules.xyz/flags v0.1.3 // indirect
 	gomodules.xyz/jsonpath v0.0.2 // indirect
