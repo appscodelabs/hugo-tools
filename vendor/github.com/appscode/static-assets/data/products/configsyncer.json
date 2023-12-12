@@ -1,9 +1,9 @@
 {
   "key": "configsyncer",
-  "name": "configsyncer",
-  "fullname": "configsyncer by AppsCode",
-  "tagline": "Kubernetes cluster manager daemon",
-  "summary": "Kubernetes cluster manager daemon",
+  "name": "ConfigSyncer",
+  "fullname": "ConfigSyncer by AppsCode",
+  "tagline": "Kubernetes Configuration Syncer",
+  "summary": "Kubernetes Configuration Syncer",
   "published": true,
   "author": "AppsCode Inc.",
   "website": {
@@ -30,12 +30,12 @@
       "192x192": "https://cdn.appscode.com/images/products/kubed/icons/android-icon-192x192.png"
     }
   },
-  "repoURL": "https://github.com/kubeops/config-syncer",
-  "starRepo": "kubeops/config-syncer",
-  "docRepo": "kubeops/config-syncer",
+  "repoURL": "https://github.com/config-syncer/docs",
+  "starRepo": "config-syncer/config-syncer",
+  "docRepo": "config-syncer/config-syncer",
   "badges": [
     {
-      "url": "github/stars/kubeops/config-syncer",
+      "url": "github/stars/config-syncer/config-syncer",
       "alt": "GitHub Stars",
       "logo": "github"
     }
@@ -127,7 +127,32 @@
       "show": true
     },
     {
-      "version": "v0.13.0-beta.0",
+      "version": "v0.14.2",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "v0.14.1",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "v0.14.0",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "v0.13.2",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "v0.13.1",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "v0.13.0",
       "hostDocs": true,
       "show": true
     },
@@ -137,66 +162,28 @@
       "show": true
     },
     {
-      "version": "v0.12.0-rc.3",
-      "hostDocs": true
-    },
-    {
-      "version": "v0.12.0-rc.2",
-      "hostDocs": true
-    },
-    {
-      "version": "v0.12.0-rc.1",
-      "hostDocs": true
-    },
-    {
-      "version": "v0.12.0-rc.0",
-      "hostDocs": true
-    },
-    {
       "version": "v0.11.0",
-      "hostDocs": true,
-      "show": true
+      "hostDocs": true
     },
     {
       "version": "0.10.0",
-      "hostDocs": true,
-      "show": true
+      "hostDocs": true
     },
     {
       "version": "0.9.0",
-      "hostDocs": true,
-      "show": true
+      "hostDocs": true
     },
     {
       "version": "0.8.0",
-      "hostDocs": true,
-      "show": true
+      "hostDocs": true
     },
     {
       "version": "0.7.0",
-      "hostDocs": true,
-      "show": true
-    },
-    {
-      "version": "0.7.0-rc.2",
-      "hostDocs": true
-    },
-    {
-      "version": "0.7.0-rc.1",
-      "hostDocs": true
-    },
-    {
-      "version": "0.7.0-rc.0",
-      "hostDocs": true
-    },
-    {
-      "version": "0.6.0-rc.0",
       "hostDocs": true
     },
     {
       "version": "0.5.0",
-      "hostDocs": true,
-      "show": true
+      "hostDocs": true
     },
     {
       "version": "0.4.0",
@@ -204,22 +191,25 @@
     },
     {
       "version": "0.3.1",
-      "hostDocs": false
+      "hostDocs": true
     },
     {
       "version": "0.3.0",
-      "hostDocs": false
+      "hostDocs": true
     },
     {
       "version": "0.2.0",
-      "hostDocs": false,
-      "show": true
+      "hostDocs": true
+    },
+    {
+      "version": "0.1.0",
+      "hostDocs": true
     }
   ],
-  "latestVersion": "v0.12.0",
+  "latestVersion": "v0.14.2",
   "socialLinks": {
     "facebook": "https://facebook.com/appscode",
-    "github": "https://github.com/kubeops/config-syncer",
+    "github": "https://github.com/config-syncer/config-syncer",
     "linkedin": "https://www.linkedin.com/company/appscode",
     "twitter": "https://twitter.com/AppsCodeHQ",
     "youtube": "https://www.youtube.com/c/appscodeinc"
@@ -230,6 +220,6 @@
   },
   "supportLinks": {
     "Support URL": "https://appscode.freshdesk.com",
-    "Website URL": "https://configsyncer.com"
+    "Website URL": "https://config-syncer.com"
   }
 }
