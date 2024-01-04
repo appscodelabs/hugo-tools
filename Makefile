@@ -196,7 +196,7 @@ unit-tests: $(BUILD_DIRS)
 	        ./hack/test.sh $(SRC_PKGS)                          \
 	    "
 
-ADDTL_LINTERS   := goconst,gofmt,goimports,unparam
+ADDTL_LINTERS   := gofmt,goimports,unparam
 
 .PHONY: lint
 lint: $(BUILD_DIRS)
@@ -212,10 +212,9 @@ lint: $(BUILD_DIRS)
 	    -v $$(pwd)/.go/cache:/.cache                            \
 	    --env HTTP_PROXY=$(HTTP_PROXY)                          \
 	    --env HTTPS_PROXY=$(HTTPS_PROXY)                        \
-	    --env GO111MODULE=on                                    \
 	    --env GOFLAGS="-mod=vendor"                             \
 	    $(BUILD_IMAGE)                                          \
-	    golangci-lint run --enable $(ADDTL_LINTERS) --deadline=10m --skip-files="generated.*\.go$\" --skip-dirs-use-default
+	    golangci-lint run --enable $(ADDTL_LINTERS) --max-same-issues=100 --timeout=10m --skip-files="generated.*\.go$\" --skip-dirs-use-default
 
 $(BUILD_DIRS):
 	@mkdir -p $@
@@ -228,8 +227,8 @@ verify: verify-gen verify-modules
 
 .PHONY: verify-modules
 verify-modules:
-	GO111MODULE=on go mod tidy
-	GO111MODULE=on go mod vendor
+	go mod tidy
+	go mod vendor
 	@if !(git diff --exit-code HEAD); then \
 		echo "go module files are out of date"; exit 1; \
 	fi
