@@ -161,6 +161,28 @@
         "illustration": "/assets/images/products/kubevault/kubevault-hero.png"
       }
     ],
+    "resources": [
+      {
+        "label": "Blog",
+        "URL": "https://appscode.com/blog/" 
+      },
+      {
+        "label": "Docs",
+        "URL": "https://appscode.com/docs/" 
+      },
+      {
+        "label": "Webinars",
+        "URL": "https://www.youtube.com/watch?v=4lkBt5UUEAQ&list=PLoiT1Gv2KR1hAtDDW7fHEi-s2y2H3DOgx" 
+      },
+      {
+        "label": "Learn",
+        "URL": "https://learn.appscode.com/learn/" 
+      },
+      {
+        "label": "Demos",
+        "URL": "https://www.youtube.com/c/AppsCodeInc" 
+      }
+    ],
     "subscription": {
       "title": "Cloud reimagined <br /> for the age of Kubernetes",
       "summary_left": "Deploy, manage, upgrade Kubernetes on any cloud and automate deployment, scaling, and management of containerized applications. Make Kubernetes accessible any member of your development team using ByteBuilder's innovative Kubernetes Dashboard.",
@@ -177,7 +199,7 @@
         },
         {
           "text": "GET LATEST UPDATE",
-          "url": "https://twitter.com/AppsCodeHQ",
+          "url": "https://x.com/AppsCodeHQ",
           "icon": "/assets/images/icon/twitter-outlined.svg"
         }
       ],
@@ -209,7 +231,7 @@
       ],
       "cta_area": {
         "title": "Get Started with AppsCode",
-        "sub_title": "AppsCode community edition is FREE to use on any supported Kubernetes engines. There is no up-front investment required, and you need to pay only for the resources you use to your infrastructure provider. We offer a 30 days license FREE of cost to try KubeDB Enterprise edition.",
+        "sub_title": "AppsCode is FREE to use on any supported Kubernetes engines. There is no up-front investment required, and you need to pay only for the resources you use to your infrastructure provider. We offer a 30 days license FREE of cost to try KubeDB.",
         "url": "/contact"
       }
     }

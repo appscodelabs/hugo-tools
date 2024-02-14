@@ -223,6 +223,39 @@
       "show": true
     },
     {
+      "version": "v2024.1.31",
+      "hostDocs": true,
+      "show": true,
+      "info": {
+        "cli": "v0.17.0",
+        "installer": "v2024.1.31",
+        "operator": "v0.17.0",
+        "unsealer": "v0.17.0"
+      }
+    },
+    {
+      "version": "v2024.1.28-rc.1",
+      "hostDocs": true,
+      "show": false,
+      "info": {
+        "cli": "v0.17.0-rc.1",
+        "installer": "v2024.1.28-rc.1",
+        "operator": "v0.17.0-rc.1",
+        "unsealer": "v0.17.0-rc.1"
+      }
+    },
+    {
+      "version": "v2024.1.26-rc.0",
+      "hostDocs": true,
+      "show": false,
+      "info": {
+        "cli": "v0.17.0-rc.0",
+        "installer": "v2024.1.26-rc.0",
+        "operator": "v0.17.0-rc.0",
+        "unsealer": "v0.17.0-rc.0"
+      }
+    },
+    {
       "version": "v2023.9.7",
       "hostDocs": true,
       "show": true,
@@ -388,13 +421,13 @@
       }
     }
   ],
-  "latestVersion": "v2023.9.7",
+  "latestVersion": "v2024.1.31",
   "socialLinks": {
     "facebook": "https://facebook.com/appscode",
     "github": "https://github.com/kubevault",
     "linkedin": "https://www.linkedin.com/company/appscode",
     "slack": "https://appscode.slack.com/messages/CAG4P4A0G",
-    "twitter": "https://twitter.com/kubevault",
+    "twitter": "https://x.com/kubevault",
     "youtube": "https://www.youtube.com/c/appscodeinc"
   },
   "description": {
