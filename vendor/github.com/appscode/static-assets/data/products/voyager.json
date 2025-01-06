@@ -2,8 +2,8 @@
   "key": "voyager",
   "name": "Voyager",
   "fullname": "Voyager by AppsCode",
-  "tagline": "Secure HAProxy Ingress Controller for <strong>Kubernetes</strong>",
-  "summary": "Secure HAProxy Ingress Controller for Kubernetes",
+  "tagline": "Secure Ingress Controller for <strong>Kubernetes</strong>",
+  "summary": "Secure Ingress Controller for Kubernetes",
   "published": true,
   "author": "AppsCode Inc.",
   "website": {
@@ -130,6 +130,24 @@
       "version": "master",
       "hostDocs": false,
       "show": true
+    },
+    {
+      "version": "v2024.8.30",
+      "hostDocs": true,
+      "show": true,
+      "info": {
+        "cli": "v0.0.16",
+        "installer": "v2024.8.30"
+      }
+    },
+    {
+      "version": "v2024.3.18",
+      "hostDocs": true,
+      "show": true,
+      "info": {
+        "cli": "v0.0.15",
+        "installer": "v2024.3.18"
+      }
     },
     {
       "version": "v2023.9.18",
@@ -293,11 +311,6 @@
       "hostDocs": true
     },
     {
-      "version": "v12.0.0",
-      "hostDocs": true,
-      "show": true
-    },
-    {
       "version": "v12.0.0-rc.2",
       "hostDocs": false
     },
@@ -308,6 +321,11 @@
     {
       "version": "v12.0.0-rc.0",
       "hostDocs": true
+    },
+    {
+      "version": "v12.0.0",
+      "hostDocs": true,
+      "show": true
     },
     {
       "version": "v11.0.1",
@@ -354,10 +372,6 @@
       "hostDocs": true
     },
     {
-      "version": "7.0.0",
-      "hostDocs": true
-    },
-    {
       "version": "7.0.0-rc.3",
       "hostDocs": true
     },
@@ -374,7 +388,7 @@
       "hostDocs": true
     },
     {
-      "version": "6.0.0",
+      "version": "7.0.0",
       "hostDocs": true
     },
     {
@@ -390,11 +404,15 @@
       "hostDocs": true
     },
     {
-      "version": "5.0.0",
+      "version": "6.0.0",
       "hostDocs": true
     },
     {
       "version": "5.0.0-rc.11",
+      "hostDocs": true
+    },
+    {
+      "version": "5.0.0",
       "hostDocs": true
     },
     {
@@ -434,7 +452,7 @@
       "hostDocs": false
     }
   ],
-  "latestVersion": "v2023.9.18",
+  "latestVersion": "v2024.8.30",
   "socialLinks": {
     "facebook": "https://facebook.com/appscode",
     "github": "https://github.com/voyagermesh/voyager",
@@ -449,7 +467,7 @@
   },
   "supportLinks": {
     "Support URL": "https://appscode.freshdesk.com",
-    "Website URL": "https://appscode.com/products/voyager"
+    "Website URL": "https://voyagermesh.com/"
   },
   "stripeProductID": "prod_FARYkUPIIB0Ocx",
   "plans": {

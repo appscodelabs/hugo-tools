@@ -3,7 +3,7 @@
   "name": "KubeDB",
   "fullname": "KubeDB by AppsCode",
   "tagline": "Run Production-Grade Databases on Kubernetes",
-  "summary": "KubeDB simplifies Provision, Upgrade, Scaling, Volume Expansion, Monitor, Backup, Restore for various Databases in Kubernetes on any Public & Private Cloud",
+  "summary": "KubeDB simplifies Provisioning, Upgrading, Scaling, Volume Expansion, Monitor, Backup, Restore for various Databases in Kubernetes on any Public & Private Cloud",
   "published": true,
   "author": "AppsCode Inc.",
   "website": {
@@ -55,12 +55,12 @@
       "title": "Lower administrative burden",
       "url": "provision-databases-on-kubernetes",
       "image": {
-        "src": "https://cdn.appscode.com/images/products/kubedb/features/easy-lg.png",
-        "alt": "http"
+        "src": "https://cdn.appscode.com/images/products/kubedb/features/easy-lg.jpg",
+        "alt": "Lower administrative burden"
       },
       "icon": {
         "src": "https://cdn.appscode.com/images/products/kubedb/features/dumbbell.png",
-        "alt": "http"
+        "alt": "Lower administrative burden"
       },
       "summary": "",
       "description": "KubeDB simplifies many of the difficult or tedious management tasks of running a production grade databases on private and public clouds. Maintain one stack for all your stateless and stateful applications and simplify the operational complexity."
@@ -69,12 +69,12 @@
       "title": "Native Kubernetes Support",
       "url": "deploy-databases-in-kubernetes-native-way",
       "image": {
-        "src": "https://cdn.appscode.com/images/products/kubedb/features/multi-cloud-lg.png",
-        "alt": "http"
+        "src": "https://cdn.appscode.com/images/products/kubedb/features/multi-cloud-lg.jpg",
+        "alt": "Native Kubernetes Support"
       },
       "icon": {
         "src": "https://cdn.appscode.com/images/products/kubedb/features/kubernetes.png",
-        "alt": "http"
+        "alt": "Native Kubernetes Support"
       },
       "summary": "",
       "description": "Runs on any Kubernetes distribution including OpenShift, Rancher, VMware Tanzu. If you can run Kubernetes, you can provision and manage databases using KubeDB. Use standard Kubernetes CLI and API to provision and manage databases."
@@ -83,12 +83,12 @@
       "title": "Performance",
       "url": "increase-database-performance-on-kubernetes",
       "image": {
-        "src": "https://cdn.appscode.com/images/products/kubedb/features/performance-lg.png",
-        "alt": "http"
+        "src": "https://cdn.appscode.com/images/products/kubedb/features/performance-lg.jpg",
+        "alt": "Performance"
       },
       "icon": {
         "src": "https://cdn.appscode.com/images/products/kubedb/features/muscle.png",
-        "alt": "http"
+        "alt": "Performance"
       },
       "summary": "",
       "description": "KubeDB uses Persistent Volume Claims (PVC) to dynamically provision disks for database instances. Using appropriately defined StorageClasses,  KubeDB provisioned database instances are designed to scale from small development workloads up to performance-intensive workloads on private and public cloud environments."
@@ -97,12 +97,12 @@
       "title": "Availability and durability",
       "url": "backup-restore-databases-on-kubernetes",
       "image": {
-        "src": "https://cdn.appscode.com/images/products/kubedb/features/availability-lg.png",
-        "alt": "http"
+        "src": "https://cdn.appscode.com/images/products/kubedb/features/availability-lg.jpg",
+        "alt": "Availability and durability"
       },
       "icon": {
         "src": "https://cdn.appscode.com/images/products/kubedb/features/last-24-hours.png",
-        "alt": "http"
+        "alt": "Availability and durability"
       },
       "summary": "",
       "description": "KubeDB will backup your database and transaction logs at a user defined frequency and store both for a user-specified retention period in a cloud object store (S3, GCS, etc.) or local filesystem (like NFS, etc.). You can also initiate one-off backups. KubeDB uses Stash by AppsCode to take deduplicated and encrypted backups so that you only incur the cost of incremental storage use. You can create a new instance from a database snapshots whenever you desire."
@@ -111,12 +111,12 @@
       "title": "Manageability",
       "url": "monitor-databases-on-kubernetes",
       "image": {
-        "src": "https://cdn.appscode.com/images/products/kubedb/features/monitoring-lg.png",
-        "alt": "http"
+        "src": "https://cdn.appscode.com/images/products/kubedb/features/monitoring-lg.jpg",
+        "alt": "Manageability"
       },
       "icon": {
         "src": "https://cdn.appscode.com/images/products/kubedb/features/prometheus.svg",
-        "alt": "http"
+        "alt": "Manageability"
       },
       "summary": "",
       "description": "KubeDB comes with native support for monitoring via Prometheus. You can use builtin Prometheus scrapper or CoreOS Prometheus Operator to monitor KubeDB supported databases as well as KubeDB operator itself. You can use the Grafana to view key operational metrics, including compute/memory/storage capacity utilization, I/O activity, and instance connections. You can also use any metrics solutions like Datadog with KubeDB."
@@ -125,26 +125,26 @@
       "title": "Cost-effectiveness",
       "url": "manage-database-on-kubernetes-free",
       "image": {
-        "src": "https://cdn.appscode.com/images/products/kubedb/features/low-price-lg.png",
-        "alt": "http"
+        "src": "https://cdn.appscode.com/images/products/kubedb/features/low-price-lg.jpg",
+        "alt": "Cost-effectiveness"
       },
       "icon": {
         "src": "https://cdn.appscode.com/images/products/kubedb/features/low-price.png",
-        "alt": "http"
+        "alt": "Cost-effectiveness"
       },
       "summary": "",
-      "description": "KubeDB is free to use on any supported Kubernetes engines. There is no up-front investment required, and you pay only for the resources you use to your infrastructure provider. And, when you’re finished with a database instance, you can easily delete it."
+      "description": "KubeDB is free to try on any Kubernetes distribution. There is no up-front investment required, and you pay only for the resources you use to your infrastructure provider. And, when you’re finished with a database instance, you can easily delete it."
     },
     {
       "title": "Security",
       "url": "secure-databases-on-kubernetes",
       "image": {
-        "src": "https://cdn.appscode.com/images/products/kubedb/features/security-lg.png",
-        "alt": "http"
+        "src": "https://cdn.appscode.com/images/products/kubedb/features/security-lg.jpg",
+        "alt": "Security"
       },
       "icon": {
         "src": "https://cdn.appscode.com/images/products/kubedb/features/security-lock.png",
-        "alt": "http"
+        "alt": "Security"
       },
       "summary": "",
       "description": "You can secure your Databases with TLS using KubeDB. Also, KubeDB allows you to use encrypted storage for your databases using keys you manage through your cloud provider’s key management service."
@@ -155,6 +155,221 @@
       "version": "master",
       "hostDocs": false,
       "show": true
+    },
+    {
+      "version": "v2024.12.18",
+      "hostDocs": true,
+      "info": {
+        "autoscaler": "v0.35.0",
+        "cli": "v0.50.0",
+        "dashboard": "v0.26.0",
+        "installer": "v2024.12.18",
+        "ops-manager": "v0.37.0",
+        "provisioner": "v0.50.0",
+        "schema-manager": "v0.26.0",
+        "ui-server": "v0.26.0",
+        "webhook-server": "v0.26.0"
+      }
+    },
+    {
+      "version": "v2024.11.18",
+      "hostDocs": true,
+      "show": true,
+      "info": {
+        "autoscaler": "v0.34.0",
+        "cli": "v0.49.0",
+        "dashboard": "v0.25.0",
+        "installer": "v2024.11.18",
+        "ops-manager": "v0.36.0",
+        "provisioner": "v0.49.0",
+        "schema-manager": "v0.25.0",
+        "ui-server": "v0.25.0",
+        "webhook-server": "v0.25.0"
+      }
+    },
+    {
+      "version": "v2024.11.8-rc.0",
+      "hostDocs": true,
+      "info": {
+        "autoscaler": "v0.34.0-rc.0",
+        "cli": "v0.49.0-rc.0",
+        "dashboard": "v0.25.0-rc.0",
+        "installer": "v2024.11.8-rc.0",
+        "ops-manager": "v0.36.0-rc.0",
+        "provisioner": "v0.49.0-rc.0",
+        "schema-manager": "v0.25.0-rc.0",
+        "ui-server": "v0.25.0-rc.0",
+        "webhook-server": "v0.25.0-rc.0"
+      }
+    },
+    {
+      "version": "v2024.9.30",
+      "hostDocs": true,
+      "show": true,
+      "info": {
+        "autoscaler": "v0.33.0",
+        "cli": "v0.48.0",
+        "dashboard": "v0.24.0",
+        "installer": "v2024.9.30",
+        "ops-manager": "v0.35.0",
+        "provisioner": "v0.48.0",
+        "schema-manager": "v0.24.0",
+        "ui-server": "v0.24.0",
+        "webhook-server": "v0.24.0"
+      }
+    },
+    {
+      "version": "v2024.8.21",
+      "hostDocs": true,
+      "show": true,
+      "info": {
+        "autoscaler": "v0.32.0",
+        "cli": "v0.47.0",
+        "dashboard": "v0.23.0",
+        "installer": "v2024.8.21",
+        "ops-manager": "v0.34.0",
+        "provisioner": "v0.47.0",
+        "schema-manager": "v0.23.0",
+        "ui-server": "v0.23.0",
+        "webhook-server": "v0.23.0"
+      }
+    },
+    {
+      "version": "v2024.8.14-rc.3",
+      "hostDocs": true,
+      "info": {
+        "autoscaler": "v0.32.0-rc.3",
+        "cli": "v0.47.0-rc.3",
+        "dashboard": "v0.23.0-rc.3",
+        "installer": "v2024.8.14-rc.3",
+        "ops-manager": "v0.34.0-rc.3",
+        "provisioner": "v0.47.0-rc.3",
+        "schema-manager": "v0.23.0-rc.3",
+        "ui-server": "v0.23.0-rc.3",
+        "webhook-server": "v0.23.0-rc.3"
+      }
+    },
+    {
+      "version": "v2024.8.2-rc.2",
+      "hostDocs": true,
+      "info": {
+        "autoscaler": "v0.32.0-rc.2",
+        "cli": "v0.47.0-rc.2",
+        "dashboard": "v0.23.0-rc.2",
+        "installer": "v2024.8.2-rc.2",
+        "ops-manager": "v0.34.0-rc.2",
+        "provisioner": "v0.47.0-rc.2",
+        "schema-manager": "v0.23.0-rc.2",
+        "ui-server": "v0.23.0-rc.2",
+        "webhook-server": "v0.23.0-rc.2"
+      }
+    },
+    {
+      "version": "v2024.7.11-rc.1",
+      "hostDocs": true,
+      "info": {
+        "autoscaler": "v0.32.0-rc.1",
+        "cli": "v0.47.0-rc.1",
+        "dashboard": "v0.23.0-rc.1",
+        "installer": "v2024.7.11-rc.1",
+        "ops-manager": "v0.34.0-rc.1",
+        "provisioner": "v0.47.0-rc.1",
+        "schema-manager": "v0.23.0-rc.1",
+        "ui-server": "v0.23.0-rc.1",
+        "webhook-server": "v0.23.0-rc.1"
+      }
+    },
+    {
+      "version": "v2024.7.3-rc.0",
+      "hostDocs": true,
+      "info": {
+        "cli": "v0.47.0-rc.0",
+        "dashboard": "v0.23.0-rc.0",
+        "installer": "v2024.7.3-rc.0",
+        "provisioner": "v0.47.0-rc.0",
+        "schema-manager": "v0.23.0-rc.0",
+        "ui-server": "v0.23.0-rc.0",
+        "webhook-server": "v0.23.0-rc.0"
+      }
+    },
+    {
+      "version": "v2024.6.4",
+      "hostDocs": true,
+      "show": true,
+      "info": {
+        "autoscaler": "v0.31.0",
+        "cli": "v0.46.0",
+        "dashboard": "v0.22.0",
+        "installer": "v2024.6.4",
+        "ops-manager": "v0.33.0",
+        "provisioner": "v0.46.0",
+        "schema-manager": "v0.22.0",
+        "ui-server": "v0.22.0",
+        "webhook-server": "v0.22.0"
+      }
+    },
+    {
+      "version": "v2024.4.27",
+      "hostDocs": true,
+      "show": true,
+      "info": {
+        "autoscaler": "v0.30.0",
+        "cli": "v0.45.0",
+        "dashboard": "v0.21.0",
+        "installer": "v2024.4.27",
+        "ops-manager": "v0.32.0",
+        "provisioner": "v0.45.0",
+        "schema-manager": "v0.21.0",
+        "ui-server": "v0.21.0",
+        "webhook-server": "v0.21.0"
+      }
+    },
+    {
+      "version": "v2024.3.16",
+      "hostDocs": true,
+      "show": true,
+      "info": {
+        "autoscaler": "v0.29.0",
+        "cli": "v0.44.0",
+        "dashboard": "v0.20.0",
+        "installer": "v2024.3.16",
+        "ops-manager": "v0.31.0",
+        "provisioner": "v0.44.0",
+        "schema-manager": "v0.20.0",
+        "ui-server": "v0.20.0",
+        "webhook-server": "v0.20.0"
+      }
+    },
+    {
+      "version": "v2024.3.9-rc.0",
+      "hostDocs": true,
+      "info": {
+        "autoscaler": "v0.28.0-rc.0",
+        "cli": "v0.43.0-rc.0",
+        "dashboard": "v0.19.0-rc.0",
+        "installer": "v2024.3.9-rc.0",
+        "ops-manager": "v0.30.0-rc.0",
+        "provisioner": "v0.43.0-rc.0",
+        "schema-manager": "v0.19.0-rc.0",
+        "ui-server": "v0.19.0-rc.0",
+        "webhook-server": "v0.19.0-rc.0"
+      }
+    },
+    {
+      "version": "v2024.2.14",
+      "hostDocs": true,
+      "show": true,
+      "info": {
+        "autoscaler": "v0.27.0",
+        "cli": "v0.42.0",
+        "dashboard": "v0.18.0",
+        "installer": "v2024.2.14",
+        "ops-manager": "v0.29.0",
+        "provisioner": "v0.42.0",
+        "schema-manager": "v0.18.0",
+        "ui-server": "v0.18.0",
+        "webhook-server": "v0.18.0"
+      }
     },
     {
       "version": "v2024.1.31",
@@ -973,7 +1188,7 @@
       "hostDocs": false
     }
   ],
-  "latestVersion": "v2024.1.31",
+  "latestVersion": "v2024.12.18",
   "socialLinks": {
     "facebook": "https://facebook.com/appscode",
     "github": "https://github.com/kubedb",

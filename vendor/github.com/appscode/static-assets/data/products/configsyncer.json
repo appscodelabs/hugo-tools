@@ -44,12 +44,12 @@
     {
       "title": "Configuration Syncer",
       "image": {
-        "src": "https://cdn.appscode.com/images/products/configsyncer/features/feature-3.png",
-        "alt": "http"
+        "src": "https://cdn.appscode.com/images/products/configsyncer/features/configuration-syncer.jpg",
+        "alt": "configuration-syncer"
       },
       "icon": {
         "src": "https://cdn.appscode.com/images/products/configsyncer/features/configuration.svg",
-        "alt": "http"
+        "alt": "configuration-syncer"
       },
       "summary": "",
       "description": "Keeps ConfigMaps and Secrets synchronized across Namespaces or Clusters"
@@ -59,6 +59,26 @@
     {
       "version": "master",
       "hostDocs": false,
+      "show": true
+    },
+    {
+      "version": "v0.15.2",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "v0.15.1",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "v0.15.0",
+      "hostDocs": true,
+      "show": true
+    },
+    {
+      "version": "v0.14.7",
+      "hostDocs": true,
       "show": true
     },
     {
@@ -156,7 +176,7 @@
       "hostDocs": true
     }
   ],
-  "latestVersion": "v0.14.6",
+  "latestVersion": "v0.15.2",
   "socialLinks": {
     "facebook": "https://facebook.com/appscode",
     "github": "https://github.com/config-syncer/config-syncer",
