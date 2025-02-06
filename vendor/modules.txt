@@ -42,7 +42,7 @@ github.com/alecthomas/chroma/lexers/y
 github.com/alecthomas/chroma/styles
 # github.com/alecthomas/repr v0.2.0
 ## explicit; go 1.18
-# github.com/appscode/static-assets v0.8.5
+# github.com/appscode/static-assets v0.8.6-0.20250131131753-8c3b4b90c576
 ## explicit; go 1.21
 github.com/appscode/static-assets
 github.com/appscode/static-assets/api
