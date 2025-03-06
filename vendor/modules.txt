@@ -42,7 +42,7 @@ github.com/alecthomas/chroma/lexers/y
 github.com/alecthomas/chroma/styles
 # github.com/alecthomas/repr v0.2.0
 ## explicit; go 1.18
-# github.com/appscode/static-assets v0.8.6-0.20250131131753-8c3b4b90c576
+# github.com/appscode/static-assets v0.8.6-0.20250306052058-2d7b67d4ce89
 ## explicit; go 1.21
 github.com/appscode/static-assets
 github.com/appscode/static-assets/api
@@ -193,16 +193,16 @@ github.com/spf13/viper
 # github.com/subosito/gotenv v1.2.0
 ## explicit
 github.com/subosito/gotenv
-# golang.org/x/net v0.20.0
+# golang.org/x/net v0.33.0
 ## explicit; go 1.18
 golang.org/x/net/http/httpguts
 golang.org/x/net/http2
 golang.org/x/net/http2/hpack
 golang.org/x/net/idna
-# golang.org/x/sys v0.16.0
+# golang.org/x/sys v0.28.0
 ## explicit; go 1.18
 golang.org/x/sys/unix
-# golang.org/x/text v0.14.0
+# golang.org/x/text v0.21.0
 ## explicit; go 1.18
 golang.org/x/text/cases
 golang.org/x/text/internal
