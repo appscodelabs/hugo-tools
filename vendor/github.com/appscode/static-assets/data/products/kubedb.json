@@ -157,6 +157,116 @@
       "show": true
     },
     {
+      "version": "v2025.10.17",
+      "hostDocs": true,
+      "info": {
+        "autoscaler": "v0.44.0",
+        "cli": "v0.59.0",
+        "dashboard": "v0.35.0",
+        "installer": "v2025.10.17",
+        "ops-manager": "v0.46.0",
+        "provisioner": "v0.59.0",
+        "schema-manager": "v0.35.0",
+        "ui-server": "v0.35.0",
+        "webhook-server": "v0.35.0"
+      }
+    },
+    {
+      "version": "v2025.8.31",
+      "hostDocs": true,
+      "show": true,
+      "info": {
+        "autoscaler": "v0.43.0",
+        "cli": "v0.58.0",
+        "dashboard": "v0.34.0",
+        "installer": "v2025.8.31",
+        "ops-manager": "v0.45.0",
+        "provisioner": "v0.58.0",
+        "schema-manager": "v0.34.0",
+        "ui-server": "v0.34.0",
+        "webhook-server": "v0.34.0"
+      }
+    },
+    {
+      "version": "v2025.7.31",
+      "hostDocs": true,
+      "show": true,
+      "info": {
+        "autoscaler": "v0.42.0",
+        "cli": "v0.57.0",
+        "dashboard": "v0.33.0",
+        "installer": "v2025.7.31",
+        "ops-manager": "v0.44.0",
+        "provisioner": "v0.57.0",
+        "schema-manager": "v0.33.0",
+        "ui-server": "v0.33.0",
+        "webhook-server": "v0.33.0"
+      }
+    },
+    {
+      "version": "v2025.7.30-rc.0",
+      "hostDocs": true,
+      "info": {
+        "autoscaler": "v0.42.0-rc.0",
+        "cli": "v0.57.0-rc.0",
+        "dashboard": "v0.33.0-rc.0",
+        "installer": "v2025.7.30-rc.0",
+        "ops-manager": "v0.44.0-rc.0",
+        "provisioner": "v0.57.0-rc.0",
+        "schema-manager": "v0.33.0-rc.0",
+        "ui-server": "v0.33.0-rc.0",
+        "webhook-server": "v0.33.0-rc.0"
+      }
+    },
+    {
+      "version": "v2025.6.30",
+      "hostDocs": true,
+      "show": true,
+      "info": {
+        "autoscaler": "v0.41.0",
+        "cli": "v0.56.0",
+        "dashboard": "v0.32.0",
+        "installer": "v2025.6.30",
+        "ops-manager": "v0.43.0",
+        "provisioner": "v0.56.0",
+        "schema-manager": "v0.32.0",
+        "ui-server": "v0.32.0",
+        "webhook-server": "v0.32.0"
+      }
+    },
+    {
+      "version": "v2025.5.30",
+      "hostDocs": true,
+      "show": true,
+      "info": {
+        "autoscaler": "v0.40.0",
+        "cli": "v0.55.0",
+        "dashboard": "v0.31.0",
+        "installer": "v2025.5.30",
+        "ops-manager": "v0.42.0",
+        "provisioner": "v0.55.0",
+        "schema-manager": "v0.31.0",
+        "ui-server": "v0.31.0",
+        "webhook-server": "v0.31.0"
+      }
+    },
+    {
+      "version": "v2025.4.30",
+      "hostDocs": true,
+      "show": true,
+      "info": {
+        "autoscaler": "v0.39.0",
+        "cli": "v0.54.0",
+        "dashboard": "v0.30.0",
+        "installer": "v2025.4.30",
+        "ops-manager": "v0.41.0",
+        "provisioner": "v0.54.0",
+        "schema-manager": "v0.30.0",
+        "ui-server": "v0.30.0",
+        "webhook-server": "v0.30.0"
+      }
+    },
+    {
       "version": "v2025.3.24",
       "hostDocs": true,
       "show": true,
@@ -1266,7 +1376,7 @@
       "hostDocs": false
     }
   ],
-  "latestVersion": "v2025.3.24",
+  "latestVersion": "v2025.8.31",
   "socialLinks": {
     "facebook": "https://facebook.com/appscode",
     "github": "https://github.com/kubedb",
