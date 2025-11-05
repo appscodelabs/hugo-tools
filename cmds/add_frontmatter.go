@@ -33,7 +33,6 @@ import (
 
 var (
 	dirTPL = template.Must(template.New("dir").Parse(`---
----
 title: {{ .title }}
 menu:
   {{- if .shared }}
@@ -128,7 +127,7 @@ func addFrontMatter(args []string) {
 			}
 
 			if info.IsDir() {
-				if !skipDir {
+				if !skipDir && !mustOnlyIndexFileInFolder(path) && !knownResourceFolder(info) {
 					var out bytes.Buffer
 					err = dirTPL.Execute(&out, data)
 					if err != nil {
@@ -174,4 +173,35 @@ func addFrontMatter(args []string) {
 			fmt.Printf("error walking the path %q: %v\n", dir, err)
 		}
 	}
+}
+
+// onlyIndexFileInFolder returns true if a folder has index.md or _index.md file in a folder
+func onlyIndexFileInFolder(folderPath string) (bool, error) {
+	files, err := os.ReadDir(folderPath)
+	if err != nil {
+		return false, fmt.Errorf("failed to read directory: %w", err)
+	}
+
+	index, nonIndex := 0, 0
+	for _, file := range files {
+		if !file.IsDir() {
+			if file.Name() == "index.md" {
+				index++
+			} else if strings.HasSuffix(file.Name(), ".md") && file.Name() != "_index.md" {
+				nonIndex++
+			}
+		}
+	}
+	return index == 1 && nonIndex == 0, nil
+}
+
+func mustOnlyIndexFileInFolder(folderPath string) bool {
+	result, _ := onlyIndexFileInFolder(folderPath)
+	return result
+}
+
+func knownResourceFolder(info os.FileInfo) bool {
+	return info.Name() == "images" ||
+		info.Name() == "yamls" ||
+		info.Name() == "yaml"
 }

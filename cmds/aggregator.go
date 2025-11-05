@@ -483,7 +483,7 @@ func processProduct(sh *shell.Session, p api.Product, allVersions bool) error {
 
 			page, err := parser.ReadFrom(buf)
 			if err != nil {
-				return err
+				return fmt.Errorf("could not parse %q: %w", path, err)
 			}
 
 			content := page.Content()
