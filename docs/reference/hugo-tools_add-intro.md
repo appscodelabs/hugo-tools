@@ -2,10 +2,6 @@
 
 Add intro
 
-### Synopsis
-
-Add intro
-
 ```
 hugo-tools add-intro [flags]
 ```

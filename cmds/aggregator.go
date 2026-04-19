@@ -49,12 +49,12 @@ type PageInfo struct {
 	// Git GitInfo `json:"git"`
 }
 
-func (p PageInfo) Map(extra map[string]interface{}) (map[string]interface{}, error) {
+func (p PageInfo) Map(extra map[string]any) (map[string]any, error) {
 	data, err := json.Marshal(p)
 	if err != nil {
 		return nil, err
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	err = json.Unmarshal(data, &m)
 	if err != nil {
 		return nil, err
@@ -80,6 +80,7 @@ var (
 	onlyAssets     = false
 	skipAssets     = false
 	allVersions    = false
+	docsDir        = "docs"
 	fmReplacements = map[string]string{}
 
 	scriptRoot, _ = os.Getwd()
@@ -100,6 +101,7 @@ func NewCmdDocsAggregator() *cobra.Command {
 	cmd.Flags().BoolVar(&onlyAssets, "only-assets", onlyAssets, "If true, only aggregates config")
 	cmd.Flags().BoolVar(&skipAssets, "skip-assets", skipAssets, "If true, skip updating aggregates config")
 	cmd.Flags().BoolVar(&allVersions, "all-versions", allVersions, "If true, process all version, otherwise only process the latest version")
+	cmd.Flags().StringVar(&docsDir, "docs-dir", docsDir, "Destination directory under content for non-shared mode")
 	cmd.Flags().StringToStringVar(&fmReplacements, "fm-replacements", fmReplacements, "Frontmatter replacements")
 	return cmd
 }
@@ -245,7 +247,7 @@ func processDataConfig() (*api.Listing, error) {
 	if err != nil {
 		return nil, err
 	}
-	var baseCfg map[string]interface{}
+	var baseCfg map[string]any
 	err = json.Unmarshal(baseData, &baseCfg)
 	if err != nil {
 		return nil, err
@@ -259,7 +261,7 @@ func processDataConfig() (*api.Listing, error) {
 	if err != nil {
 		return nil, err
 	}
-	var cfg map[string]interface{}
+	var cfg map[string]any
 	err = json.Unmarshal(data, &cfg)
 	if err != nil {
 		return nil, err
@@ -288,7 +290,7 @@ func processDataConfig() (*api.Listing, error) {
 	return &out, nil
 }
 
-func hasKey(m map[string]interface{}, key string) bool {
+func hasKey(m map[string]any, key string) bool {
 	_, ok := m[key]
 	return ok
 }
@@ -407,15 +409,11 @@ func processProduct(sh *shell.Session, p api.Product, allVersions bool) error {
 		if sharedSite {
 			vDir = filepath.Join(scriptRoot, "content", "products", p.Key, v.Version)
 		} else {
-			vDir = filepath.Join(scriptRoot, "content", "docs", v.Version)
+			vDir = filepath.Join(scriptRoot, "content", docsDir, v.Version)
 		}
 
 		if !allVersions && v.Version != p.LatestVersion && dirExists(vDir) {
 			continue
-		}
-
-		if v.DocsDir == "" {
-			v.DocsDir = "docs"
 		}
 
 		sh.SetDir(wdCur)
@@ -453,7 +451,7 @@ func processProduct(sh *shell.Session, p api.Product, allVersions bool) error {
 			return err
 		}
 
-		err = sh.Command("cp", "-r", filepath.Join(wdCur, v.DocsDir), vDir).Run()
+		err = sh.Command("cp", "-r", filepath.Join(wdCur, docsDir), vDir).Run()
 		if err != nil {
 			return err
 		}
@@ -505,7 +503,7 @@ func processProduct(sh *shell.Session, p api.Product, allVersions bool) error {
 					} else {
 						re2 = regexp.MustCompile(`([("]/docs/.*)(/index.md)(#.*)?([)"])`)
 					}
-					for idx := 0; idx < 5; idx++ {
+					for range 5 {
 						content = re2.ReplaceAll(content, []byte(`${1}/${3}${4}`))
 					}
 				}
@@ -516,7 +514,7 @@ func processProduct(sh *shell.Session, p api.Product, allVersions bool) error {
 				} else {
 					re2 = regexp.MustCompile(`([("]/docs/.*)(.md)(#.*)?([)"])`)
 				}
-				for idx := 0; idx < 5; idx++ {
+				for range 5 {
 					content = re2.ReplaceAll(content, []byte(`${1}${3}${4}`))
 				}
 
@@ -552,7 +550,7 @@ func processProduct(sh *shell.Session, p api.Product, allVersions bool) error {
 					for i := range m2 {
 						if sk, ok := m2[i].Key.(string); ok && sk == "aliases" {
 
-							v2, ok := m2[i].Value.([]interface{})
+							v2, ok := m2[i].Value.([]any)
 							if !ok {
 								continue
 							}
@@ -583,7 +581,7 @@ func processProduct(sh *shell.Session, p api.Product, allVersions bool) error {
 							if err != nil {
 								return err
 							}
-							m3 := make(map[string]interface{})
+							m3 := make(map[string]any)
 							err = yaml.Unmarshal(d3, &m3)
 							if err != nil {
 								return err
@@ -711,16 +709,16 @@ func applyFrontmatterReplacements(data []byte) []byte {
 // described here: https://github.com/go-yaml/yaml/issues/139
 //
 // Inspired by https://github.com/stripe/stripe-mock, MIT licensed
-func stringifyMapKeys(in interface{}) (interface{}, bool) {
+func stringifyMapKeys(in any) (any, bool) {
 	switch in := in.(type) {
-	case []interface{}:
+	case []any:
 		for i, v := range in {
 			if vv, replaced := stringifyMapKeys(v); replaced {
 				in[i] = vv
 			}
 		}
-	case map[interface{}]interface{}:
-		res := make(map[string]interface{})
+	case map[any]any:
+		res := make(map[string]any)
 		var (
 			ok  bool
 			err error
@@ -805,9 +803,6 @@ func processSubProject(sh *shell.Session, p api.Product, v api.ProductVersion, v
 					if !spv.HostDocs {
 						continue
 					}
-					if spv.DocsDir == "" {
-						spv.DocsDir = "docs"
-					}
 
 					fmt.Println(wdCur)
 					sh.SetDir(wdCur)
@@ -844,7 +839,7 @@ func processSubProject(sh *shell.Session, p api.Product, v api.ProductVersion, v
 						return err
 					}
 
-					err = sh.Command("cp", "-r", spv.DocsDir, spvDir).Run()
+					err = sh.Command("cp", "-r", docsDir, spvDir).Run()
 					if err != nil {
 						return err
 					}

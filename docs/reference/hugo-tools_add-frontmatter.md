@@ -2,10 +2,6 @@
 
 Add front matter
 
-### Synopsis
-
-Add front matter
-
 ```
 hugo-tools add-frontmatter [flags]
 ```
