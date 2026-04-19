@@ -1,16 +1,16 @@
 module github.com/appscodelabs/hugo-tools
 
-go 1.24
+go 1.24.0
 
 require (
-	github.com/appscode/static-assets v0.8.8
-	github.com/gohugoio/hugo v0.49.1
+	github.com/appscode/static-assets v0.8.9
+	github.com/gohugoio/hugo v0.79.1
 	github.com/imdario/mergo v0.3.6
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cast v1.6.0
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/pflag v1.0.5
-	golang.org/x/text v0.23.0
+	golang.org/x/text v0.29.0
 	gomodules.xyz/encoding v0.0.7
 	gomodules.xyz/go-sh v0.1.0
 	gomodules.xyz/logs v0.0.7
@@ -62,8 +62,8 @@ require (
 	github.com/spf13/jwalterweatherman v1.0.0 // indirect
 	github.com/spf13/viper v1.7.0 // indirect
 	github.com/subosito/gotenv v1.2.0 // indirect
-	golang.org/x/net v0.38.0 // indirect
-	golang.org/x/sys v0.31.0 // indirect
+	golang.org/x/net v0.45.0 // indirect
+	golang.org/x/sys v0.36.0 // indirect
 	gomodules.xyz/clock v0.0.0-20200817085942-06523dba733f // indirect
 	gomodules.xyz/flags v0.1.3 // indirect
 	gomodules.xyz/jsonpath v0.0.2 // indirect

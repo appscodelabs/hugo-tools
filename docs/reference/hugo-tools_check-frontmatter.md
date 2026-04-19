@@ -2,10 +2,6 @@
 
 Check front matter
 
-### Synopsis
-
-Check front matter
-
 ```
 hugo-tools check-frontmatter [flags]
 ```

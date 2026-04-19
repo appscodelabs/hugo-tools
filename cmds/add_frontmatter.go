@@ -116,7 +116,7 @@ func addFrontMatter(args []string) {
 			self := clean(strings.TrimSuffix(filepath.Base(path), ".md"))
 			parent := clean(filepath.Base(filepath.Dir(path)))
 			granny := clean(filepath.Base(filepath.Dir(filepath.Dir(path))))
-			data := map[string]interface{}{
+			data := map[string]any{
 				"id":      id(self + " " + parent),
 				"pid":     id(parent + " " + granny),
 				"title":   cases.Title(language.English).String(self),

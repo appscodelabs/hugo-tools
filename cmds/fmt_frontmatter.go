@@ -81,7 +81,7 @@ func fmtFrontMatter(args []string) {
 			}
 			for i, item := range obj {
 				if item.Key.(string) == "tags" {
-					valTags := item.Value.([]interface{})
+					valTags := item.Value.([]any)
 					tags := sets.NewString()
 					for _, tag := range valTags {
 						tags.Insert(strings.ToLower(tag.(string)))

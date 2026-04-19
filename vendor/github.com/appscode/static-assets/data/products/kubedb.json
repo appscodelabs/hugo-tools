@@ -2,7 +2,7 @@
   "key": "kubedb",
   "name": "KubeDB",
   "fullname": "KubeDB by AppsCode",
-  "tagline": "Run Production-Grade Databases on Kubernetes",
+  "tagline": "Kubernetes-native DBaaS Anywhere with Any Storage",
   "summary": "KubeDB simplifies Provisioning, Upgrading, Scaling, Volume Expansion, Monitor, Backup, Restore for various Databases in Kubernetes on any Public & Private Cloud",
   "published": true,
   "author": "AppsCode Inc.",
@@ -155,6 +155,113 @@
       "version": "master",
       "hostDocs": false,
       "show": true
+    },
+    {
+      "version": "v2026.4.13-rc.0",
+      "hostDocs": true,
+      "info": {
+        "autoscaler": "v0.49.0-rc.0",
+        "cli": "v0.64.0-rc.0",
+        "dashboard": "v0.40.0-rc.0",
+        "installer": "v2026.4.13-rc.0",
+        "ops-manager": "v0.51.0-rc.0",
+        "provisioner": "v0.64.0-rc.0",
+        "schema-manager": "v0.40.0-rc.0",
+        "ui-server": "v0.40.0-rc.0",
+        "webhook-server": "v0.40.0-rc.0"
+      }
+    },
+    {
+      "version": "v2026.2.26",
+      "hostDocs": true,
+      "show": true,
+      "info": {
+        "autoscaler": "v0.48.0",
+        "cli": "v0.63.0",
+        "dashboard": "v0.39.0",
+        "installer": "v2026.2.26",
+        "ops-manager": "v0.50.0",
+        "provisioner": "v0.63.0",
+        "schema-manager": "v0.39.0",
+        "ui-server": "v0.39.0",
+        "webhook-server": "v0.39.0"
+      }
+    },
+    {
+      "version": "v2026.2.21-rc.1",
+      "hostDocs": true,
+      "info": {
+        "autoscaler": "v0.46.0-rc.1",
+        "cli": "v0.61.0-rc.1",
+        "dashboard": "v0.37.0-rc.1",
+        "installer": "v2026.2.21-rc.1",
+        "ops-manager": "v0.48.0-rc.1",
+        "provisioner": "v0.61.0-rc.1",
+        "schema-manager": "v0.37.0-rc.1",
+        "ui-server": "v0.37.0-rc.1",
+        "webhook-server": "v0.37.0-rc.1"
+      }
+    },
+    {
+      "version": "v2026.2.16-rc.0",
+      "hostDocs": true,
+      "info": {
+        "autoscaler": "v0.46.0-rc.0",
+        "cli": "v0.61.0-rc.0",
+        "dashboard": "v0.37.0-rc.0",
+        "installer": "v2026.2.16-rc.0",
+        "ops-manager": "v0.48.0-rc.0",
+        "provisioner": "v0.61.0-rc.0",
+        "schema-manager": "v0.37.0-rc.0",
+        "ui-server": "v0.37.0-rc.0",
+        "webhook-server": "v0.37.0-rc.0"
+      }
+    },
+    {
+      "version": "v2026.1.19",
+      "hostDocs": true,
+      "show": true,
+      "info": {
+        "autoscaler": "v0.45.0",
+        "cli": "v0.60.0",
+        "dashboard": "v0.36.0",
+        "installer": "v2026.1.19",
+        "ops-manager": "v0.47.0",
+        "provisioner": "v0.60.0",
+        "schema-manager": "v0.36.0",
+        "ui-server": "v0.36.0",
+        "webhook-server": "v0.36.0"
+      }
+    },
+    {
+      "version": "v2025.12.31-rc.1",
+      "hostDocs": true,
+      "info": {
+        "autoscaler": "v0.45.0-rc.1",
+        "cli": "v0.60.0-rc.1",
+        "dashboard": "v0.36.0-rc.1",
+        "installer": "v2025.12.31-rc.1",
+        "ops-manager": "v0.47.0-rc.1",
+        "provisioner": "v0.60.0-rc.1",
+        "schema-manager": "v0.36.0-rc.1",
+        "ui-server": "v0.36.0-rc.1",
+        "webhook-server": "v0.36.0-rc.1"
+      }
+    },
+    {
+      "version": "v2025.12.9-rc.0",
+      "hostDocs": true,
+      "info": {
+        "autoscaler": "v0.45.0-rc.0",
+        "cli": "v0.60.0-rc.0",
+        "dashboard": "v0.36.0-rc.0",
+        "installer": "v2025.12.9-rc.0",
+        "ops-manager": "v0.47.0-rc.0",
+        "provisioner": "v0.60.0-rc.0",
+        "schema-manager": "v0.36.0-rc.0",
+        "ui-server": "v0.36.0-rc.0",
+        "webhook-server": "v0.36.0-rc.0"
+      }
     },
     {
       "version": "v2025.10.17",
@@ -1377,7 +1484,7 @@
       "hostDocs": false
     }
   ],
-  "latestVersion": "v2025.10.17",
+  "latestVersion": "v2026.2.26",
   "socialLinks": {
     "facebook": "https://facebook.com/appscode",
     "github": "https://github.com/kubedb",
