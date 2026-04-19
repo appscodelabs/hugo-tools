@@ -76,7 +76,6 @@ const (
 )
 
 var (
-	sharedSite     = false
 	onlyAssets     = false
 	skipAssets     = false
 	allVersions    = false
@@ -97,7 +96,6 @@ func NewCmdDocsAggregator() *cobra.Command {
 		},
 	}
 	cmd.Flags().StringVar(&product, "product", product, "Name of product")
-	cmd.Flags().BoolVar(&sharedSite, "shared", sharedSite, "If true, considered a shared site like appscode.com instead of a product specific site like kubedb.com")
 	cmd.Flags().BoolVar(&onlyAssets, "only-assets", onlyAssets, "If true, only aggregates config")
 	cmd.Flags().BoolVar(&skipAssets, "skip-assets", skipAssets, "If true, skip updating aggregates config")
 	cmd.Flags().BoolVar(&allVersions, "all-versions", allVersions, "If true, process all version, otherwise only process the latest version")
@@ -127,10 +125,6 @@ func process() error {
 	sh.ShowCMD = true
 	sh.PipeFail = true
 	sh.PipeStdErrors = true
-
-	if !sharedSite {
-		sharedSite = len(cfg.Products) > 1
-	}
 
 	if !skipAssets {
 		err = processAssets(sh, cfg.Assets)
@@ -405,12 +399,7 @@ func processProduct(sh *shell.Session, p api.Product, allVersions bool) error {
 			continue
 		}
 
-		var vDir string
-		if sharedSite {
-			vDir = filepath.Join(scriptRoot, "content", "products", p.Key, v.Version)
-		} else {
-			vDir = filepath.Join(scriptRoot, "content", docsDir, v.Version)
-		}
+		vDir := filepath.Join(scriptRoot, "content", docsDir, v.Version)
 
 		if !allVersions && v.Version != p.LatestVersion && dirExists(vDir) {
 			continue
@@ -487,33 +476,20 @@ func processProduct(sh *shell.Session, p api.Product, allVersions bool) error {
 			content := page.Content()
 
 			if strings.Contains(string(content), "/docs") {
-				prefix := `/products/` + p.Key + `/` + v.Version
-				if !sharedSite {
-					prefix = `/docs/` + v.Version
-				}
+				prefix := `/docs/` + v.Version
 
 				re1 := regexp.MustCompile(`([("])(/docs)`)
 				content = re1.ReplaceAll(content, []byte(`${1}`+prefix))
 
 				{
 					// remove index.md
-					var re2 *regexp.Regexp
-					if sharedSite {
-						re2 = regexp.MustCompile(`([("]/products/.*)(/index.md)(#.*)?([)"])`)
-					} else {
-						re2 = regexp.MustCompile(`([("]/docs/.*)(/index.md)(#.*)?([)"])`)
-					}
+					re2 := regexp.MustCompile(`([("]/docs/.*)(/index.md)(#.*)?([)"])`)
 					for range 5 {
 						content = re2.ReplaceAll(content, []byte(`${1}/${3}${4}`))
 					}
 				}
 
-				var re2 *regexp.Regexp
-				if sharedSite {
-					re2 = regexp.MustCompile(`([("]/products/.*)(.md)(#.*)?([)"])`)
-				} else {
-					re2 = regexp.MustCompile(`([("]/docs/.*)(.md)(#.*)?([)"])`)
-				}
+				re2 := regexp.MustCompile(`([("]/docs/.*)(.md)(#.*)?([)"])`)
 				for range 5 {
 					content = re2.ReplaceAll(content, []byte(`${1}${3}${4}`))
 				}
