@@ -398,11 +398,16 @@ func processProduct(sh *shell.Session, p api.Product, allVersions bool, multiPro
 	sh.SetDir(wdCur)
 
 	for _, v := range p.Versions {
+		vDir := filepath.Join(scriptRoot, "content", docsDir, v.Version)
+
 		if !v.HostDocs {
+			if dirExists(vDir) {
+				if err := os.RemoveAll(vDir); err != nil {
+					return err
+				}
+			}
 			continue
 		}
-
-		vDir := filepath.Join(scriptRoot, "content", docsDir, v.Version)
 
 		if !allVersions && v.Version != p.LatestVersion && dirExists(vDir) {
 			continue
