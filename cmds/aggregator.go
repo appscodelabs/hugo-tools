@@ -45,6 +45,7 @@ import (
 
 type PageInfo struct {
 	Version           string `json:"version"`
+	Product           string `json:"product,omitempty"`
 	SubProjectVersion string `json:"subproject_version,omitempty"`
 	// Git GitInfo `json:"git"`
 }
@@ -126,6 +127,8 @@ func process() error {
 	sh.PipeFail = true
 	sh.PipeStdErrors = true
 
+	multiProduct := len(cfg.Products) > 1
+
 	if !skipAssets {
 		err = processAssets(sh, cfg.Assets)
 		if err != nil {
@@ -159,7 +162,7 @@ func process() error {
 			return fmt.Errorf("missing product key in file=%s", pfile)
 		}
 
-		err = processProduct(sh, p, allVersions)
+		err = processProduct(sh, p, allVersions, multiProduct)
 		if err != nil {
 			return err
 		}
@@ -362,7 +365,7 @@ func dirExists(path string) bool {
 	return false
 }
 
-func processProduct(sh *shell.Session, p api.Product, allVersions bool) error {
+func processProduct(sh *shell.Session, p api.Product, allVersions bool, multiProduct bool) error {
 	// pushd, popd
 	wdOrig := sh.Getwd()
 	defer sh.SetDir(wdOrig)
@@ -446,7 +449,7 @@ func processProduct(sh *shell.Session, p api.Product, allVersions bool) error {
 		}
 
 		// process sub project
-		err = processSubProject(sh, p, v, vDir)
+		err = processSubProject(sh, p, v, vDir, multiProduct)
 		if err != nil {
 			return err
 		}
@@ -501,7 +504,11 @@ func processProduct(sh *shell.Session, p api.Product, allVersions bool) error {
 				content = bytes.ReplaceAll(content, []byte(`"/docs/images`), []byte(`"`+prefix+`/images`))
 			}
 
-			pageInfo, err := PageInfo{Version: v.Version}.Map(v.Info)
+			pi := PageInfo{Version: v.Version}
+			if multiProduct {
+				pi.Product = p.Key
+			}
+			pageInfo, err := pi.Map(v.Info)
 			if err != nil {
 				return err
 			}
@@ -722,7 +729,7 @@ func stringifyMapKeys(in any) (any, bool) {
 	return nil, false
 }
 
-func processSubProject(sh *shell.Session, p api.Product, v api.ProductVersion, vDir string) error {
+func processSubProject(sh *shell.Session, p api.Product, v api.ProductVersion, vDir string, multiProduct bool) error {
 	// pushd, popd
 	wdOrig := sh.Getwd()
 	defer sh.SetDir(wdOrig)
@@ -841,10 +848,14 @@ func processSubProject(sh *shell.Session, p api.Product, v api.ProductVersion, v
 							return err
 						}
 
-						pageInfo, err := PageInfo{
+						pi := PageInfo{
 							Version:           v.Version,
 							SubProjectVersion: spv.Version,
-						}.Map(v.Info)
+						}
+						if multiProduct {
+							pi.Product = p.Key
+						}
+						pageInfo, err := pi.Map(v.Info)
 						if err != nil {
 							return err
 						}
