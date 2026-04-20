@@ -3,7 +3,7 @@ module github.com/appscodelabs/hugo-tools
 go 1.24.0
 
 require (
-	github.com/appscode/static-assets v0.8.9
+	github.com/appscode/static-assets v0.8.10
 	github.com/gohugoio/hugo v0.79.1
 	github.com/imdario/mergo v0.3.6
 	github.com/pkg/errors v0.9.1
