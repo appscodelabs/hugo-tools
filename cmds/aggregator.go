@@ -309,7 +309,8 @@ func processAssets(sh *shell.Session, a api.AssetListing) error {
 	if !exists(filepath.Join(wdCur, repo)) {
 		sh.SetDir(wdCur)
 
-		err = sh.Command("git",
+		err = sh.Command(
+			"git",
 			"clone",
 			// "--no-tags", //TODO: ok?
 			"--no-recurse-submodules",
@@ -382,7 +383,8 @@ func processProduct(sh *shell.Session, p api.Product, allVersions bool, multiPro
 	if !exists(filepath.Join(wdCur, repo)) {
 		sh.SetDir(wdCur)
 
-		err = sh.Command("git",
+		err = sh.Command(
+			"git",
 			"clone",
 			// "--no-tags", //TODO: ok?
 			"--no-recurse-submodules",
@@ -765,7 +767,8 @@ func processSubProject(sh *shell.Session, p api.Product, v api.ProductVersion, v
 		if !exists(filepath.Join(wdCur, repo)) {
 			sh.SetDir(wdCur)
 
-			err = sh.Command("git",
+			err = sh.Command(
+				"git",
 				"clone",
 				// "--no-tags", //TODO: ok?
 				"--no-recurse-submodules",
